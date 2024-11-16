@@ -331,21 +331,48 @@ class UIManager {
     this.initializeEventListeners();
   }
 
+ 
   initializeCategoryIcons() {
-    // Your category icons initialization
-  
+    const categoryIconsDiv = document.getElementById('categoryIcons');
 
+    for (const category in this.config.categories) {
+      const categoryData = this.config.categories[category];
+      const iconElement = `
+        <button class="iconButton relative group" data-category="${category}">
+          <div class="bg-gradient-to-r ${categoryData.color} 
+                      text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                      hover:scale-105 hover:shadow-xl
+                      ${categoryData.anim} 
+                      flex items-center justify-center"> 
+            <i class="fas fa-2x ${categoryData.icon}"></i>
+          </div>
+          <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 
+                     bg-white/80 backdrop-blur-md rounded-md px-2 py-1 text-sm text-gray-700 
+                     opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+            ${category}
+          </span>
+        </button>
+      `;
+      categoryIconsDiv.innerHTML += iconElement;
+    }
 
-
-
-}
-
-  initializeSortControls() {
-    // Your sort controls initialization
+    // Add click event listeners to the icons
+    const iconButtons = document.querySelectorAll('.iconButton');
+    iconButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const category = button.dataset.category;
+        this.state.update({ filterCategory: category }); 
+        this.videoManager.loadVideos();
+      });
+    });
   }
 
-  initializeEventListeners() {
-    // Your event listeners
+  initializeSortControls() {
+    const sortSelect = document.getElementById('sortSelect');
+    sortSelect.addEventListener('change', () => {
+      this.state.update({ currentSort: sortSelect.value });
+      this.videoManager.loadVideos(); 
+    });
   }
 }
 
