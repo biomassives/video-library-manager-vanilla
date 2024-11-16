@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+  <title>Feed Validator - ApproVideo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+  <div class="container mx-auto p-4">
+    <div class="bg-white rounded-lg shadow-lg p-6">
+      <h1 class="text-2xl font-bold mb-6">Feed Validator</h1>
+
+      <!-- Validation Controls -->
+      <div class="flex gap-4 mb-6">
+        <button onclick="validateFeed()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+          </svg>
+          Validate Feed
+        </button>
+        <button onclick="attemptFix()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
+          </svg>
+          Attempt Fix
+        </button>
+      </div>
+
+      <!-- Results Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Validation Issues -->
+        <div>
+          <h2 class="text-lg font-semibold mb-4">Validation Results</h2>
+          <div id="validationResults" class="space-y-3">
+            <!-- Results will be inserted here -->
+          </div>
+        </div>
+
+        <!-- Quick Fixes -->
+        <div>
+          <h2 class="text-lg font-semibold mb-4">Suggested Fixes</h2>
+          <div id="suggestedFixes" class="space-y-3">
+            <!-- Fixes will be inserted here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Feed Preview -->
+      <div class="mt-8">
+        <h2 class="text-lg font-semibold mb-4">Feed Preview</h2>
+        <div class="bg-gray-800 text-green-400 p-4 rounded-lg">
+          <pre id="feedPreview" class="text-sm overflow-x-auto"></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    // Feed validation rules
+    const validationRules = {
+      required: ['id', 'title', 'description', 'youtubeId'],
+      types: {
+        id: 'string',
+        title: 'string',
+        description: 'string',
+        youtubeId: 'string',
+        categories: 'array',
+        tags: 'array',
+        rating: 'number',
+        date: 'string',
+        materials: 'array',
+        steps: 'array'
+      },
+      formats: {
+        date: /^\d{4}-\d{2}-\d{2}$/,
+        youtubeId: /^[a-zA-Z0-9_-]{11}$/
+      }
+    };
+
+    // Validation function
+    async function validateFeed() {
+      const validationResults = document.getElementById('validationResults');
+      validationResults.innerHTML = '';
+      
+      try {
+        const { data: videos, error } = await supabase
+          .from('Video')
+          .select('*');
+
+        if (error) throw error;
+
+        let issues = [];
+        
+        videos.forEach(video => {
+          // Check required fields
+          validationRules.required.forEach(field => {
+            if (!video[field]) {
+              issues.push({
+                type: 'error',
+                message: `Missing required field: ${field}`,
+                video: video.id,
+                fixable: true
+              });
+            }
+          });
+
+          // Check types
+          Object.entries(validationRules.types).forEach(([field, type]) => {
+            if (video[field] && typeof video[field] !== type && 
+               !(type === 'array' && Array.isArray(video[field]))) {
+              issues.push({
+                type: 'error',
+                message: `Invalid type for ${field}: expected ${type}`,
+                video: video.id,
+                fixable: true
+              });
+            }
+          });
+
+          // Check formats
+          Object.entries(validationRules.formats).forEach(([field, regex]) => {
+            if (video[field] && !regex.test(video[field])) {
+              issues.push({
+                type: 'warning',
+                message: `Invalid format for ${field}`,
+                video: video.id,
+                fixable: true
+              });
+            }
+          });
+
+          // Check array fields
+          if (video.tags && typeof video.tags === 'string') {
+            issues.push({
+              type: 'warning',
+              message: 'Tags stored as string instead of array',
+              video: video.id,
+              fixable: true,
+              fix: () => convertTagsToArray(video.id)
+            });
+          }
+        });
+
+        // Display issues
+        issues.forEach(issue => {
+          const issueEl = document.createElement('div');
+          issueEl.className = `p-3 rounded-lg ${issue.type === 'error' ? 
+                             'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}`;
+          issueEl.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span>${issue.message} (Video ID: ${issue.video})</span>
+              ${issue.fixable ? `
+                <button onclick="fixIssue('${issue.video}', '${issue.message}')" 
+                        class="text-sm bg-white px-2 py-1 rounded hover:bg-opacity-80">
+                  Fix
+                </button>
+              ` : ''}
+            </div>
+          `;
+          validationResults.appendChild(issueEl);
+        });
+
+      } catch (error) {
+        console.error('Validation error:', error);
+      }
+    }
+
+    // Fix functions
+    async function convertTagsToArray(videoId) {
+      try {
+        const { data: video } = await supabase
+          .from('Video')
+          .select('tags')
+          .eq('id', videoId)
+          .single();
+
+        if (typeof video.tags === 'string') {
+          const tagsArray = video.tags
+            .replace(/[{}]/g, '')
+            .split(',')
+            .map(tag => tag.trim().replace(/"/g, ''));
+
+          await supabase
+            .from('Video')
+            .update({ tags: tagsArray })
+            .eq('id', videoId);
+
+          return true;
+        }
+      } catch (error) {
+        console.error('Error fixing tags:', error);
+        return false;
+      }
+    }
+
+    window.fixIssue = async function(videoId, issue) {
+      // Add specific fix logic based on issue type
+      if (issue.includes('Tags stored as string')) {
+        if (await convertTagsToArray(videoId)) {
+          validateFeed(); // Refresh validation results
+        }
+      }
+    };
+
+    window.attemptFix = async function() {
+      const suggestedFixes = document.getElementById('suggestedFixes');
+      suggestedFixes.innerHTML = '<div class="p-3 bg-blue-100 text-blue-800 rounded-lg">Analyzing and fixing issues...</div>';
+      
+      try {
+        // Attempt automatic fixes
+        const { data: videos } = await supabase
+          .from('Video')
+          .select('*');
+
+        let fixCount = 0;
+        for (const video of videos) {
+          if (typeof video.tags === 'string') {
+            await convertTagsToArray(video.id);
+            fixCount++;
+          }
+          // Add more automatic fixes here
+        }
+
+        suggestedFixes.innerHTML = `
+          <div class="p-3 bg-green-100 text-green-800 rounded-lg">
+            Fixed ${fixCount} issues automatically
+          </div>
+        `;
+
+        // Refresh validation
+        validateFeed();
+
+      } catch (error) {
+        console.error('Error fixing issues:', error);
+        suggestedFixes.innerHTML = `
+          <div class="p-3 bg-red-100 text-red-800 rounded-lg">
+            Error fixing issues: ${error.message}
+          </div>
+        `;
+      }
+    };
+
+    // Initialize
+    validateFeed();
+  </script>
+</body>
+</html>

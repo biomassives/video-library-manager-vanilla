@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+  <title>Edit Video</title>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-4">
+    <nav class="flex items-center justify-between mb-6">
+      <h1 class="text-3xl font-bold">Approvideo</h1>
+      <div class="space-x-4">
+        <a href="index.html" class="text-blue-500 hover:text-blue-700">
+            <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+        </a>
+        <a href="newcreate1.html" class="text-blue-500 hover:text-blue-700">
+            <svg class="h-8 w-8 text-red-500"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <rect x="4" y="4" width="6" height="6" rx="1" />  <rect x="4" y="14" width="6" height="6" rx="1" />  <rect x="14" y="14" width="6" height="6" rx="1" />  <line x1="14" y1="7" x2="20" y2="7" />  <line x1="17" y1="4" x2="17" y2="10" /></svg>
+        </a>
+      </div>
+    </nav>
+    
+    <div id="editFormContainer"></div>
+    <div id="errorMessages" class="text-red-500 text-sm mt-2"></div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 translate-y-full">
+      <div class="flex items-center space-x-2">
+        <span id="toastMessage"></span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabaseUrl = 'https://vlvbodwrtblttvwnxkjx.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg';
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      
+      // Set toast style based on type
+      if (type === 'success') {
+        toast.className = 'fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg bg-green-500 text-white transform transition-all duration-300 translate-y-full';
+      } else if (type === 'error') {
+        toast.className = 'fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg bg-red-500 text-white transform transition-all duration-300 translate-y-full';
+      }
+      
+      toastMessage.textContent = message;
+      
+      // Show toast
+      setTimeout(() => {
+        toast.style.transform = 'translateY(0)';
+      }, 100);
+      
+      // Hide toast after 3 seconds
+      setTimeout(() => {
+        toast.style.transform = 'translateY(100%)';
+      }, 3000);
+    }
+
+    async function loadVideoData() {
+      try {
+        const videoId = await localforage.getItem('videoId');
+        console.log('Retrieved video ID from localForage:', videoId);
+        
+        if (!videoId) {
+          displayError('Video ID not found. Please try again.');
+          return;
+        }
+
+        document.getElementById('editFormContainer').innerHTML = '<p class="text-gray-600">Loading video data...</p>';
+
+        const { data: video, error } = await supabase
+          .from('Video')
+          .select('*')
+          .eq('id', videoId)
+          .single();
+
+        if (error) throw error;
+        if (!video) {
+          displayError('Video not found.');
+          return;
+        }
+
+        renderEditForm(video);
+      } catch (error) {
+        console.error('Error loading video:', error);
+        displayError('Failed to load video data. Please try again.');
+      }
+    }
+
+    function renderEditForm(video) {
+      const editFormContainer = document.getElementById('editFormContainer');
+      editFormContainer.innerHTML = `
+        <form id="editForm" class="w-full max-w-lg mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <input type="hidden" id="editVideoId" value="${video.id}">
+          
+          <div class="mb-6">
+            <label for="editTitle" class="block text-gray-700 text-sm font-bold mb-2">Title:</label>
+            <input type="text" id="editTitle" value="${video.title || ''}" 
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required>
+          </div>
+
+          <div class="mb-6">
+            <label for="editDescription" class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
+            <textarea id="editDescription" 
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32"
+              required>${video.description || ''}</textarea>
+          </div>
+
+          <div class="mb-6">
+            <label for="editYoutubeUrl" class="block text-gray-700 text-sm font-bold mb-2">YouTube URL:</label>
+            <input type="text" id="editYoutubeUrl" 
+              value="${video.youtubeId ? `https://youtube.com/watch?v=${video.youtubeId}` : ''}"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required>
+          </div>
+
+          <div class="mb-6">
+            <label for="editYoutubeId" class="block text-gray-700 text-sm font-bold mb-2">YouTube ID:</label>
+            <input type="text" id="editYoutubeId" value="${video.youtubeId || ''}" 
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-gray-100 leading-tight"
+              readonly>
+          </div>
+
+          <button type="submit" 
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full transition duration-200">
+            Save Changes
+          </button>
+        </form>
+      `;
+
+      const form = document.getElementById('editForm');
+      const youtubeUrlInput = document.getElementById('editYoutubeUrl');
+      const youtubeIdInput = document.getElementById('editYoutubeId');
+
+      youtubeUrlInput.addEventListener('input', () => {
+        const url = youtubeUrlInput.value;
+        const extractedId = extractYoutubeId(url);
+        youtubeIdInput.value = extractedId || '';
+      });
+
+      form.addEventListener('submit', handleSubmit);
+    }
+
+    async function handleSubmit(event) {
+      event.preventDefault();
+      clearMessages();
+
+      try {
+        const videoData = {
+          id: document.getElementById('editVideoId').value,
+          title: document.getElementById('editTitle').value.trim(),
+          description: document.getElementById('editDescription').value.trim(),
+          youtubeId: document.getElementById('editYoutubeId').value.trim()
+        };
+
+        if (!validateVideoData(videoData)) {
+          return;
+        }
+
+        const submitButton = event.target.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Saving...';
+        submitButton.classList.add('bg-blue-400');
+
+        const { data, error } = await supabase
+          .from('Video')
+          .update(videoData)
+          .eq('id', videoData.id)
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        showToast('Changes saved successfully!', 'success');
+        
+        // Reset button state
+        submitButton.disabled = false;
+        submitButton.textContent = 'Save Changes';
+        submitButton.classList.remove('bg-blue-400');
+
+      } catch (error) {
+        console.error('Error updating video:', error);
+        showToast('Failed to save changes. Please try again.', 'error');
+        
+        const submitButton = event.target.querySelector('button[type="submit"]');
+        submitButton.disabled = false;
+        submitButton.textContent = 'Save Changes';
+        submitButton.classList.remove('bg-blue-400');
+      }
+    }
+
+    function validateVideoData(videoData) {
+      if (!videoData.title) {
+        showToast('Please enter a title.', 'error');
+        return false;
+      }
+
+      if (!videoData.description) {
+        showToast('Please enter a description.', 'error');
+        return false;
+      }
+
+      if (!videoData.youtubeId) {
+        showToast('Please enter a valid YouTube URL.', 'error');
+        return false;
+      }
+
+      if (!isValidYoutubeId(videoData.youtubeId)) {
+        showToast('Invalid YouTube video ID. Please check the URL.', 'error');
+        return false;
+      }
+
+      return true;
+    }
+
+    function extractYoutubeId(url) {
+      const patterns = [
+        /youtube\.com\/watch\?v=([^&#]+)/,
+        /youtu\.be\/([^&#]+)/,
+        /youtube\.com\/embed\/([^&#]+)/
+      ];
+
+      for (const pattern of patterns) {
+        const match = url.match(pattern);
+        if (match && match[1]) {
+          return match[1];
+        }
+      }
+
+      return null;
+    }
+
+    function isValidYoutubeId(id) {
+      return /^[a-zA-Z0-9_-]{11}$/.test(id);
+    }
+
+    function displayError(message) {
+      const errorMessagesDiv = document.getElementById('errorMessages');
+      errorMessagesDiv.textContent = message;
+      errorMessagesDiv.classList.remove('hidden');
+    }
+
+    function clearMessages() {
+      document.getElementById('errorMessages').textContent = '';
+    }
+
+    loadVideoData();
+  </script>
+</body>
+</html>
