@@ -47,17 +47,19 @@
           <!-- Feed Configurator Link -->
           <a href="feed-config.html" 
              class="flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-colors px-3 py-2 rounded-lg hover:bg-gray-50">
-            <svg xmlns="http://www.w3.org/2000/svg" 
-                 fill="none" 
-                 viewBox="0 0 24 24" 
-                 stroke-width="1.5" 
-                 stroke="currentColor" 
-                 class="w-6 h-6">
-              <path stroke-linecap="round" 
-                    stroke-linejoin="round" 
-                    d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
-            </svg>
-            <span class="hidden md:inline">Feed Settings</span>
+          <svg xmlns="http://www.w3.org/2000/svg" 
+      	        fill="none" 
+    	 	viewBox="0 0 24 24" 
+    	  	stroke-width="1.5" 
+        	stroke="currentColor" 
+     		class="w-6 h-6">
+    	  <path stroke-linecap="round" 
+        	stroke-linejoin="round" 
+        	d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006  
+ 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m3 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" />
+	</svg>      
+
+	<span class="hidden md:inline"></span>
           </a>
   
           <!-- New Video Link -->
@@ -70,14 +72,9 @@
               <line x1="14" y1="7" x2="20" y2="7" />
               <line x1="17" y1="4" x2="17" y2="10" />
             </svg>
-            <span>New Video</span>
+            <span></span>
           </a>
           
-          <!-- Add Video Button -->
-          <button id="newVideoButton" class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-bold py-2 px-4 rounded-full transition-all duration-200 transform hover:scale-105 flex items-center space-x-2">
-            <span class="text-xl">+</span>
-            <span class="hidden md:inline">Add Video</span>
-          </button>
         </div>
       </div>
     </div>
@@ -108,14 +105,22 @@
                      transition-all duration-300">
         <option value="date-desc">Newest First</option>
         <option value="date-asc">Oldest First</option>
-        <option value="title-asc">Title A-Z</option>
+        <option value="title">Title</option>
         <option value="title-desc">Title Z-A</option>
         <option value="category">Category</option>
+        <option value="category-desc">Category Z-A</option>
       </select>
     </div>
   </div>
 </div>
   
+  <!-- Add Search Input -->
+  <div class="mt-4">
+    <input type="text" id="searchInput" placeholder="Search videos..." class="w-full px-4 py-2 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
+  </div>
+
+
+
   <!-- Video Grid -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="videoGrid"></div>
 </div>
@@ -133,12 +138,12 @@ const APP_CONFIG = {
     key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg'
   },
   categories: {
-    Shelter: { icon: 'fa-home', color: 'from-blue-500 to-indigo-600', anim: 'float-1' },
-    Water: { icon: 'fa-tint', color: 'from-cyan-500 to-blue-600', anim: 'float-2' },
-    'Waste Management': { icon: 'fa-recycle', color: 'from-green-500 to-emerald-600', anim: 'float-3' },
-    Energy: { icon: 'fa-solar-panel', color: 'from-yellow-500 to-amber-600', anim: 'float-4' },
-    'Appropriate Tech': { icon: 'fa-tools', color: 'from-purple-500 to-indigo-600', anim: 'float-5' },
-    Agronomy: { icon: 'fa-seedling', color: 'from-emerald-500 to-green-600', anim: 'float-6' }
+    diy: { icon: 'fa-home', color: 'from-blue-500 to-indigo-600', anim: 'float-1' },
+    'drinking-water': { icon: 'fa-tint', color: 'from-cyan-500 to-blue-600', anim: 'float-2' },
+    'waste-management': { icon: 'fa-recycle', color: 'from-green-500 to-emerald-600', anim: 'float-3' },
+    'energy-systems': { icon: 'fa-solar-panel', color: 'from-yellow-500 to-amber-600', anim: 'float-4' },
+    'natural-health': { icon: 'fa-tools', color: 'from-purple-500 to-indigo-600', anim: 'float-5' },
+    agriculure: { icon: 'fa-seedling', color: 'from-emerald-500 to-green-600', anim: 'float-6' }
   }
 };
 
@@ -147,6 +152,7 @@ const AppState = {
   _state: {
     currentSort: 'date-desc',
     filterCategory: null,
+    searchQuery: '',
     loading: false
   },
   
@@ -179,38 +185,80 @@ class VideoManager {
   }
 
   async loadVideos() {
-    try {
-      this.state.update({ loading: true });
-      
-      let query = this.supabase.from('Video').select('*');
-      
-      if (this.state.state.filterCategory) {
-        query = query.eq('category', this.state.state.filterCategory);
-      }
+  try {
+    this.state.update({ loading: true });
+    console.log("Loading videos with category filter:", this.state.state.filterCategory);
 
-      const { data: videos, error } = await query;
-      if (error) throw error;
+    let query = this.supabase.from('Video').select('*');
 
-      const sortedVideos = this.sortVideos(videos);
-      this.renderVideos(sortedVideos);
-    } catch (error) {
-      console.error('Error loading videos:', error);
-    } finally {
-      this.state.update({ loading: false });
+    if (this.state.state.filterCategory) {
+      query = query.eq('category', this.state.state.filterCategory);
     }
-  }
 
-  sortVideos(videos) {
-    return [...videos].sort((a, b) => {
-      switch (this.state.state.currentSort) {
-        case 'date-desc':
-          return new Date(b.created_at || 0) - new Date(a.created_at || 0);
-        case 'title-asc':
-          return (a.title || '').localeCompare(b.title || '');
-        // ... other sort cases
-      }
+    const { data: videos, error } = await query;
+    if (error) throw error;
+
+    // Log fetched videos to see if the `created_at` values are correctly formatted
+    videos.forEach(video => {
+      console.log("Fetched video:", video.title, "created_at:", video.created_at);
     });
+
+    let filteredVideos = videos;
+
+    if (this.state.state.searchQuery) {
+      const searchQuery = this.state.state.searchQuery.toLowerCase();
+      filteredVideos = videos.filter(video =>
+        (video.title || '').toLowerCase().includes(searchQuery) ||
+        (video.description || '').toLowerCase().includes(searchQuery)
+      );
+    }
+
+    const sortedVideos = this.sortVideos(filteredVideos);
+    this.renderVideos(sortedVideos);
+  } catch (error) {
+    console.error('Error loading videos:', error);
+  } finally {
+    this.state.update({ loading: false });
   }
+}
+
+  
+
+
+
+sortVideos(videos) {
+  // Log the original videos array to see the initial state
+  console.log("Original videos:", videos);
+
+
+  return [...videos].sort((a, b) => {
+
+    // Ensure that `datePublished` fields are in a format that can be parsed correctly
+    const aDate = a.datePublished ? new Date(a.datePublished) : new Date(0); // Default to UNIX epoch if `datePublished` is missing
+    const bDate = b.datePublished ? new Date(b.datePublished) : new Date(0); // Default to UNIX epoch if `datePublished` is missing
+
+
+    // Log each comparison to ensure the values are correct
+    console.log("Comparing:", a.title, "(", aDate, ") with", b.title, "(", bDate, ")");
+
+    switch (this.state.state.currentSort) {
+      case 'date-desc': // Newest First
+        return bDate - aDate; // Sort descending by date
+      case 'date-asc': // Oldest First
+        return aDate - bDate; // Sort ascending by date
+      case 'title-asc': // Title A-Z
+        return (a.title || '').localeCompare(b.title || '');
+      case 'title-desc': // Title Z-A
+        return (b.title || '').localeCompare(a.title || '');
+      case 'category': // Category Sort
+        return (a.category || '').localeCompare(b.category || '');
+      default:
+        console.warn("Unknown sort option:", this.state.state.currentSort);
+        return 0;
+    }
+  });
+}
+
 
   renderVideos(videos) {
     const videoGrid = document.getElementById('videoGrid');
@@ -313,10 +361,6 @@ class VideoManager {
 }
 
 
-
-
-
-
 // 4. UI Manager for handling interface elements
 class UIManager {
   constructor(videoManager, state, config) {
@@ -376,8 +420,12 @@ class UIManager {
   }
 
   initializeEventListeners() {
-    // Add any other event listeners you need here
-  }   
+  const searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', () => {
+    this.state.update({ searchQuery: searchInput.value });
+    this.videoManager.loadVideos();
+  });
+} 
     
 }
 
@@ -387,8 +435,6 @@ async function initializeApp() {
     const supabase = createClient(APP_CONFIG.supabase.url, APP_CONFIG.supabase.key);
     const videoManager = new VideoManager(supabase, AppState);
     const uiManager = new UIManager(videoManager, AppState, APP_CONFIG);
-
-
 
     uiManager.initialize();
     await videoManager.loadVideos();
@@ -400,10 +446,6 @@ async function initializeApp() {
 // Start the app
 document.addEventListener('DOMContentLoaded', initializeApp);
 
-
-
-
-  </script>
-
+</script>
 </body>
 </html>
