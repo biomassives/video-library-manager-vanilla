@@ -1,19 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
-
-
-  <title>Appro🎥video Video Portal Manager🎥</title>
+  <title>Approvideo Video Portal Manager</title>
   <link href="style.css" rel="stylesheet">
   <!-- Add Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #dbe5df;
+      animation: wave 20s linear infinite;
+      
+      background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23e6912f' fill-opacity='0.11' fill-rule='evenodd'/%3E%3C/svg%3E");
+ 
+        }
+
+        .modal {      'Poppins', sans-serif;    
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+        
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.4);
+    } 
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    
+
+
+    /* Add some styles to make cards pop against the pattern */
+    .video-card {
+      backdrop-filter: blur(4px);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .video-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    /* Make the navigation bar more prominent */
+    .nav-container {
+      background-color: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  </style>
 
   </head>
+
   <body class="bg-gray-50">
   <!-- Top Banner -->
   <div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm">
@@ -47,19 +105,17 @@
           <!-- Feed Configurator Link -->
           <a href="feed-config.html" 
              class="flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-colors px-3 py-2 rounded-lg hover:bg-gray-50">
-          <svg xmlns="http://www.w3.org/2000/svg" 
-      	        fill="none" 
-    	 	viewBox="0 0 24 24" 
-    	  	stroke-width="1.5" 
-        	stroke="currentColor" 
-     		class="w-6 h-6">
-    	  <path stroke-linecap="round" 
-        	stroke-linejoin="round" 
-        	d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006  
- 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m3 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" />
-	</svg>      
-
-	<span class="hidden md:inline"></span>
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 fill="none" 
+                 viewBox="0 0 24 24" 
+                 stroke-width="1.5" 
+                 stroke="currentColor" 
+                 class="w-6 h-6">
+              <path stroke-linecap="round" 
+                    stroke-linejoin="round" 
+                    d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
+            </svg>
+            <span class="hidden md:inline">Feed Settings</span>
           </a>
   
           <!-- New Video Link -->
@@ -72,391 +128,201 @@
               <line x1="14" y1="7" x2="20" y2="7" />
               <line x1="17" y1="4" x2="17" y2="10" />
             </svg>
-            <span></span>
+            <span>New Video</span>
           </a>
           
+          <!-- Add Video Button -->
+          <button id="newVideoButton" class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-bold py-2 px-4 rounded-full transition-all duration-200 transform hover:scale-105 flex items-center space-x-2">
+            <span class="text-xl">+</span>
+            <span class="hidden md:inline">Add Video</span>
+          </button>
         </div>
       </div>
     </div>
   </nav>
 
+    <!-- Page Header -->
+    <div class="mb-8 text-center">
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">Video Library</h1>
+      <p class="text-gray-600">Manage and organize your sustainable video content</p>
+    </div>
 
-<!-- Sorting and Filtering Controls -->
-<div class="mb-6 space-y-4">
-  <!-- Category Icons -->
-  <div class="flex justify-center space-x-4 py-4" id="categoryIcons"></div>
-
-  <!-- Sorting Controls -->
-  <div class="bg-white/80 backdrop-blur-md rounded-lg shadow-md p-4">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center space-x-2">
-        <i class="fas fa-sort text-gray-600"></i>
-
-        <h2 class="text-lg font-semibold text-gray-800">Add a Video</h2>
-	<a href="newcreate1.html" class="flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-colors">
-            <svg class="h-6 w-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z"/>
-              <rect x="4" y="4" width="6" height="6" rx="1" />
-              <rect x="4" y="14" width="6" height="6" rx="1" />
-              <rect x="14" y="14" width="6" height="6" rx="1" />
-              <line x1="14" y1="7" x2="20" y2="7" />
-              <line x1="17" y1="4" x2="17" y2="10" />
-            </svg>
-            <span></span>
-          </a>
-
-	      
-      </div>
-
-      <h2 class="text-lg font-semibold text-gray-800">Sort</h2>
-
-      <select id="sortSelect" 
-              class="px-4 py-2 bg-white/50 backdrop-blur-sm border rounded-lg 
-                     focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                     transition-all duration-300">
-        <option value="date-desc">Newest First</option>
-        <option value="date-asc">Oldest First</option>
-        <option value="title">Title</option>
-        <option value="title-desc">Title Z-A</option>
-        <option value="category">Category</option>
-        <option value="category-desc">Category Z-A</option>
-      </select>
+    <!-- Video Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="videoGrid">
     </div>
   </div>
-</div>
-  
-  <!-- Add Search Input -->
-  <div class="mt-4">
-    <input type="text" id="searchInput" placeholder="Search videos..." class="w-full px-4 py-2 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <p id="modalText">Modal content will be loaded here</p>
+      <div id="modalContent"></div>
+    </div>
   </div>
 
-
-
-  <!-- Video Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="videoGrid"></div>
-</div>
-
-
   <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-// 1. First, separate our configuration and state
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const supabaseUrl = 'https://vlvbodwrtblttvwnxkjx.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg';
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-
-const APP_CONFIG = {
-  supabase: {
-    url: 'https://vlvbodwrtblttvwnxkjx.supabase.co',
-    key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg'
-  },
-  categories: {
-    diy: { icon: 'fa-home', color: 'from-blue-500 to-indigo-600', anim: 'float-1' },
-    'drinking-water': { icon: 'fa-tint', color: 'from-cyan-500 to-blue-600', anim: 'float-2' },
-    'waste-management': { icon: 'fa-recycle', color: 'from-green-500 to-emerald-600', anim: 'float-3' },
-    'energy-systems': { icon: 'fa-solar-panel', color: 'from-yellow-500 to-amber-600', anim: 'float-4' },
-    'natural-health': { icon: 'fa-tools', color: 'from-purple-500 to-indigo-600', anim: 'float-5' },
-    agriculure: { icon: 'fa-seedling', color: 'from-emerald-500 to-green-600', anim: 'float-6' }
-  }
-};
-
-// 2. Create a single state manager
-const AppState = {
-  _state: {
-    currentSort: 'date-desc',
-    filterCategory: null,
-    searchQuery: '',
-    loading: false
-  },
-  
-  subscribers: new Set(),
-  
-  get state() {
-    return {...this._state};
-  },
-  
-  update(newState) {
-    this._state = {...this._state, ...newState};
-    this.notify();
-  },
-  
-  subscribe(callback) {
-    this.subscribers.add(callback);
-    return () => this.subscribers.delete(callback);
-  },
-  
-  notify() {
-    this.subscribers.forEach(callback => callback(this.state));
-  }
-};
-
-// 3. Create a VideoManager class to handle all video-related operations
-class VideoManager {
-  constructor(supabase, state) {
-    this.supabase = supabase;
-    this.state = state;
-  }
-
-  async loadVideos() {
-  try {
-    this.state.update({ loading: true });
-    console.log("Loading videos with category filter:", this.state.state.filterCategory);
-
-    let query = this.supabase.from('Video').select('*');
-
-    if (this.state.state.filterCategory) {
-      query = query.eq('category', this.state.state.filterCategory);
+    async function handleDeleteClick(videoId) {
+      try {
+        localStorage.setItem('deleteVideoId', videoId);
+        await localforage.setItem('deleteVideoId', videoId);
+        window.location.href = 'delete1.html';
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error preparing to delete. Please try again.');
+      }
     }
 
-    const { data: videos, error } = await query;
-    if (error) throw error;
+    async function loadVideos() {
+      try {
+        const { data: videos, error } = await supabase
+          .from('Video')
+          .select('*');
 
-    // Log fetched videos to see if the `created_at` values are correctly formatted
-    videos.forEach(video => {
-      console.log("Fetched video:", video.title, "created_at:", video.created_at);
-    });
-
-    let filteredVideos = videos;
-
-    if (this.state.state.searchQuery) {
-      const searchQuery = this.state.state.searchQuery.toLowerCase();
-      filteredVideos = videos.filter(video =>
-        (video.title || '').toLowerCase().includes(searchQuery) ||
-        (video.description || '').toLowerCase().includes(searchQuery)
-      );
-    }
-
-    const sortedVideos = this.sortVideos(filteredVideos);
-    this.renderVideos(sortedVideos);
-  } catch (error) {
-    console.error('Error loading videos:', error);
-  } finally {
-    this.state.update({ loading: false });
-  }
-}
-
-  
+        if (error) {
+          console.error('Error loading videos:', error);
+          return;
+        }
 
 
+        const videoGrid = document.getElementById('videoGrid');
+        videoGrid.innerHTML = '';
 
-sortVideos(videos) {
-  // Log the original videos array to see the initial state
-  console.log("Original videos:", videos);
+        videos.forEach(video => {
+            const videoElement = `
+  <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-200 hover:scale-105 hover:shadow-xl">
+    <div class="relative group">
+      <!-- Video Thumbnail with Overlay Controls -->
+      <div class="relative">
+        <img src="https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg" 
+             alt="${video.title}" 
+             class="w-full h-48 object-cover"
+             onerror="this.src='https://img.youtube.com/vi/${video.youtubeId}/0.jpg'">
+        
+        <!-- Control Overlay (appears on hover) -->
+        <div class="absolute top-0 right-0 p-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <!-- Edit Button -->
+          <button onclick="event.stopPropagation(); handleEditClick('${video.id}')"
+                  class="p-2 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
+                 stroke="currentColor" class="w-5 h-5 text-blue-600">
+              <path stroke-linecap="round" stroke-linejoin="round" 
+                    d="M21.75 6.75a4.5 4.5 0 0 1-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 1 1-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 0 1 6.336-4.486l-3.276 3.276a3.004 3.004 0 0 0 2.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.867 19.125h.008v.008h-.008v-.008Z" />
+            </svg>
+          </button>
+          
+          <!-- Delete Button -->
+          <button onclick="event.stopPropagation(); handleDeleteClick('${video.id}')"
+                  class="p-2 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
+                 stroke="currentColor" class="w-5 h-5 text-red-600">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
 
-
-  return [...videos].sort((a, b) => {
-
-    // Ensure that `datePublished` fields are in a format that can be parsed correctly
-    const aDate = a.datePublished ? new Date(a.datePublished) : new Date(0); // Default to UNIX epoch if `datePublished` is missing
-    const bDate = b.datePublished ? new Date(b.datePublished) : new Date(0); // Default to UNIX epoch if `datePublished` is missing
-
-
-    // Log each comparison to ensure the values are correct
-    console.log("Comparing:", a.title, "(", aDate, ") with", b.title, "(", bDate, ")");
-
-    switch (this.state.state.currentSort) {
-      case 'date-desc': // Newest First
-        return bDate - aDate; // Sort descending by date
-      case 'date-asc': // Oldest First
-        return aDate - bDate; // Sort ascending by date
-      case 'title-asc': // Title A-Z
-        return (a.title || '').localeCompare(b.title || '');
-      case 'title-desc': // Title Z-A
-        return (b.title || '').localeCompare(a.title || '');
-      case 'category': // Category Sort
-        return (a.category || '').localeCompare(b.category || '');
-      default:
-        console.warn("Unknown sort option:", this.state.state.currentSort);
-        return 0;
-    }
-  });
-}
-
-
-  renderVideos(videos) {
-    const videoGrid = document.getElementById('videoGrid');
-    videoGrid.innerHTML = videos.map(video => this.createVideoCard(video)).join('');
-  }
-
-  createVideoCard(video) {
-    return `
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-200 hover:scale-105 hover:shadow-xl">
-        <div class="relative group">
-          <!-- Video Thumbnail with Overlay Controls -->
-          <div class="relative">
-            <img src="https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg" 
-                 alt="${this.escapeHtml(video.title)}" 
-                 class="w-full h-48 object-cover"
-                 onerror="this.src='https://img.youtube.com/vi/${video.youtubeId}/0.jpg'">
-            
-            <!-- Control Overlay (appears on hover) -->
-            <div class="absolute top-0 right-0 p-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              <!-- Edit Button -->
-              <button onclick="event.stopPropagation(); handleEditClick('${video.id}')"
-                      class="p-2 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
-                     stroke="currentColor" class="w-5 h-5 text-blue-600">
+      <!-- Content Section -->
+      <div class="p-6">
+        <div class="mb-3">
+          <h2 class="text-xl font-semibold mb-2 text-gray-800 line-clamp-2">${video.title}</h2>
+          <p class="text-gray-600 text-sm line-clamp-3">${video.description}</p>
+        </div>
+        
+        <!-- Category and Tags -->
+        <div class="flex flex-col gap-3">
+          <span class="text-sm text-green-600 font-medium">${video.category || 'Uncategorized'}</span>
+          <div class="flex flex-wrap gap-2">
+            ${Array.isArray(video.tags) ? video.tags.map(tag => `
+              <a href="/tags/${encodeURIComponent(tag)}" 
+                 class="px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full text-xs 
+                        transition-colors duration-200 flex items-center gap-1 hover:shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+                     stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
                   <path stroke-linecap="round" stroke-linejoin="round" 
-                        d="M21.75 6.75a4.5 4.5 0 0 1-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 1 1-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 0 1 6.336-4.486l-3.276 3.276a3.004 3.004 0 0 0 2.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852Z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.867 19.125h.008v.008h-.008v-.008Z" />
+                        d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
                 </svg>
-              </button>
-              
-              <!-- Delete Button -->
-              <button onclick="event.stopPropagation(); handleDeleteClick('${video.id}')"
-                      class="p-2 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
-                     stroke="currentColor" class="w-5 h-5 text-red-600">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                ${tag}
+              </a>
+            `).join('') : (video.tags || '').toString().replace(/[{}]/g, '').split(',').map(tag => `
+              <a href="/tags/${encodeURIComponent(tag.trim().replace(/"/g, ''))}" 
+                 class="px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full text-xs 
+                        transition-colors duration-200 flex items-center gap-1 hover:shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+                     stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+                  <path stroke-linecap="round" stroke-linejoin="round" 
+                        d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
                 </svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Content Section -->
-          <div class="p-6">
-            <div class="mb-3">
-              <h2 class="text-xl font-semibold mb-2 text-gray-800 line-clamp-2">${this.escapeHtml(video.title)}</h2>
-              <p class="text-gray-600 text-sm line-clamp-3">${this.escapeHtml(video.description)}</p>
-            </div>
-            
-            <!-- Category and Tags -->
-            <div class="flex flex-col gap-3">
-              <!-- Category with Icon -->
-              <div class="flex items-center gap-2">
-                <i class="fas ${this.getCategoryIcon(video.category)} text-green-600"></i>
-                <span class="text-sm text-green-600 font-medium">${video.category || 'Uncategorized'}</span>
-              </div>
-              
-              <!-- Tags -->
-              <div class="flex flex-wrap gap-2">
-                ${this.renderTags(video.tags)}
-              </div>
-            </div>
+                ${tag.trim().replace(/"/g, '')}
+              </a>
+            `).join('')}
           </div>
         </div>
       </div>
-    `;
-  }
+    </div>
+  </div>
+`;
+          videoGrid.innerHTML += videoElement;
+        });
 
-  renderTags(tags) {
-    if (!tags) return '';
+        // Add event listeners for the video cards
+        document.querySelectorAll('.video-card a').forEach(link => {
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const videoId = link.href.split('=')[1];
+            storeVideoIdForEdit(videoId);
+            window.location.href = link.href;
+          });
+        });
+
+      } catch (error) {
+        console.error('Error loading videos:', error);
+      }
+    }
     
-    const processedTags = Array.isArray(tags) 
-      ? tags 
-      : tags.toString().replace(/[{}]/g, '').split(',');
-
-    return processedTags.map(tag => `
-      <a href="/tags/${encodeURIComponent(tag.trim())}" 
-         class="px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full text-xs 
-                transition-colors duration-200 flex items-center gap-1 hover:shadow-sm">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
-             stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
-          <path stroke-linecap="round" stroke-linejoin="round" 
-                d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
-        </svg>
-        ${this.escapeHtml(tag.trim())}
-      </a>
-    `).join('');
-  }
-
-  getCategoryIcon(category) {
-    return APP_CONFIG.categories[category]?.icon || 'fa-tag';
-  }
-
-  escapeHtml(str) {
-    if (!str) return '';
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
-}
-
-
-// 4. UI Manager for handling interface elements
-class UIManager {
-  constructor(videoManager, state, config) {
-    this.videoManager = videoManager;
-    this.state = state;
-    this.config = config;
-  }
-
-  initialize() {
-    this.initializeCategoryIcons();
-    this.initializeSortControls();
-    this.initializeEventListeners();
-  }
-
- 
-  initializeCategoryIcons() {
-    const categoryIconsDiv = document.getElementById('categoryIcons');
-
-    for (const category in this.config.categories) {
-      const categoryData = this.config.categories[category];
-      const iconElement = `
-        <button class="iconButton relative group" data-category="${category}">
-          <div class="bg-gradient-to-r ${categoryData.color} 
-                      text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
-                      hover:scale-105 hover:shadow-xl
-                      ${categoryData.anim} 
-                      flex items-center justify-center"> 
-            <i class="fas fa-2x ${categoryData.icon}"></i>
-          </div>
-          <span class="absolute -bottom-5 left-1/2 -translate-x-1/2 
-                     bg-white/80 backdrop-blur-md rounded-md px-2 py-1 text-sm text-gray-700 
-                     opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-            ${category}
-          </span>
-        </button>
-      `;
-      categoryIconsDiv.innerHTML += iconElement;
+    async function handleEditClick(videoId) {
+      try {
+        console.log('Setting videoId in localStorage:', videoId);
+        
+        // Store in both localStorage and localForage for redundancy
+        localStorage.setItem('videoId', videoId);
+        await localforage.setItem('videoId', videoId);
+        
+        // Verify the storage was successful
+        const storedId = localStorage.getItem('videoId');
+        const forageId = await localforage.getItem('videoId');
+        
+        console.log('Verified localStorage videoId:', storedId);
+        console.log('Verified localForage videoId:', forageId);
+        
+        if (storedId === videoId && forageId === videoId) {
+          console.log('Storage verification successful, navigating to edit page');
+          window.location.href = `edit4.html?id=${videoId}`;
+        } else {
+          throw new Error('Storage verification failed');
+        }
+      } catch (error) {
+        console.error('Error handling edit click:', error);
+        alert('There was an error preparing to edit this video. Please try again.');
+      }
     }
 
-    // Add click event listeners to the icons
-    const iconButtons = document.querySelectorAll('.iconButton');
-    iconButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const category = button.dataset.category;
-        this.state.update({ filterCategory: category }); 
-        this.videoManager.loadVideos();
-      });
-    });
-  }
 
-  initializeSortControls() {
-    const sortSelect = document.getElementById('sortSelect');
-    sortSelect.addEventListener('change', () => {
-      this.state.update({ currentSort: sortSelect.value });
-      this.videoManager.loadVideos(); 
-    });
-  }
+    // Make handleEditClick available globally
+    window.handleEditClick = handleEditClick;
+    window.handleDeleteClick = handleDeleteClick;
 
-  initializeEventListeners() {
-  const searchInput = document.getElementById('searchInput');
-  searchInput.addEventListener('input', () => {
-    this.state.update({ searchQuery: searchInput.value });
-    this.videoManager.loadVideos();
-  });
-} 
-    
-}
-
-// 5. Initialize everything in a clean way
-async function initializeApp() {
-  try {
-    const supabase = createClient(APP_CONFIG.supabase.url, APP_CONFIG.supabase.key);
-    const videoManager = new VideoManager(supabase, AppState);
-    const uiManager = new UIManager(videoManager, AppState, APP_CONFIG);
-
-    uiManager.initialize();
-    await videoManager.loadVideos();
-  } catch (error) {
-    console.error('Failed to initialize app:', error);
-  }
-}
-
-// Start the app
-document.addEventListener('DOMContentLoaded', initializeApp);
-
-</script>
+    // Initialize
+    loadVideos();
+  </script>
 </body>
 </html>
