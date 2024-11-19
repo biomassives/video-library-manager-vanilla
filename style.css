@@ -2,10 +2,6 @@
 body {
   font-family: 'Poppins', sans-serif;
   transition: all 0.3s ease;
-}
-
-/* Light mode */
-body {
   background-color: #dbe5df;
   color: #333;
   background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23e6912f' fill-opacity='0.11' fill-rule='evenodd'/%3E%3C/svg%3E");
@@ -76,18 +72,41 @@ h1.page-title {
   @apply from-green-400 to-blue-400;
 }
 
-/* Dropdown Menu */
-.profile-dropdown {
-  @apply transition-all duration-300;
+
+/* Profile Dropdown Styles - Light Mode */
+#profileDropdown {
+  @apply bg-white border border-gray-200 shadow-lg;
 }
 
-.dark-mode .profile-dropdown {
+#profileDropdown a {
+  @apply text-gray-700 hover:bg-gray-100;
+}
+
+/* Profile Dropdown Styles - Dark Mode */
+.dark-mode #profileDropdown {
   @apply bg-gray-800 border-gray-700;
 }
 
-.dark-mode .profile-dropdown a {
-  @apply text-gray-300 hover:bg-gray-700;
+.dark-mode #profileDropdown a {
+  @apply text-gray-100 hover:bg-gray-700;
 }
+
+/* Update dropdown transition */
+.dropdown-active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+  @apply backdrop-blur-sm;
+}
+
+.dropdown-inactive {
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
+}
+
+
+
 
 /* Dark mode */
 body.dark-mode {
@@ -111,7 +130,16 @@ h1.dark-mode {
   color: #e1e1e1;
 }
 
+
 /* Input styles */
+input,
+select,
+textarea {
+  background-color: #f0f0f0;
+  border-color: #051108;
+  color: #000000;
+}
+
 .dark-mode input,
 .dark-mode select,
 .dark-mode textarea {
@@ -211,6 +239,15 @@ h1.dark-mode {
   pointer-events: none;
 }
 
+.dark-mode .liquid-input,
+.dark-mode .liquid-textarea {
+  @apply bg-gray-700 border-gray-600 text-gray-200;
+}
+
+.dark-mode .liquid-button {
+  @apply bg-green-600 hover:bg-green-700;
+}
+
 /* Dark mode dropdown */
 .dark-mode .dropdown-menu {
   background-color: #2d2d44;
@@ -236,4 +273,72 @@ h1.dark-mode {
 
 .dark-mode #toast {
   @apply bg-gray-800;
+}
+
+
+
+/* Button base styles */
+.submit-button {
+  @apply px-8 py-3 rounded-lg font-medium shadow-lg transform transition-all duration-300;
+}
+
+/* Light mode styles */
+.submit-button {
+  @apply bg-gradient-to-r from-green-600 to-blue-600 text-white;
+  @apply hover:from-green-700 hover:to-blue-700;
+  @apply focus:ring-2 focus:ring-green-500 focus:ring-opacity-50;
+  @apply hover:-translate-y-0.5;
+}
+
+/* Dark mode styles */
+.dark-mode .submit-button {
+  @apply from-green-500 to-blue-500;
+  @apply hover:from-green-600 hover:to-blue-600;
+  @apply focus:ring-green-400;
+}
+
+/* Loading state */
+.submit-button:disabled {
+  @apply opacity-75 cursor-not-allowed transform-none;
+}
+
+
+
+
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #dbe5df;
+  animation: wave 20s linear infinite;
+  
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23e6912f' fill-opacity='0.11' fill-rule='evenodd'/%3E%3C/svg%3E");
+
+    }
+
+
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+
+
+
+
+/* Make the navigation bar more prominent */
+.nav-container {
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
