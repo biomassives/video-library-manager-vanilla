@@ -7,7 +7,7 @@
   <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
 
 
-  <title>Approvideo Video Portal Manager 🎥🎥🎥</title>
+  <title>Appro🎥video Video Portal Manager🎥</title>
   <link href="style.css" rel="stylesheet">
   <!-- Add Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
   <body class="bg-gray-50">
   <!-- Top Banner -->
   <div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm">
-    🎥 Welcome to ApproVideo - Your Sustainable Video Management Portal 🎥
+    🎥 Welcome to ApproVideo - Your Sustainable Video Management Portal
   </div>
 
   <div class="container mx-auto p-4">
@@ -61,6 +61,7 @@
           </a>
   
 
+          
 
         </div>
       </div>
@@ -70,7 +71,7 @@
     <!-- Page Header -->
     <div class="mb-8 text-center">
       <h1 class="text-4xl font-bold text-gray-800 mb-2">Video Library</h1>
-      <p class="text-gray-600">Manage and organize Approvideo video content</p>
+      <p class="text-gray-600">Manage and organize ApproVideo</p>
     </div>
 
 
@@ -237,11 +238,6 @@
         tagSuggestionsDiv.classList.add('hidden');
       };
 
-
-
-
-
-
     function isValidYoutubeId(id) {
       return /^[a-zA-Z0-9_-]{11}$/.test(id);
     }
@@ -276,8 +272,25 @@
       const description = document.getElementById('newDescription').value.trim();
       const category = document.getElementById('newCategory').value;
       const subcategory = document.getElementById('newSubcategory').value;
-      const tags = Array.from(document.getElementById('newTags').selectedOptions)
-        .map(option => option.value);
+  
+      const tagsInput = document.getElementById('newTags');
+      let tags = [];
+        if (tagsInput) {
+            tags = tagsInput.value.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
+        } else {
+            console.error('Element with ID "newTags" not found.');
+            // You might want to return here or show an error message to the user if the element is not found.
+        }
+
+
+
+
+
+
+
+
+
+
 
       // Extract YouTube ID
       const youtubeId = extractYoutubeId(youtubeUrl);
