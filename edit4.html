@@ -179,33 +179,7 @@
 
       form.addEventListener('submit', handleSubmit);
     }
-
-    const categorySubcategories = {
-        Shelter: ["Earthbag Construction", "Bamboo Building", "Tiny Homes", "Emergency Shelters"],
-        Water: ["Rainwater Harvesting", "Water Filtration", "Greywater Systems", "Irrigation"],
-        "Waste Management": ["Composting", "Recycling", "Waste Reduction", "Upcycling"],
-        Energy: ["Solar Power", "Wind Power", "Biogas", "Hydropower"],
-        "Appropriate Tech": ["DIY Tools", "Low-Tech Solutions", "Sustainable Design", "Open Source Technology"],
-        Agronomy: ["Permaculture", "Organic Farming", "Agroforestry", "Soil Conservation"]
-      };
-
-      // Function to populate subcategories
-      function populateSubcategories(category) {
-        const subcategorySelect = document.getElementById('newSubcategory');
-        subcategorySelect.innerHTML = '<option value="">Select a subcategory</option>';
-        if (categorySubcategories[category]) {
-          categorySubcategories[category].forEach(subcategory => {
-            subcategorySelect.innerHTML += `<option value="${subcategory}">${subcategory}</option>`;
-          });
-        }
-      }
-
-      // Add event listener for category change
-      const categorySelect = document.getElementById('newCategory');
-      categorySelect.addEventListener('change', () => {
-        populateSubcategories(categorySelect.value);
-      });
-
+ 
 
     
     async function handleSubmit(event) {
@@ -237,33 +211,6 @@
         if (!validateVideoData(videoData)) {
           return;
         }
-
-    const categorySubcategories = {
-        Shelter: ["Earthbag Construction", "Bamboo Building", "Tiny Homes", "Emergency Shelters"],
-        Water: ["Rainwater Harvesting", "Water Filtration", "Greywater Systems", "Irrigation"],
-        "Waste Management": ["Composting", "Recycling", "Waste Reduction", "Upcycling"],
-        Energy: ["Solar Power", "Wind Power", "Biogas", "Hydropower"],
-        "Appropriate Tech": ["DIY Tools", "Low-Tech Solutions", "Sustainable Design", "Open Source Technology"],
-        Agronomy: ["Permaculture", "Organic Farming", "Agroforestry", "Soil Conservation"]
-      };
-
-      // Function to populate subcategories
-      function populateSubcategories(category) {
-        const subcategorySelect = document.getElementById('newSubcategory');
-        subcategorySelect.innerHTML = '<option value="">Select a subcategory</option>';
-        if (categorySubcategories[category]) {
-          categorySubcategories[category].forEach(subcategory => {
-            subcategorySelect.innerHTML += `<option value="${subcategory}">${subcategory}</option>`;
-          });
-        }
-      }
-
-      // Add event listener for category change
-      const categorySelect = document.getElementById('newCategory');
-      categorySelect.addEventListener('change', () => {
-        populateSubcategories(categorySelect.value);
-      });
-
 
         
         const submitButton = event.target.querySelector('button[type="submit"]');
@@ -354,6 +301,85 @@
     }
 
     loadVideoData();
+
+
+
+// Wait for DOM content to load before adding event listeners
+document.addEventListener('DOMContentLoaded', () => {
+  const categorySubcategories = {
+    Shelter: ["Earthbag Construction", "Bamboo Building", "Tiny Homes", "Emergency Shelters"],
+    Water: ["Rainwater Harvesting", "Water Filtration", "Greywater Systems", "Irrigation"],
+    "Waste Management": ["Composting", "Recycling", "Waste Reduction", "Upcycling"],
+    Energy: ["Solar Power", "Wind Power", "Biogas", "Hydropower"],
+    "Appropriate Tech": ["DIY Tools", "Low-Tech Solutions", "Sustainable Design", "Open Source Technology"],
+    Agronomy: ["Permaculture", "Organic Farming", "Agroforestry", "Soil Conservation"]
+  };
+
+  // Function to populate subcategories
+  function populateSubcategories(category) {
+    const subcategorySelect = document.getElementById('newSubcategory');
+    if (!subcategorySelect) return; // Guard clause
+    
+    subcategorySelect.innerHTML = '<option value="">Select a subcategory</option>';
+    if (categorySubcategories[category]) {
+      categorySubcategories[category].forEach(subcategory => {
+        subcategorySelect.innerHTML += `<option value="${subcategory}">${subcategory}</option>`;
+      });
+    }
+  }
+
+  // Add event listener for category change
+  const categorySelect = document.getElementById('newCategory');
+  if (categorySelect) {
+    categorySelect.addEventListener('change', () => {
+      populateSubcategories(categorySelect.value);
+    });
+  }
+
+  // Tag suggestion functionality
+  const tagInput = document.getElementById('newTags');
+  const tagSuggestionsDiv = document.getElementById('tagSuggestions');
+
+  if (tagInput && tagSuggestionsDiv) {
+    const tagSuggestions = [
+      "DIY", "Sustainability", "Environment", "Green Building", "Gardening", "Recycling", "Composting", "Solar", "Wind",
+      "Permaculture", "Organic Farming", "Water Conservation", "Renewable Energy", "Appropriate Technology", "Eco-friendly",
+      "Off-grid", "Resilience", "Community Development"
+    ];
+
+    tagInput.addEventListener('input', () => {
+      const inputText = tagInput.value.toLowerCase();
+      const filteredSuggestions = tagSuggestions.filter(tag => tag.toLowerCase().includes(inputText));
+      tagSuggestionsDiv.innerHTML = '';
+      if (filteredSuggestions.length > 0 && inputText !== '') {
+        filteredSuggestions.forEach(tag => {
+          tagSuggestionsDiv.innerHTML += `<div class="cursor-pointer hover:bg-gray-100 px-2 py-1" onclick="addTag('${tag}')">${tag}</div>`;
+        });
+        tagSuggestionsDiv.classList.remove('hidden');
+      } else {
+        tagSuggestionsDiv.classList.add('hidden');
+      }
+    });
+  }
+});
+
+
+// Keep the addTag function in global scope since it's called from HTML
+window.addTag = function(tag) {
+  const tagInput = document.getElementById('newTags');
+  if (tagInput) {
+    const currentTags = tagInput.value.split(',').map(t => t.trim()).filter(t => t !== '');
+    currentTags.push(tag);
+    tagInput.value = currentTags.join(', ');
+    const tagSuggestionsDiv = document.getElementById('tagSuggestions');
+    if (tagSuggestionsDiv) {
+      tagSuggestionsDiv.classList.add('hidden');
+    }
+  }
+};
+
+
+    
   </script>
 </body>
 </html>
