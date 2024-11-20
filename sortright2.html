@@ -224,16 +224,7 @@ class VideoManager {
 
 
 
-    async function handleDeleteClick(videoId) {
-      try {
-        localStorage.setItem('deleteVideoId', videoId);
-        await localforage.setItem('deleteVideoId', videoId);
-        window.location.href = 'delete1.html';
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Error preparing to delete. Please try again.');
-      }
-    }
+
 
 
   
@@ -487,6 +478,17 @@ async function initializeApp() {
       }
     }
 
+
+    async function handleDeleteClick(videoId) {
+      try {
+        localStorage.setItem('deleteVideoId', videoId);
+        await localforage.setItem('deleteVideoId', videoId);
+        window.location.href = 'delete1.html';
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error preparing to delete. Please try again.');
+      }
+    }
 
     
 // Start the app
