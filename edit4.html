@@ -185,11 +185,26 @@
       clearMessages();
 
       try {
+
+ementById('newSubcategory').value;
+  
+      const tagsInput = document.getElementById('newTags');
+      let tags = [];
+        if (tagsInput) {
+            tags = tagsInput.value.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
+        } else {
+            console.error('Element with ID "newTags" not found.');
+            // You might want to return here or show an error message to the user if the element is not found.
+        }
+        
         const videoData = {
           id: document.getElementById('editVideoId').value,
           title: document.getElementById('editTitle').value.trim(),
           description: document.getElementById('editDescription').value.trim(),
-          youtubeId: document.getElementById('editYoutubeId').value.trim()
+          youtubeId: document.getElementById('editYoutubeId').value.trim(),
+          category: document.getElementById('newCategory').value.trim(),
+          subcategory: document.getElementById('newSubcategory').value.trim(),
+          tags: tags,
         };
 
         if (!validateVideoData(videoData)) {
