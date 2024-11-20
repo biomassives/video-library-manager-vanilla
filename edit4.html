@@ -186,7 +186,6 @@
 
       try {
 
-ementById('newSubcategory').value;
   
       const tagsInput = document.getElementById('newTags');
       let tags = [];
@@ -211,6 +210,36 @@ ementById('newSubcategory').value;
           return;
         }
 
+    const categorySubcategories = {
+        Shelter: ["Earthbag Construction", "Bamboo Building", "Tiny Homes", "Emergency Shelters"],
+        Water: ["Rainwater Harvesting", "Water Filtration", "Greywater Systems", "Irrigation"],
+        "Waste Management": ["Composting", "Recycling", "Waste Reduction", "Upcycling"],
+        Energy: ["Solar Power", "Wind Power", "Biogas", "Hydropower"],
+        "Appropriate Tech": ["DIY Tools", "Low-Tech Solutions", "Sustainable Design", "Open Source Technology"],
+        Agronomy: ["Permaculture", "Organic Farming", "Agroforestry", "Soil Conservation"]
+      };
+
+      // Function to populate subcategories
+      function populateSubcategories(category) {
+        const subcategorySelect = document.getElementById('newSubcategory');
+        subcategorySelect.innerHTML = '<option value="">Select a subcategory</option>';
+        if (categorySubcategories[category]) {
+          categorySubcategories[category].forEach(subcategory => {
+            subcategorySelect.innerHTML += `<option value="${subcategory}">${subcategory}</option>`;
+          });
+        }
+      }
+
+      // Add event listener for category change
+      const categorySelect = document.getElementById('newCategory');
+      categorySelect.addEventListener('change', () => {
+        populateSubcategories(categorySelect.value);
+      });
+
+
+
+
+        
         const submitButton = event.target.querySelector('button[type="submit"]');
         submitButton.disabled = true;
         submitButton.textContent = 'Saving...';
