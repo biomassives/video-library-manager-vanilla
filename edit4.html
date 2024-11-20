@@ -132,6 +132,34 @@
               readonly>
           </div>
 
+
+          <div class="mb-4">
+            <label for="category" class="block text-gray-700 text-sm font-bold mb-2">Category:</label>
+            <select id="newCategory" class="liquid-input w-full" required>
+              <option value="">Select a category</option>
+              <option value="Shelter">Shelter</option>
+              <option value="Water">Water</option>
+              <option value="Waste Management">Waste Management</option>
+              <option value="Energy">Energy</option>
+              <option value="Appropriate Tech">Appropriate Tech</option>
+              <option value="Agronomy">Agronomy</option>
+            </select>
+          </div>
+    
+          <div class="mb-4">
+            <label for="subcategory" class="block text-gray-700 text-sm font-bold mb-2">Subcategory:</label>
+            <select id="newSubcategory" class="liquid-input w-full" required>
+              <option value="">Select a subcategory</option>
+            </select>
+          </div>
+    
+          <div class="mb-4">
+            <label for="tags" class="block text-gray-700 text-sm font-bold mb-2">Tags:</label>
+            <input type="text" id="newTags" class="liquid-input w-full" placeholder="Enter tags separated by commas">
+            <div id="tagSuggestions" class="absolute z-10 bg-white rounded-md shadow-lg mt-1 p-2 max-h-40 overflow-y-auto hidden"></div>
+          </div>
+
+    
           <button type="submit" 
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full transition duration-200">
             Save Changes
