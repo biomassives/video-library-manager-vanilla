@@ -73,6 +73,9 @@ h1.page-title {
 }
 
 
+
+
+
 /* Profile Dropdown Styles - Light Mode */
 #profileDropdown {
   @apply bg-white border border-gray-200 shadow-lg;
@@ -341,4 +344,65 @@ body {
   background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+
+/* Profile Dropdown Z-Index Fix */
+.profile-dropdown {
+  z-index: 50;  /* Ensure dropdown appears above other elements */
+  transform: scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Dark Mode Text Colors */
+.dark-mode .profile-dropdown {
+  background-color: #1f2937;  /* darker background for dropdown */
+}
+
+.dark-mode .profile-dropdown a {
+  color: #e5e7eb;  /* lighter text for dropdown items */
+}
+
+.dark-mode .profile-dropdown a:hover {
+  background-color: #374151;  /* slightly lighter hover state */
+}
+
+/* Ensure other dark mode text is visible */
+.dark-mode .nav-link {
+  color: #e5e7eb;
+}
+
+.dark-mode #mainNav {
+  background-color: #1f2937;
+}
+
+.dark-mode .text-gray-700 {
+  color: #e5e7eb;
+}
+
+/* Add transition for smooth color changes */
+.nav-link,
+.profile-dropdown,
+.profile-dropdown a {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Fix for category icons in dark mode */
+.dark-mode .iconButton .text-gray-700 {
+  color: #e5e7eb;
+}
+
+.dark-mode #searchInput,
+.dark-mode #sortSelect {
+  background-color: #374151;
+  color: #e5e7eb;
+  border-color: #4b5563;
+}
+
+.dark-mode #searchInput::placeholder {
+  color: #9ca3af;
 }
