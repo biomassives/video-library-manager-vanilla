@@ -168,7 +168,6 @@
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="videoGrid"></div>
 </div>
 
-
 <script type="module">
 // 1. First, separate our configuration and state
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
@@ -347,7 +346,7 @@ sortVideos(videos) {
             <div class="flex flex-col gap-3">
               <!-- Category with Icon -->
               <div class="flex items-center gap-2">
-                <i class="fas ${this.getCategoryIcon(video.category)} text-green-600"></i>
+                <i class="fas ${this.getCategoryIcon(video.category)} text-green-600 "></i>
                 <span class="text-sm text-green-600 font-medium">${video.category || 'Uncategorized'}</span>
               </div>
               
@@ -425,7 +424,7 @@ class UIManager {
     for (const category in this.config.categories) {
       const categoryData = this.config.categories[category];
       const iconElement = `
-        <button class="iconButton relative group" data-category="${category}">
+        <button class="icon-button relative group" data-category="${category}">
           <div class="bg-gradient-to-r ${categoryData.color} 
                       text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
                       hover:scale-105 hover:shadow-xl
