@@ -22,6 +22,33 @@ h1.page-title {
   transition: color 0.3s ease;
 }
 
+.icon-button {
+  @apply relative inline-flex items-center justify-center 
+         w-12 h-12 rounded-lg border border-black 
+         transition-shadow duration-300; 
+}
+
+.icon-button i {
+  @apply text-black; 
+}
+
+.icon-button::before { 
+  @apply absolute inset-0 bg-gradient-to-r 
+         from-black to-[#FFD700] opacity-0 
+         rounded-lg blur-md transition-opacity duration-300;
+  content: '';
+  z-index: -1; /* Place the pseudo-element behind the icon */
+}
+
+.icon-button:hover::before {
+  @apply opacity-70; /* Adjust opacity as needed */
+}
+
+.icon-button:hover {
+  @apply shadow-lg shadow-black/50; /* Adjust shadow color and intensity as needed */
+}
+
+
 
 /* Nav and Header Styles */
 .nav-container {
