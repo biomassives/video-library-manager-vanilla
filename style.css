@@ -7,7 +7,31 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23e6912f' fill-opacity='0.11' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
 
+.icon-button {
+  @apply relative inline-flex items-center justify-center 
+         w-12 h-12 rounded-lg border border-black 
+         transition-shadow duration-300; 
+}
 
+.icon-button i {
+  @apply text-black; 
+}
+
+.icon-button::before { 
+  @apply absolute inset-0 bg-gradient-to-r 
+         from-black to-[#FFD700] opacity-0 
+         rounded-lg blur-md transition-opacity duration-300;
+  content: '';
+  z-index: -1; /* Place the pseudo-element behind the icon */
+}
+
+.icon-button:hover::before {
+  @apply opacity-70; /* Adjust opacity as needed */
+}
+
+.icon-button:hover {
+  @apply shadow-lg shadow-black/50; /* Adjust shadow color and intensity as needed */
+}
 
 :root {
   --heading-color: #1f2937; /* gray-800 */
