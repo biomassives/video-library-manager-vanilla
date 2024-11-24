@@ -11,10 +11,19 @@ export class VideoService {
       let query = this.supabase
         .from('Video')
         .select(`
+          *
+        `);
+
+      /*  let query = this.supabase
+        .from('Video')
+        .select(`
           *,
           panels (*),
           VideoStep!inner(*) 
         `);
+      */
+
+
 
       // Apply filters if provided
       if (category) {
