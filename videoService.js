@@ -12,8 +12,8 @@ export class VideoService {
         .from('Video')
         .select(`
           *,
-          Step (*),
-          Panel (*)
+          step (*),
+          panels (*)
         `);
 
       // Apply filters if provided
