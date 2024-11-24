@@ -12,7 +12,7 @@ export class VideoService {
         .from('Video')
         .select(`
           *,
-          step (*),
+          VideoStep (*),
           panels (*)
         `);
 
