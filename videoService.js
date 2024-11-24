@@ -41,6 +41,8 @@ export class VideoService {
         throw error;
       }
 
+      console.log('Fetched video data:', data); // Add this line for debugging
+
       return data.map(this.formatVideo);
     } catch (error) {
       console.error('VideoService error:', error);
