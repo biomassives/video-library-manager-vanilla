@@ -52,7 +52,8 @@ export class VideoService {
 
       console.log('Fetched video data:', data); // Add this line for debugging
 
-      return data.map(this.formatVideo);
+      return data;
+     // return data.map(this.formatVideo);
     } catch (error) {
       console.error('VideoService error:', error);
       throw new Error('Failed to fetch videos');
