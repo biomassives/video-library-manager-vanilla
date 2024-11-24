@@ -13,7 +13,7 @@ export class VideoService {
         .select(`
           *,
           panels (*),
-          VideoStep ( id, text, videoId, description, orderIndex)
+          VideoStep!inner(*) 
         `);
 
       // Apply filters if provided
