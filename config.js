@@ -6,7 +6,7 @@ const CACHE_DURATION = {
   STALE_WHILE_REVALIDATE: 86400  // 24 hours
 };
 
-const ALLOWED_ORIGINS = [
+export const ALLOWED_ORIGINS = [
   'http://localhost:3000',
   'https://content.approvideo.org'  // Add your production domain
 ];
