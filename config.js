@@ -11,6 +11,9 @@ const ALLOWED_ORIGINS = [
   'https://content.approvideo.org'  // Add your production domain
 ];
 
+console.log('Supabase URL:', process.env.SUPABASE_URL);
+console.log('Supabase key:', process.env.SUPABASE_ANON_KEY);
+
 const supabaseConfig = {
   url: process.env.SUPABASE_URL,
   key: process.env.SUPABASE_ANON_KEY,
