@@ -8,12 +8,12 @@ const CACHE_DURATION = {
 
 const ALLOWED_ORIGINS = [
   'http://localhost:3000',
-  'https://yourdomain.com'  // Add your production domain
+  'https://content.approvideo.org'  // Add your production domain
 ];
 
 const supabaseConfig = {
   url: process.env.SUPABASE_URL,
-  key: process.env.SUPABASE_KEY,
+  key: process.env.SUPABASE_ANON_KEY,
   timeout: 20000  // 20 second timeout
 };
 

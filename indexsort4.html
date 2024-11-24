@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <title>ApproVideo Manager</title>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #dbe5df;
+      background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23e6912f' fill-opacity='0.11' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); background-position: -1000px 0;
+         }
+      100% { transform: translateX(100%); background-position: 1000px 0; 
+           }
+    }
+
+.shimmer {
+      position: relative;
+      overflow: hidden;
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(to right, #f0f0f0 4%, #e0e0e0 25%, #f0f0f0 36%);
+  background-size: 1000px 100%;
+}
+
+
+    .shimmer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(90deg, 
+        rgba(255,255,255,0) 0%, 
+        rgba(255,255,255,0.3) 50%, 
+        rgba(255,255,255,0) 100%);
+      animation: shimmer 1.5s infinite;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50">
+  <!-- Top Banner -->
+  <div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm">
+    🎥 Welcome to ApproVideo - Your Sustainable Video Management Portal
+  </div>
+
+  <div class="container mx-auto p-4">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg rounded-lg mb-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <a href="index.html" class="flex items-center space-x-3">
+            <svg class="h-8 w-8 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25" />
+            </svg>
+            <span class="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+              ApproVideo Manager
+            </span>
+          </a>
+          
+          <div class="flex items-center space-x-4">
+            <a href="feed-config.html" class="btn-nav">
+              <i class="fas fa-cog mr-2"></i>
+              <span class="hidden md:inline">Settings</span>
+            </a>
+            <a href="newcreate1.html" class="btn-nav">
+              <i class="fas fa-plus-circle mr-2"></i>
+              <span>New</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="mb-8 text-center">
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">Video Library</h1>
+      <p class="text-gray-600">Manage and organize your sustainable video content</p>
+    </div>
+
+    <!-- Search and Filter Container -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <!-- Search Bar -->
+      <div class="mb-6">
+        <div class="relative">
+          <input type="text" 
+                 id="searchInput" 
+                 placeholder="Search videos by title, description, or tags..." 
+                 class="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+        </div>
+      </div>
+
+      <!-- Category Filters -->
+      <div id="categoryFilterSystem">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center space-x-2">
+            <i class="fas fa-filter text-gray-600"></i>
+            <h2 class="text-lg font-semibold text-gray-800">Category Filters</h2>
+          </div>
+          <button id="clearFilters" class="text-sm text-blue-600 hover:text-blue-800 hidden">
+            Clear Filters
+          </button>
+        </div>
+
+        <!-- Category Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4" id="categoryGrid"></div>
+
+        <!-- Active Filters Display -->
+        <div id="activeFilters" class="mt-4 p-2 bg-blue-50 rounded-lg hidden">
+          <p class="text-sm text-blue-800"></p>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+<!-- Replace the entire loadingPlaceholder div with this -->
+<div id="loadingPlaceholder" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+    <div class="relative">
+      <div class="shimmer h-48 bg-gray-200"></div>
+    </div>
+    <div class="p-6">
+      <div class="mb-3">
+        <div class="shimmer h-6 bg-gray-200 rounded mb-4"></div>
+        <div class="shimmer h-4 bg-gray-200 rounded mb-2"></div>
+        <div class="shimmer h-4 bg-gray-200 rounded mb-4 w-2/3"></div>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <div class="shimmer h-6 w-20 bg-gray-200 rounded-full"></div>
+        <div class="shimmer h-6 w-24 bg-gray-200 rounded-full"></div>
+        <div class="shimmer h-6 w-16 bg-gray-200 rounded-full"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+    <div class="relative">
+      <div class="shimmer h-48 bg-gray-200"></div>
+    </div>
+    <div class="p-6">
+      <div class="mb-3">
+        <div class="shimmer h-6 bg-gray-200 rounded mb-4"></div>
+        <div class="shimmer h-4 bg-gray-200 rounded mb-2"></div>
+        <div class="shimmer h-4 bg-gray-200 rounded mb-4 w-2/3"></div>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <div class="shimmer h-6 w-20 bg-gray-200 rounded-full"></div>
+        <div class="shimmer h-6 w-24 bg-gray-200 rounded-full"></div>
+        <div class="shimmer h-6 w-16 bg-gray-200 rounded-full"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+    <div class="relative">
+      <div class="shimmer h-48 bg-gray-200"></div>
+    </div>
+    <div class="p-6">
+      <div class="mb-3">
+        <div class="shimmer h-6 bg-gray-200 rounded mb-4"></div>
+        <div class="shimmer h-4 bg-gray-200 rounded mb-2"></div>
+        <div class="shimmer h-4 bg-gray-200 rounded mb-4 w-2/3"></div>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <div class="shimmer h-6 w-20 bg-gray-200 rounded-full"></div>
+        <div class="shimmer h-6 w-24 bg-gray-200 rounded-full"></div>
+        <div class="shimmer h-6 w-16 bg-gray-200 rounded-full"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+    <div class="relative">
+      <div class="shimmer h-48 bg-gray-200"></div>
+    </div>
+    <div class="p-6">
+      <div class="mb-3">
+        <div class="shimmer h-6 bg-gray-200 rounded mb-4"></div>
+        <div class="shimmer h-4 bg-gray-200 rounded mb-2"></div>
+        <div class="shimmer h-4 bg-gray-200 rounded mb-4 w-2/3"></div>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <div class="shimmer h-6 w-20 bg-gray-200 rounded-full"></div>
+        <div class="shimmer h-6 w-24 bg-gray-200 rounded-full"></div>
+        <div class="shimmer h-6 w-16 bg-gray-200 rounded-full"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+    <div class="relative">
+      <div class="shimmer h-48 bg-gray-200"></div>
+    </div>
+    <div class="p-6">
+      <div class="mb-3">
+        <div class="shimmer h-6 bg-gray-200 rounded mb-4"></div>
+        <div class="shimmer h-4 bg-gray-200 rounded mb-2"></div>
+        <div class="shimmer h-4 bg-gray-200 rounded mb-4 w-2/3"></div>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <div class="shimmer h-6 w-20 bg-gray-200 rounded-full"></div>
+        <div class="shimmer h-6 w-24 bg-gray-200 rounded-full"></div>
+        <div class="shimmer h-6 w-16 bg-gray-200 rounded-full"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+    <div class="relative">
+      <div class="shimmer h-48 bg-gray-200"></div>
+    </div>
+    <div class="p-6">
+      <div class="mb-3">
+        <div class="shimmer h-6 bg-gray-200 rounded mb-4"></div>
+        <div class="shimmer h-4 bg-gray-200 rounded mb-2"></div>
+        <div class="shimmer h-4 bg-gray-200 rounded mb-4 w-2/3"></div>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <div class="shimmer h-6 w-20 bg-gray-200 rounded-full"></div>
+        <div class="shimmer h-6 w-24 bg-gray-200 rounded-full"></div>
+        <div class="shimmer h-6 w-16 bg-gray-200 rounded-full"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Video Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden" id="videoGrid"></div>
+</div>
+
+  <script type="module">
+// Replace all the JavaScript code with this organized version
+
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+// Initialize Supabase
+const supabase = createClient(
+  'https://vlvbodwrtblttvwnxkjx.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg'
+);
+
+// Category structure
+const categoryStructure = {
+  Shelter: {
+    icon: 'fa-home',
+    color: 'text-blue-600',
+    subcategories: ['Temporary Shelter', 'Permanent Housing', 'Insulation', 'Ventilation', 'Natural Building']
+  },
+  Water: {
+    icon: 'fa-tint',
+    color: 'text-cyan-600',
+    subcategories: ['Water Filtration', 'Urban Water', 'Water Purification', 'Drinking Water Storage', 'Water Distribution']
+  },
+  'Waste Management': {
+    icon: 'fa-recycle',
+    color: 'text-green-600',
+    subcategories: ['Composting', 'Recycling', 'Upcycling', 'Hygiene', 'Zero Waste']
+  },
+  Energy: {
+    icon: 'fa-solar-panel',
+    color: 'text-yellow-600',
+    subcategories: ['Solar', 'Wind', 'Hydropower', 'Biogas', 'Motors', 'Wiring', 'Compressors', 'HVAC', 'Plumbing', 'Design']
+  },
+  'Appropriate Tech': {
+    icon: 'fa-tools',
+    color: 'text-purple-600',
+    subcategories: ['Agriculture', 'Construction', 'People', 'Healthcare', 'PTSD Care', 'Field Medicine', 'Education']
+  },
+  Agronomy: {
+    icon: 'fa-seedling',
+    color: 'text-emerald-600',
+    subcategories: ['Integrated Pest Management', 'Soil Improvement', 'Cover Cropping', 'Diversified Agriculture', 'Specialty Crops', 'Organic Techniques']
+  }
+};
+
+
+
+
+// State management
+const state = {
+  currentCategory: null,
+  currentSubcategory: null,
+  activeDropdown: null,
+  searchTerm: ''
+};
+
+// Core functionality
+async function loadVideos() {
+  try {
+    showLoading();
+    
+    let query = supabase.from('Video').select('*');
+    
+    if (state.currentCategory) {
+      query = query.eq('type', state.currentCategory);
+    }
+    
+    if (state.searchTerm) {
+      query = query.or(`title.ilike.%${state.searchTerm}%,description.ilike.%${state.searchTerm}%`);
+    }
+
+    const { data: videos, error } = await query;
+    if (error) throw error;
+
+    await new Promise(resolve => setTimeout(resolve, 300));
+    renderVideoGrid(videos);
+    hideLoading();
+  } catch (error) {
+    console.error('Error loading videos:', error);
+    hideLoading();
+  }
+}
+
+function renderVideoGrid(videos) {
+  const videoGrid = document.getElementById('videoGrid');
+  videoGrid.innerHTML = '';
+
+  if (!videos || videos.length === 0) {
+    videoGrid.innerHTML = `
+      <div class="col-span-full text-center py-12">
+        <i class="fas fa-search text-gray-400 text-4xl mb-4"></i>
+        <p class="text-gray-500">No videos found</p>
+      </div>
+    `;
+    return;
+  }
+
+  videos.forEach(video => {
+    const videoElement = createVideoCard(video);
+    videoGrid.innerHTML += videoElement;
+  });
+}
+
+function createVideoCard(video) {
+  return `
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-200 hover:scale-105 hover:shadow-xl">
+      <div class="relative group">
+        <div class="relative">
+          <img src="https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg" 
+               alt="${video.title}" 
+               class="w-full h-48 object-cover"
+               onerror="this.src='https://img.youtube.com/vi/${video.youtubeId}/0.jpg'">
+          
+          <div class="absolute top-0 right-0 p-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <button onclick="handleEditClick('${video.id}')"
+                    class="p-2 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200">
+              <i class="fas fa-edit text-blue-600"></i>
+            </button>
+            
+            <button onclick="handleDeleteClick('${video.id}')"
+                    class="p-2 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200">
+              <i class="fas fa-trash text-red-600"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <div class="mb-3">
+            <h2 class="text-xl font-semibold mb-2 text-gray-800 line-clamp-2">${video.title || 'Untitled'}</h2>
+            <p class="text-gray-600 text-sm line-clamp-3">${video.description || ''}</p>
+          </div>
+          
+          <div class="flex flex-col gap-3">
+            <div class="flex items-center gap-2">
+              <i class="fas ${categoryStructure[video.type]?.icon || 'fa-tag'} ${categoryStructure[video.type]?.color || 'text-gray-600'}"></i>
+              <span class="text-sm font-medium">${video.type || 'Uncategorized'}</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              ${Array.isArray(video.tags) ? video.tags.map(tag => `
+                <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs">
+                  ${tag}
+                </span>
+              `).join('') : ''}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+
+
+async function handleEditClick(videoId) {
+  try {
+    localStorage.setItem('videoId', videoId);
+    await localforage.setItem('videoId', videoId);
+    
+    const storedId = localStorage.getItem('videoId');
+    const forageId = await localforage.getItem('videoId');
+    
+    if (storedId === videoId && forageId === videoId) {
+      window.location.href = `edit4.html?id=${videoId}`;
+    } else {
+      throw new Error('Storage verification failed');
+    }
+  } catch (error) {
+    console.error('Error handling edit click:', error);
+    alert('There was an error preparing to edit this video. Please try again.');
+  }
+}
+
+// Event handlers
+async function handleDeleteClick(videoId) {
+  try {
+    localStorage.setItem('deleteVideoId', videoId);
+    await localforage.setItem('deleteVideoId', videoId);
+    window.location.href = 'delete1.html';
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Error preparing to delete. Please try again.');
+  }
+}
+
+
+
+function initializeCategoryFilters() {
+    const categoryGrid = document.getElementById('categoryGrid');
+    const clearFiltersBtn = document.getElementById('clearFilters');
+  
+    // Create category buttons
+    Object.entries(categoryStructure).forEach(([category, data]) => {
+      const categoryContainer = document.createElement('div');
+      categoryContainer.className = 'relative';
+      
+      const categoryButton = document.createElement('button');
+      categoryButton.className = `w-full px-4 py-3 text-left rounded-lg flex items-center justify-between bg-white hover:bg-gray-50 transition-all duration-200`;
+      categoryButton.innerHTML = `
+        <div class="flex items-center gap-3">
+          <i class="fas ${data.icon} text-lg text-gray-600"></i>
+          <span class="truncate">${category}</span>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      `;
+  
+      categoryButton.addEventListener('click', () => handleCategoryClick(category, categoryContainer));
+      categoryContainer.appendChild(categoryButton);
+      categoryGrid.appendChild(categoryContainer);
+    });
+  
+    clearFiltersBtn.addEventListener('click', clearFilters);
+  }
+
+
+  function handleCategoryClick(category, containerElement) {
+  if (state.activeDropdown) {
+    state.activeDropdown.remove();
+    if (state.currentCategory === category) {
+      state.currentCategory = null;
+      state.activeDropdown = null;
+      updateActiveFilters();
+      loadVideos();
+      return;
+    }
+  }
+
+  state.currentCategory = category;
+  const dropdown = createSubcategoryDropdown(category, containerElement);
+  containerElement.appendChild(dropdown);
+  state.activeDropdown = dropdown;
+  updateActiveFilters();
+  loadVideos();
+}
+
+
+function createSubcategoryDropdown(category, parentElement) {
+  const dropdown = document.createElement('div');
+  dropdown.className = 'absolute z-10 w-48 mt-2 py-2 bg-white rounded-lg shadow-xl border border-gray-100 transform transition-all duration-200 ease-in-out';
+  
+  categoryStructure[category].subcategories.forEach(subcategory => {
+    const item = document.createElement('button');
+    item.className = `w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors duration-150
+                     ${state.currentSubcategory === subcategory ? 'bg-blue-50 text-blue-800' : 'text-gray-700'}
+                     flex items-center space-x-2`;
+    
+    // Add mini-icon for subcategories
+    const icon = categoryStructure[category].icon;
+    item.innerHTML = `
+      <i class="fas ${icon} text-sm opacity-50"></i>
+      <span>${subcategory}</span>
+    `;
+    
+    item.addEventListener('click', () => {
+      state.currentSubcategory = subcategory;
+      updateActiveFilters();
+      loadVideos();
+      dropdown.remove();
+      state.activeDropdown = null;
+    });
+    
+    dropdown.appendChild(item);
+  });
+
+  return dropdown;
+}
+
+
+  function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+  
+// Utility functions
+function showLoading() {
+  document.getElementById('loadingPlaceholder').classList.remove('hidden');
+  document.getElementById('videoGrid').classList.add('hidden');
+}
+
+function hideLoading() {
+  document.getElementById('loadingPlaceholder').classList.add('hidden');
+  document.getElementById('videoGrid').classList.remove('hidden');
+}
+
+// Event handlers
+function setupEventListeners() {
+  // Search handler
+  const searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', debounce((e) => {
+    state.searchTerm = e.target.value.toLowerCase();
+    loadVideos();
+  }, 300));
+
+  // Clear filters handler
+  const clearFiltersBtn = document.getElementById('clearFilters');
+  clearFiltersBtn.addEventListener('click', clearFilters);
+}
+
+function clearFilters() {
+  state.currentCategory = null;
+  state.currentSubcategory = null;
+  state.searchTerm = '';
+  
+  if (state.activeDropdown) {
+    state.activeDropdown.remove();
+    state.activeDropdown = null;
+  }
+
+  // Clear search input
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) searchInput.value = '';
+
+  updateActiveFilters();
+  loadVideos();
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  initializeCategoryFilters();
+  setupEventListeners();
+  loadVideos();
+});
+
+// Make handlers globally available
+window.handleEditClick = handleEditClick;
+window.handleDeleteClick = handleDeleteClick;
+
+
+
+
+
+  </script>
+</body>
+</html>

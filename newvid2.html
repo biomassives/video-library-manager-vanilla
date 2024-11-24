@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+  <title>ApproVideo Video Portal Manager 🎥🎥🎥</title>
+	
+  <link href="style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  </head>
+ 
+<style>
+/* Add these styles to your HTML head or in a style tag */
+.profile-dropdown {
+  transform: scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+  background-color: white;
+}
+
+.profile-dropdown.dropdown-active {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.profile-dropdown.dropdown-inactive {
+  transform: scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.profile-dropdown a {
+  transition: all 0.2s ease-in-out;
+}
+
+.profile-dropdown a:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+</style>
+
+
+</head>
+<body class="bg-gray-100">
+    
+  <div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm">
+    🎥 Welcome to ApproVideo - DIY Solutions Video Portal 🎥
+  </div>
+
+    <div class="container mx-auto p-4">
+      <!-- Enhanced Navigation Bar -->
+ 
+<nav class="bg-white shadow-lg rounded-lg mb-8 transition-colors duration-300" id="mainNav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo Section -->
+        <div class="flex items-center space-x-4">
+          <a href="index.html" class="flex items-center space-x-3 group">
+            <svg class="h-10 w-10 text-green-500 transform transition-all duration-300 group-hover:scale-110" 
+                 viewBox="0 0 24 24" 
+                 fill="none" 
+                 stroke="currentColor" 
+                 stroke-width="1.5"
+                 id="logoIcon">
+              <circle class="tool-circle" cx="12" cy="12" r="10" stroke-dasharray="4 4"/>
+              <path class="tool-wrench" d="M3 21h4l9-9"/>
+              <path class="tool-screwdriver" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+              <circle class="tool-gear" cx="12" cy="12" r="3"/>
+              <path class="tool-arrows" d="M8 12h8m-4-4v8" stroke-linecap="round"/>
+            </svg>
+            <span class="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+              ApproAdmin
+            </span>
+          </a>
+        </div>
+
+        <!-- Navigation Items -->
+        <div class="flex items-center space-x-6">
+          <!-- Website Link -->
+          <a href="http://www.approvideo.org" 
+             class="nav-link group flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50">
+
+            <span class="hidden md:inline">Live site</span>
+          </a>
+
+	
+	<a href="new.html" class="nav-link group flex items-center space-x-2 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-600">
+	  <svg class="w-6 h-6 transform transition-all duration-300 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+	    <circle cx="12" cy="12" r="10"></circle>
+	    <path d="M12 8v8"></path>
+	    <path d="M8 12h8"></path>
+	  </svg>	
+	</a>  
+
+          <!-- Dark Mode Toggle -->
+	     <button id="darkModeToggle" 
+                class="p-2 rounded-lg transition-all duration-300 space-x-2 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50 ">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path class="dark-toggle" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </button>
+
+          <!-- Profile Button -->
+          <div class="relative">
+            <button id="profileButton" 
+            class="icon-button p-2 rounded-lg transition-colors duration-300 space-x-2 text-white text-gray-800 dark:text-white hover:text-green-500 transition-all px-3 hover:bg-gray-50">
+              <svg class="w-[39px] h-[39px] "  stroke="currentColor"  class="text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+ 		 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 4h12M6 4v16M6 4H5m13 0v16m0-16h1m-1 16H6m12 0h1M6 20H5M9 7h1v1H9V7Zm5 0h1v1h-1V7Zm-5 4h1v1H9v-1Zm5 0h1v1h-1v-1Zm-3 4h2a1 1 0 0 1 1 1v4h-4v-4a1 1 0 0 1 1-1Z"/>
+	      </svg>
+            </button>
+            <div id="profileDropdown"
+            class="profile-dropdown dropdown-inactive absolute right-0 mt-2 w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+              <div class="py-1">
+                <a href="https://www.approvideo.org" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Approvideo</a>
+                <a href="pending.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pending</a>
+		      
+                <a href="feed.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Output</a>
+                <a href="feed-config.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+
+
+
+
+
+
+    <form id="videoForm" class="space-y-6">
+        <!-- Basic Video Information -->
+        <div class="space-y-4 bg-white p-6 rounded-lg shadow">
+            <div>
+                <label class="block mb-1 font-medium">Title *</label>
+                <input 
+                    type="text" 
+                    name="title" 
+                    required
+                    class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+            </div>
+
+            <div>
+                <label class="block mb-1 font-medium">YouTube ID *</label>
+                <input 
+                    type="text" 
+                    name="youtubeId" 
+                    required
+                    class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+            </div>
+
+            <div>
+                <label class="block mb-1 font-medium">Description</label>
+                <textarea 
+                    name="description" 
+                    rows="3"
+                    class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                ></textarea>
+            </div>
+
+            <div>
+                <label class="block mb-1 font-medium">Categories (comma-separated)</label>
+                <input 
+                    type="text" 
+                    name="categories"
+                    class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+            </div>
+
+            <div>
+                <label class="block mb-1 font-medium">Tags (comma-separated)</label>
+                <input 
+                    type="text" 
+                    name="tags"
+                    class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+            </div>
+
+            <div>
+                <label class="block mb-1 font-medium">Materials (comma-separated)</label>
+                <input 
+                    type="text" 
+                    name="materials"
+                    class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+            </div>
+
+            <div>
+                <label class="block mb-1 font-medium">Rating</label>
+                <input 
+                    type="number" 
+                    name="rating"
+                    min="0"
+                    max="5"
+                    step="0.1"
+                    class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+            </div>
+
+            <div>
+                <label class="block mb-1 font-medium">Transcript</label>
+                <textarea 
+                    name="transcript"
+                    rows="4"
+                    class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                ></textarea>
+            </div>
+        </div>
+
+
+    <!-- Materials Section -->
+    <div class="mb-6 bg-white p-6 rounded-lg shadow-md">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Materials Needed</h2>
+            <button type="button"
+                    onclick="addMaterial()"
+                    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+                Add Material
+            </button>
+        </div>
+        <div id="materialsContainer" class="space-y-3">
+            <div class="flex gap-2">
+                <input type="text" 
+                       placeholder="Enter material name" 
+                       class="flex-1 p-2 border rounded focus:ring-2 focus:ring-blue-500">
+                <input type="text" 
+                       placeholder="Quantity (optional)" 
+                       class="w-32 p-2 border rounded focus:ring-2 focus:ring-blue-500">
+                <button type="button"
+                        onclick="removeMaterial(0)"
+                        class="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                    Remove
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Steps Section -->
+    <div class="mb-6 bg-white p-6 rounded-lg shadow-md">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Steps</h2>
+            <button type="button"
+                    onclick="addStep()"
+                    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+                Add Step
+            </button>
+        </div>
+        <div id="stepsContainer" class="space-y-3">
+            <div class="flex gap-2">
+                <span class="flex items-center px-3 bg-gray-100 rounded-l">1</span>
+                <input type="text" 
+                       placeholder="Enter step description" 
+                       class="flex-1 p-2 border rounded focus:ring-2 focus:ring-blue-500">
+                <button type="button"
+                        onclick="removeStep(0)"
+                        class="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                    Remove
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panels Section -->
+    <div class="mb-6 bg-white p-6 rounded-lg shadow-md">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Additional Information Panels</h2>
+            <button type="button"
+                    onclick="addPanel()"
+                    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+                Add Panel
+            </button>
+        </div>
+        <div id="panelsContainer" class="space-y-4">
+            <div class="border p-4 rounded">
+                <div class="flex justify-between mb-2">
+                    <h3>Panel 1</h3>
+                    <button type="button"
+                            onclick="removePanel(0)"
+                            class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600">
+                        Remove
+                    </button>
+                </div>
+                <div class="space-y-2">
+                    <input type="text" 
+                           placeholder="Panel Title" 
+                           class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500">
+                    <textarea placeholder="Panel Content"
+                              class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                              rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+
+
+            <!-- Submit Button -->
+            <button 
+                type="submit"
+                class="w-full p-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+            >
+                Create Video
+            </button>
+        </form>
+
+
+
+
+    </div>
+
+    <script>
+        // Add these functions to your existing JavaScript
+
+        // Materials Management
+        function addMaterial() {
+            const container = document.getElementById('materialsContainer');
+            const materialDiv = document.createElement('div');
+            materialDiv.className = 'flex gap-2';
+            materialDiv.innerHTML = `
+                <input type="text" 
+                       placeholder="Enter material name" 
+                       class="flex-1 p-2 border rounded focus:ring-2 focus:ring-blue-500">
+                <input type="text" 
+                       placeholder="Quantity (optional)" 
+                       class="w-32 p-2 border rounded focus:ring-2 focus:ring-blue-500">
+                <button type="button"
+                        onclick="removeMaterial(${container.children.length})"
+                        class="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                    Remove
+                </button>
+            `;
+            container.appendChild(materialDiv);
+        }
+
+        function removeMaterial(index) {
+            const container = document.getElementById('materialsContainer');
+            container.children[index].remove();
+            updateMaterialIndices();
+        }
+
+        function updateMaterialIndices() {
+            const container = document.getElementById('materialsContainer');
+            Array.from(container.children).forEach((div, index) => {
+                div.querySelector('button').onclick = () => removeMaterial(index);
+            });
+        }
+
+        // Steps Management
+        function addStep() {
+            const container = document.getElementById('stepsContainer');
+            const stepDiv = document.createElement('div');
+            stepDiv.className = 'flex gap-2';
+            stepDiv.innerHTML = `
+                <span class="flex items-center px-3 bg-gray-100 rounded-l">${container.children.length + 1}</span>
+                <input type="text" 
+                       placeholder="Enter step description" 
+                       class="flex-1 p-2 border rounded focus:ring-2 focus:ring-blue-500">
+                <button type="button"
+                        onclick="removeStep(${container.children.length})"
+                        class="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                    Remove
+                </button>
+            `;
+            container.appendChild(stepDiv);
+        }
+
+        function removeStep(index) {
+            const container = document.getElementById('stepsContainer');
+            container.children[index].remove();
+            updateStepIndices();
+        }
+
+        function updateStepIndices() {
+            const container = document.getElementById('stepsContainer');
+            Array.from(container.children).forEach((div, index) => {
+                div.querySelector('span').textContent = index + 1;
+                div.querySelector('button').onclick = () => removeStep(index);
+            });
+        }
+
+        // Panels Management
+        function addPanel() {
+            const container = document.getElementById('panelsContainer');
+            const panelDiv = document.createElement('div');
+            panelDiv.className = 'border p-4 rounded';
+            panelDiv.innerHTML = `
+                <div class="flex justify-between mb-2">
+                    <h3>Panel ${container.children.length + 1}</h3>
+                    <button type="button"
+                            onclick="removePanel(${container.children.length})"
+                            class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600">
+                        Remove
+                    </button>
+                </div>
+                <div class="space-y-2">
+                    <input type="text" 
+                           placeholder="Panel Title" 
+                           class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500">
+                    <textarea placeholder="Panel Content"
+                              class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                              rows="3"></textarea>
+                </div>
+            `;
+            container.appendChild(panelDiv);
+        }
+
+        function removePanel(index) {
+            const container = document.getElementById('panelsContainer');
+            container.children[index].remove();
+            updatePanelIndices();
+        }
+
+        function updatePanelIndices() {
+            const container = document.getElementById('panelsContainer');
+            Array.from(container.children).forEach((div, index) => {
+                div.querySelector('h3').textContent = `Panel ${index + 1}`;
+                div.querySelector('button').onclick = () => removePanel(index);
+            });
+        }
+
+        // Modify your existing form submission handler
+        newVideoForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            // ... your existing form validation ...
+
+            try {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Creating...';
+
+                const now = new Date().toISOString();
+                const videoId = crypto.randomUUID();
+
+                // Collect materials
+                const materials = Array.from(document.getElementById('materialsContainer').children).map(div => ({
+                    name: div.querySelector('input:first-child').value.trim(),
+                    quantity: div.querySelector('input:nth-child(2)').value.trim()
+                })).filter(material => material.name);
+
+                // Collect steps
+                const steps = Array.from(document.getElementById('stepsContainer').children).map((div, index) => ({
+                    video_id: videoId,
+                    text: div.querySelector('input').value.trim(),
+                    order_number: index + 1
+                })).filter(step => step.text);
+
+                // Collect panels
+                const panels = Array.from(document.getElementById('panelsContainer').children).map((div, index) => ({
+                    video_id: videoId,
+                    title: div.querySelector('input').value.trim(),
+                    content: div.querySelector('textarea').value.trim(),
+                    order_number: index + 1
+                })).filter(panel => panel.title && panel.content);
+
+                // Prepare video data
+                const videoData = {
+                    id: videoId,
+                    title,
+                    description,
+                    youtubeId,
+                    category,
+                    subcategory,
+                    tags,
+                    materials: materials.map(m => `${m.name}${m.quantity ? ` (${m.quantity})` : ''}`),
+                    datePublished: now,
+                    createdAt: now,
+                    updatedAt: now
+                };
+
+                // Insert video data
+                const { error: videoError } = await supabase
+                    .from('Video')
+                    .insert(videoData);
+
+                if (videoError) throw videoError;
+
+                // Insert steps if any
+                if (steps.length > 0) {
+                    const { error: stepsError } = await supabase
+                        .from('Step')
+                        .insert(steps);
+                    
+                    if (stepsError) throw stepsError;
+                }
+
+                // Insert panels if any
+                if (panels.length > 0) {
+                    const { error: panelsError } = await supabase
+                        .from('Panel')
+                        .insert(panels);
+                    
+                    if (panelsError) throw panelsError;
+                }
+
+                showToast('Video created successfully!');
+                newVideoForm.reset();
+                youtubeIdPreview.textContent = '';
+                
+                // Reset containers
+                document.getElementById('materialsContainer').innerHTML = '';
+                document.getElementById('stepsContainer').innerHTML = '';
+                document.getElementById('panelsContainer').innerHTML = '';
+                
+                // Add initial empty fields
+                addMaterial();
+                addStep();
+                addPanel();
+
+            } catch (error) {
+                console.error('Error creating video:', error);
+                showToast('Failed to create video. Please try again.', 'error');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Create Video';
+            }
+        });
+
+        // Initialize with one empty field each
+        addMaterial();
+        addStep();
+        addPanel();
+    </script>

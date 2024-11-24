@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Creation Form</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Add any custom styles here */
+        .loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-4xl mx-auto p-6">
+        <h1 class="text-2xl font-bold mb-6">Create New Video</h1>
+        
+        <form id="videoForm" class="space-y-6">
+            <!-- Basic Video Information -->
+            <div class="space-y-4 bg-white p-6 rounded-lg shadow">
+                <div>
+                    <label class="block mb-1 font-medium">Title *</label>
+                    <input 
+                        type="text" 
+                        name="title" 
+                        required
+                        class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">YouTube ID *</label>
+                    <input 
+                        type="text" 
+                        name="youtubeId" 
+                        required
+                        class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">Description</label>
+                    <textarea 
+                        name="description" 
+                        rows="3"
+                        class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    ></textarea>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">Categories (comma-separated)</label>
+                    <input 
+                        type="text" 
+                        name="categories"
+                        class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">Tags (comma-separated)</label>
+                    <input 
+                        type="text" 
+                        name="tags"
+                        class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">Materials (comma-separated)</label>
+                    <input 
+                        type="text" 
+                        name="materials"
+                        class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">Rating</label>
+                    <input 
+                        type="number" 
+                        name="rating"
+                        min="0"
+                        max="5"
+                        step="0.1"
+                        class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">Transcript</label>
+                    <textarea 
+                        name="transcript"
+                        rows="4"
+                        class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    ></textarea>
+                </div>
+            </div>
+
+            <!-- Steps Section -->
+            <div id="stepsSection" class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">Steps</h2>
+                    <button 
+                        type="button"
+                        onclick="addStep()"
+                        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                    >
+                        Add Step
+                    </button>
+                </div>
+                <div id="stepsContainer" class="space-y-3">
+                    <!-- Steps will be added here -->
+                </div>
+            </div>
+
+            <!-- Panels Section -->
+            <div id="panelsSection" class="bg-white p-6 rounded-lg shadow">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">Panels</h2>
+                    <button 
+                        type="button"
+                        onclick="addPanel()"
+                        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                    >
+                        Add Panel
+                    </button>
+                </div>
+                <div id="panelsContainer" class="space-y-4">
+                    <!-- Panels will be added here -->
+                </div>
+            </div>
+
+            <!-- Message Area -->
+            <div id="messageArea" class="hidden p-4 rounded"></div>
+
+            <!-- Submit Button -->
+            <button 
+                type="submit"
+                class="w-full p-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+            >
+                Create Video
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Initialize LocalForage
+        const store = localforage.createInstance({
+            name: 'videoForm'
+        });
+
+        // Form elements
+        const form = document.getElementById('videoForm');
+        const stepsContainer = document.getElementById('stepsContainer');
+        const panelsContainer = document.getElementById('panelsContainer');
+        const messageArea = document.getElementById('messageArea');
+
+        // Initial state
+        let steps = [];
+        let panels = [];
+
+        // Load saved data if exists
+        async function loadSavedData() {
+            try {
+                const savedForm = await store.getItem('formData');
+                if (savedForm) {
+                    Object.keys(savedForm).forEach(key => {
+                        const input = form.elements[key];
+                        if (input) {
+                            input.value = savedForm[key];
+                        }
+                    });
+                }
+
+                const savedSteps = await store.getItem('steps') || [];
+                savedSteps.forEach(() => addStep());
+
+                const savedPanels = await store.getItem('panels') || [];
+                savedPanels.forEach(() => addPanel());
+            } catch (error) {
+                console.error('Error loading saved data:', error);
+            }
+        }
+
+        // Save form data
+        async function saveFormData() {
+            const formData = {};
+            new FormData(form).forEach((value, key) => {
+                formData[key] = value;
+            });
+            await store.setItem('formData', formData);
+            await store.setItem('steps', steps);
+            await store.setItem('panels', panels);
+        }
+
+        // Add step
+        function addStep() {
+            const stepIndex = steps.length;
+            const stepDiv = document.createElement('div');
+            stepDiv.className = 'flex gap-2';
+            stepDiv.innerHTML = `
+                <input 
+                    type="text" 
+                    name="step_${stepIndex}"
+                    placeholder="Enter step description"
+                    class="flex-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                <button 
+                    type="button"
+                    onclick="removeStep(${stepIndex})"
+                    class="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                >
+                    Remove
+                </button>
+            `;
+            stepsContainer.appendChild(stepDiv);
+            steps.push({ text: '' });
+        }
+
+        // Remove step
+        function removeStep(index) {
+            const stepInputs = stepsContainer.children;
+            stepInputs[index].remove();
+            steps.splice(index, 1);
+            // Update remaining steps' indices
+            Array.from(stepInputs).forEach((step, i) => {
+                step.querySelector('input').name = `step_${i}`;
+                step.querySelector('button').onclick = () => removeStep(i);
+            });
+        }
+
+        // Add panel
+        function addPanel() {
+            const panelIndex = panels.length;
+            const panelDiv = document.createElement('div');
+            panelDiv.className = 'border p-4 rounded';
+            panelDiv.innerHTML = `
+                <div class="flex justify-between mb-2">
+                    <h3 class="font-medium">Panel ${panelIndex + 1}</h3>
+                    <button 
+                        type="button"
+                        onclick="removePanel(${panelIndex})"
+                        class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                    >
+                        Remove
+                    </button>
+                </div>
+                <div class="space-y-2">
+                    <input 
+                        type="text" 
+                        name="panel_${panelIndex}_title"
+                        placeholder="Panel Title"
+                        class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                    <textarea 
+                        name="panel_${panelIndex}_content"
+                        placeholder="Panel Content"
+                        rows="3"
+                        class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    ></textarea>
+                </div>
+            `;
+            panelsContainer.appendChild(panelDiv);
+            panels.push({ title: '', content: '' });
+        }
+
+        // Remove panel
+        function removePanel(index) {
+            const panelElements = panelsContainer.children;
+            panelElements[index].remove();
+            panels.splice(index, 1);
+            // Update remaining panels' indices
+            Array.from(panelElements).forEach((panel, i) => {
+                panel.querySelector('h3').textContent = `Panel ${i + 1}`;
+                panel.querySelector('input').name = `panel_${i}_title`;
+                panel.querySelector('textarea').name = `panel_${i}_content`;
+                panel.querySelector('button').onclick = () => removePanel(i);
+            });
+        }
+
+        // Show message
+        function showMessage(message, isError = false) {
+            messageArea.textContent = message;
+            messageArea.className = `p-4 rounded ${isError ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`;
+            messageArea.classList.remove('hidden');
+            setTimeout(() => {
+                messageArea.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Handle form submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            form.classList.add('loading');
+
+            try {
+                const formData = new FormData(form);
+                const videoData = {
+                    title: formData.get('title'),
+                    description: formData.get('description'),
+                    youtubeId: formData.get('youtubeId'),
+                    categories: formData.get('categories').split(',').map(item => item.trim()),
+                    tags: formData.get('tags').split(',').map(item => item.trim()),
+                    rating: parseFloat(formData.get('rating')) || 0,
+                    materials: formData.get('materials').split(',').map(item => item.trim()),
+                    transcript: formData.get('transcript')
+                };
+
+                // Collect steps
+                const stepsData = Array.from(stepsContainer.children).map(stepDiv => ({
+                    text: stepDiv.querySelector('input').value
+                })).filter(step => step.text.trim());
+
+                // Collect panels
+                const panelsData = Array.from(panelsContainer.children).map(panelDiv => ({
+                    title: panelDiv.querySelector('input').value,
+                    content: panelDiv.querySelector('textarea').value
+                })).filter(panel => panel.title.trim() && panel.content.trim());
+
+                // Save to LocalForage
+                await store.setItem('videoData', videoData);
+                await store.setItem('steps', stepsData);
+                await store.setItem('panels', panelsData);
+
+                // TODO: Send to your API
+                console.log('Submission data:', { videoData, steps: stepsData, panels: panelsData });
+
+                showMessage('Video data saved successfully!');
+                // Optionally reset form
+                form.reset();
+                stepsContainer.innerHTML = '';
+                panelsContainer.innerHTML = '';
+                steps = [];
+                panels = [];
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                showMessage('Error saving video data. Please try again.', true);
+            } finally {
+                form.classList.remove('loading');
+            }
+        });
+
+        // Load initial step and panel
+        addStep();
+        addPanel();
+        loadSavedData();
+
+        // Auto-save form data periodically
+        let autoSaveTimeout;
+        form.addEventListener('input', () => {
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(saveFormData, 1000);
+        });
+    </script>
+</body>
+</html>
