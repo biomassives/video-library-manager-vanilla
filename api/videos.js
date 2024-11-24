@@ -1,6 +1,6 @@
 
 // api/videos.js
-import { supabase, ALLOWED_ORIGINS } from '../config';
+import { supabase, ALLOWED_ORIGINS, CACHE_DURATION } from '../config';
 import { VideoService } from '../videoService';
 
 const videoService = new VideoService(supabase);

@@ -1,7 +1,7 @@
 // config.js
 import { createClient } from '@supabase/supabase-js';
 
-const CACHE_DURATION = {
+export const CACHE_DURATION = {
   DEFAULT: 3600,           // 1 hour
   STALE_WHILE_REVALIDATE: 86400  // 24 hours
 };
