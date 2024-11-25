@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+  <link href="style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <title>Appro🎥Video Portal</title>
+</head>
+<body class="bg-gray-50">
+  <!-- Top Banner -->
+  <div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm">
+    🎥 Welcome to ApproVideo - Your Sustainable Video Management Portal
+  </div>
+
+  <div class="container mx-auto p-4">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg rounded-lg mb-8">
+      <div class="flex items-center justify-between px-4">
+        <a href="index.html" class="flex items-center space-x-3">
+          <svg class="h-8 w-8 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25" />
+          </svg>
+          <span class="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">ApproVideo</span>
+        </a>
+        <div class="flex space-x-4">
+          <a href="feed-config.html" class="text-gray-600 hover:text-green-500">Feed Settings</a>
+          <a href="newcreate1.html" class="text-gray-600 hover:text-green-500">New Video</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">Video Library</h1>
+      <p class="text-gray-600">Manage and organize your sustainable video content</p>
+    </div>
+
+    <!-- Video Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="videoGrid"></div>
+
+    <!-- Overlay Panel -->
+    <div id="videoOverlay" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50">
+      <div class="relative bg-white rounded-lg shadow-lg mx-auto mt-20 max-w-2xl p-6">
+        <button id="closeOverlay" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times"></i>
+        </button>
+        <div id="overlayContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabase = createClient('https://vlvbodwrtblttvwnxkjx.supabase.co', 'YOUR_SUPABASE_KEY');
+    const videoGrid = document.getElementById('videoGrid');
+    const videoOverlay = document.getElementById('videoOverlay');
+    const overlayContent = document.getElementById('overlayContent');
+    const closeOverlay = document.getElementById('closeOverlay');
+
+    // Fetch Videos
+    async function fetchVideos() {
+      try {
+        const response = await fetch('https://content.approvideo.org/api/videos'); // Update API URL as needed
+        const result = await response.json();
+
+        if (!result.success) throw new Error('Failed to fetch videos');
+        renderVideos(result.data);
+      } catch (error) {
+        console.error('Error fetching videos:', error);
+      }
+    }
+
+    // Render Videos
+    function renderVideos(videos) {
+      videoGrid.innerHTML = videos.map(video => createVideoCard(video)).join('');
+    }
+
+    // Create Video Card
+    function createVideoCard(video) {
+      return `
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition" onclick="showVideoOverlay(${video.id})">
+          <img src="https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg" alt="${escapeHtml(video.title)}" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <h2 class="font-bold text-lg">${escapeHtml(video.title)}</h2>
+            <p class="text-gray-600 text-sm">${escapeHtml(video.description)}</p>
+            <span class="text-sm text-green-500">${video.category || 'Uncategorized'}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // Show Overlay with Video Details
+    async function showVideoOverlay(videoId) {
+      try {
+        const { data: video, error } = await supabase.from('Video').select('*').eq('id', videoId).single();
+        if (error || !video) throw error;
+
+        overlayContent.innerHTML = `
+          <h2 class="text-2xl font-bold mb-4">${escapeHtml(video.title)}</h2>
+          <iframe src="https://www.youtube.com/embed/${video.youtubeId}" class="w-full h-64 mb-4" frameborder="0" allowfullscreen></iframe>
+          <p>${escapeHtml(video.description)}</p>
+        `;
+        videoOverlay.classList.remove('hidden');
+      } catch (error) {
+        console.error('Error loading video details:', error);
+      }
+    }
+
+    // Close Overlay
+    closeOverlay.addEventListener('click', () => {
+      videoOverlay.classList.add('hidden');
+    });
+
+    // Escape HTML
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', fetchVideos);
+    window.showVideoOverlay = showVideoOverlay; // Make available globally
+  </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+
+
+  <title>Appro🎥video Video Portal Manager🎥</title>
+  <link href="style.css" rel="stylesheet">
+  <!-- Add Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  </head>
+  <body class="bg-gray-50">
+  <!-- Top Banner -->
+  <div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm">
+    🎥 Welcome to ApproVideo - Your Sustainable Video Management Portal
+  </div>
+
+  <div class="container mx-auto p-4">
+    <!-- Enhanced Navigation Bar -->
+<!-- Updated Navigation Bar -->
+<nav class="bg-white shadow-lg rounded-lg mb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center space-x-4">
+          <a href="index.html" class="flex items-center space-x-3">
+            <svg class="h-8 w-8 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="8" y1="19" x2="8" y2="21" />
+              <line x1="8" y1="13" x2="8" y2="15" />
+              <line x1="16" y1="19" x2="16" y2="21" />
+              <line x1="16" y1="13" x2="16" y2="15" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="12" y1="15" x2="12" y2="17" />
+              <path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25" />
+            </svg>
+            <span class="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+              ApproVideo Manager
+            </span>
+          </a>
+        </div>
+  
+        <div class="flex items-center space-x-4">
+          <!-- Feed Configurator Link -->
+          <a href="feed-config.html" 
+             class="flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-colors px-3 py-2 rounded-lg hover:bg-gray-50">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 fill="none" 
+                 viewBox="0 0 24 24" 
+                 stroke-width="1.5" 
+                 stroke="currentColor" 
+                 class="w-6 h-6">
+              <path stroke-linecap="round" 
+                    stroke-linejoin="round" 
+                    d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
+            </svg>
+            <span class="hidden md:inline">Feed Settings</span>
+          </a>
+  
+          <!-- New Video Link -->
+          <a href="newcreate1.html" class="flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-colors">
+            <svg class="h-6 w-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z"/>
+              <rect x="4" y="4" width="6" height="6" rx="1" />
+              <rect x="4" y="14" width="6" height="6" rx="1" />
+              <rect x="14" y="14" width="6" height="6" rx="1" />
+              <line x1="14" y1="7" x2="20" y2="7" />
+              <line x1="17" y1="4" x2="17" y2="10" />
+            </svg>
+            <span>New Video</span>
+          </a>
+          
+          <!-- Add Video Button -->
+          <button id="newVideoButton" class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-bold py-2 px-4 rounded-full transition-all duration-200 transform hover:scale-105 flex items-center space-x-2">
+            <span class="text-xl">+</span>
+            <span class="hidden md:inline">Add Video</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+    <!-- Page Header -->
+    <div class="mb-8 text-center">
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">Video Library</h1>
+      <p class="text-gray-600">Manage and organize your sustainable video content</p>
+    </div>
+
+
+<!-- Sorting and Filtering Controls -->
+<div class="mb-6 space-y-4">
+  <!-- Category Icons -->
+  <div class="flex justify-center space-x-4 py-4" id="categoryIcons"></div>
+
+  <!-- Sorting Controls -->
+  <div class="bg-white/80 backdrop-blur-md rounded-lg shadow-md p-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <i class="fas fa-sort text-gray-600"></i>
+        <h2 class="text-lg font-semibold text-gray-800">Sort Videos</h2>
+      </div>
+      <select id="sortSelect" 
+              class="px-4 py-2 bg-white/50 backdrop-blur-sm border rounded-lg 
+                     focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                     transition-all duration-300">
+        <option value="date-desc">Newest First</option>
+        <option value="date-asc">Oldest First</option>
+        <option value="title-asc">Title A-Z</option>
+        <option value="title-desc">Title Z-A</option>
+        <option value="category">Category</option>
+      </select>
+    </div>
+  </div>
+</div>
+  
+  <!-- Video Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="videoGrid"></div>
+</div>
+
+
+  <script type="module">
+
+// 1. separate our configuration and state
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+
+config categories  [ {
+    Shelter: { icon: 'fa-home', color: 'from-blue-500 to-indigo-600', anim: 'float-1' },
+    Water: { icon: 'fa-tint', color: 'from-cyan-500 to-blue-600', anim: 'float-2' },
+    'Waste Management': { icon: 'fa-recycle', color: 'from-green-500 to-emerald-600', anim: 'float-3' },
+    Energy: { icon: 'fa-solar-panel', color: 'from-yellow-500 to-amber-600', anim: 'float-4' },
+    'Appropriate Tech': { icon: 'fa-tools', color: 'from-purple-500 to-indigo-600', anim: 'float-5' },
+    Agronomy: { icon: 'fa-seedling', color: 'from-emerald-500 to-green-600', anim: 'float-6' }
+  }
+}];
+
+
+const supabase = createClient('https://vlvbodwrtblttvwnxkjx.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg');
+
+// Fetch Videos from API
+async function fetchVideos() {
+  try {
+    const response = await fetch('/api/videos'); // Replace with your actual API endpoint
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error('Failed to fetch videos');
+    }
+
+    const videos = result.data;
+    renderVideos(videos); // Call the render function with fetched videos
+  } catch (error) {
+    console.error('Error fetching videos:', error);
+    alert('Unable to load videos. Please try again later.');
+  }
+}
+
+// Render Videos to the Grid
+function renderVideos(videos) {
+  const videoGrid = document.getElementById('videoGrid');
+  videoGrid.innerHTML = videos
+    .map(video => createVideoCard(video))
+    .join('');
+}
+
+// Create Video Card HTML
+function createVideoCard(video) {
+  return `
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-200 hover:scale-105 hover:shadow-xl">
+      <div class="relative group">
+        <!-- Video Thumbnail -->
+        <img src="https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg" 
+             alt="${escapeHtml(video.title)}" 
+             class="w-full h-48 object-cover">
+        <div class="p-4">
+          <h2 class="text-lg font-bold">${escapeHtml(video.title)}</h2>
+          <p class="text-gray-600 text-sm">${escapeHtml(video.description)}</p>
+          <span class="text-sm text-green-500 font-medium">${video.category || 'Uncategorized'}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Escape HTML to Prevent Injection
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// Initialize App
+document.addEventListener('DOMContentLoaded', fetchVideos);
+
