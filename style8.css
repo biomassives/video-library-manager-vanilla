@@ -26,6 +26,29 @@ body.dark {
   color: var(--text-dark);
 }
 
+.fallback-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: white;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  height: 12rem;
+  border-radius: 0.5rem;
+}
+.fallback-waste-management { background-color: #2d6a4f; }
+.fallback-energy-systems { background-color: #ffb703; }
+.fallback-default { background-color: #6c757d; }
+
+
+
+
+
+
 /* Video card and info panel styles */
 .video-card,
 .info-panel {

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Blueprint</title>
+    <!-- Add Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .modal input,
+        .modal textarea {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* Loading state */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .loading::after {
+            content: '';
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid #3498db;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error state */
+        .error {
+            background: #fee;
+            color: #e74c3c;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Content Blueprint</h1>
+            <nav>
+                <a href="#categories">Categories</a> |
+                <a href="#tags">Tags</a> |
+                <a href="#features">Features</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="carousel">
+                <div class="carousel-item active">
+                    <h2>Welcome to Content Blueprint</h2>
+                    <p>Organize your sustainability and appropriate technology content</p>
+                </div>
+                <div class="carousel-item">
+                    <h2>Categories & Subcategories</h2>
+                    <p>Structured content organization for better navigation</p>
+                </div>
+                <div class="carousel-item">
+                    <h2>Tag Management</h2>
+                    <p>Flexible content classification with suggested tags</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="categories" class="blueprint-section">
+            <h2>Categories & Subcategories</h2>
+            <button class="add-btn" id="add-category-btn">Add Category</button>
+            <div id="category-container">
+                <div class="loading">Loading categories...</div>
+            </div>
+        </section>
+
+        <section id="tags" class="blueprint-section">
+            <h2>Tag Management</h2>
+            <button class="add-btn" id="add-tag-btn">Add Tag</button>
+            <div id="tag-cloud" class="tag-cloud">
+                <div class="loading">Loading tags...</div>
+            </div>
+        </section>
+
+        <section id="features" class="blueprint-section">
+            <h2>Header & Hero Features</h2>
+            <button class="add-btn" id="add-feature-btn">Add Feature</button>
+            <ul id="feature-list" class="item-list"></ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Apprvideo Content Blueprint Manager © 2024</p>
+        </div>
+    </footer>
+
+
+    <script>
+
+// Initialize Supabase first
+const supabaseClient = supabase.createClient(
+    'https://vlvbodwrtblttvwnxkjx.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg'
+);
+
+// Event System
+class EventEmitter {
+    constructor() {
+        this.events = {};
+    }
+
+    on(event, callback) {
+        if (!this.events[event]) {
+            this.events[event] = [];
+        }
+        this.events[event].push(callback);
+    }
+
+    emit(event, data) {
+        if (this.events[event]) {
+            this.events[event].forEach(callback => callback(data));
+        }
+    }
+}
+
+// Blueprint Store
+class BlueprintStore extends EventEmitter {
+    constructor() {
+        super();
+        this.supabase = supabaseClient;
+        this.categories = [];
+        this.subcategories = [];
+        this.tags = [];
+        this.isLoading = false;
+        this.error = null;
+    }
+
+    async loadInitialData() {
+        try {
+            this.isLoading = true;
+            this.emit('loading', true);
+            
+            // Load categories with their subcategories
+            const { data: categories, error: catError } = await this.supabase
+                .from('categories')
+                .select(`
+                    id,
+                    name,
+                    slug,
+                    icon_class,
+                    description,
+                    subcategories (
+                        id,
+                        name,
+                        slug,
+                        description
+                    )
+                `);
+
+            if (catError) throw catError;
+            console.log('Categories loaded:', categories);
+            this.categories = categories || [];
+
+            // Load tags
+            const { data: tags, error: tagError } = await this.supabase
+                .from('tags')
+                .select('*')
+                .order('name');
+
+            if (tagError) throw tagError;
+            console.log('Tags loaded:', tags);
+            this.tags = tags || [];
+
+            this.emit('dataLoaded', { categories: this.categories, tags: this.tags });
+        } catch (error) {
+            console.error('Error loading data:', error);
+            this.error = error.message;
+            this.emit('error', error.message);
+        } finally {
+            this.isLoading = false;
+            this.emit('loading', false);
+        }
+    }
+
+    async addCategory(categoryData) {
+        try {
+            const { data, error } = await this.supabase
+                .from('categories')
+                .insert([{
+                    name: categoryData.name,
+                    slug: categoryData.name.toLowerCase().replace(/\s+/g, '-'),
+                    description: categoryData.description || null,
+                    icon_class: categoryData.icon_class || null
+                }])
+                .select();
+
+            if (error) throw error;
+            await this.loadInitialData();
+            this.emit('categoryAdded', data);
+            return data;
+        } catch (error) {
+            console.error('Error adding category:', error);
+            this.emit('error', error.message);
+            throw error;
+        }
+    }
+
+    async deleteCategory(categoryId) {
+        try {
+            // First delete all subcategories
+            await this.supabase
+                .from('subcategories')
+                .delete()
+                .eq('category_id', categoryId);
+
+            // Then delete the category
+            const { error } = await this.supabase
+                .from('categories')
+                .delete()
+                .eq('id', categoryId);
+
+            if (error) throw error;
+            await this.loadInitialData();
+            this.emit('categoryDeleted', categoryId);
+        } catch (error) {
+            console.error('Error deleting category:', error);
+            this.emit('error', error.message);
+            throw error;
+        }
+    }
+
+    async addSubcategory(categoryId, subcategoryData) {
+        try {
+            const { data, error } = await this.supabase
+                .from('subcategories')
+                .insert([{
+                    category_id: categoryId,
+                    name: subcategoryData.name,
+                    slug: subcategoryData.name.toLowerCase().replace(/\s+/g, '-'),
+                    description: subcategoryData.description || null
+                }])
+                .select();
+
+            if (error) throw error;
+            await this.loadInitialData();
+            this.emit('subcategoryAdded', data);
+            return data;
+        } catch (error) {
+            console.error('Error adding subcategory:', error);
+            this.emit('error', error.message);
+            throw error;
+        }
+    }
+}
+
+// Category Manager
+class CategoryManager {
+    constructor(store) {
+        this.store = store;
+        this.containerEl = document.getElementById('category-container');
+        this.bindEvents();
+        this.bindStoreEvents();
+    }
+
+    bindStoreEvents() {
+        this.store.on('loading', (isLoading) => {
+            if (isLoading) {
+                LoadingManager.show(this.containerEl);
+            } else {
+                LoadingManager.hide(this.containerEl);
+            }
+        });
+
+        this.store.on('error', (message) => {
+            LoadingManager.error(this.containerEl, message);
+        });
+
+        this.store.on('dataLoaded', () => {
+            this.render();
+        });
+    }
+
+    bindEvents() {
+        document.getElementById('add-category-btn').addEventListener('click', () => {
+            this.showAddCategoryModal();
+        });
+    }
+
+    showAddCategoryModal() {
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h2>Add Category</h2>
+                <form id="category-form">
+                    <input type="text" name="name" placeholder="Category Name" required>
+                    <input type="text" name="icon_class" placeholder="Icon Class">
+                    <textarea name="description" placeholder="Description"></textarea>
+                    <button type="submit">Add Category</button>
+                    <button type="button" onclick="this.closest('.modal').remove()">Cancel</button>
+                </form>
+            </div>
+        `;
+
+        modal.querySelector('form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            try {
+                await this.store.addCategory({
+                    name: formData.get('name'),
+                    icon_class: formData.get('icon_class'),
+                    description: formData.get('description')
+                });
+                modal.remove();
+            } catch (error) {
+                alert('Error adding category: ' + error.message);
+            }
+        });
+
+        document.body.appendChild(modal);
+    }
+
+    render() {
+        if (this.store.error) {
+            this.containerEl.innerHTML = `<div class="error">${this.store.error}</div>`;
+            return;
+        }
+
+        this.containerEl.innerHTML = this.store.categories.map(category => `
+            <div class="category-item" data-id="${category.id}">
+                <div class="item">
+                    <strong>${category.name}</strong>
+                    <div class="category-icons">
+                        ${category.icon_class ? `<i class="${category.icon_class}"></i>` : ''}
+                    </div>
+                    <div class="category-actions">
+                        <button onclick="categoryManager.addSubcategory('${category.id}')">Add Sub</button>
+                        <button onclick="categoryManager.deleteCategory('${category.id}')" class="delete-btn">Delete</button>
+                    </div>
+                </div>
+                ${category.description ? `<p class="category-description">${category.description}</p>` : ''}
+                <ul class="subcategory-list">
+                    ${(category.subcategories || []).map(sub => `
+                        <li class="item">
+                            <span>${sub.name}</span>
+                            <button class="delete-btn" 
+                                    onclick="categoryManager.deleteSubcategory('${sub.id}')">
+                                Delete
+                            </button>
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+        `).join('');
+    }
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const store = new BlueprintStore();
+        window.categoryManager = new CategoryManager(store);
+        await store.loadInitialData();
+    } catch (error) {
+        console.error('Error initializing app:', error);
+        document.getElementById('category-container').innerHTML = 
+            `<div class="error">Error loading data: ${error.message}</div>`;
+    }
+});
+
+
+
+    </script>
+</body>
+</html>
