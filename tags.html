@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -9,51 +12,54 @@
 <!-- Add Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-
 <style>
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+}
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.video-thumbnail {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 8px;
+}
+.video-thumbnail img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+.video-thumbnail:hover img {
+    transform: scale(1.05);
+}
+.video-thumbnail::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 24px;
+}
     /* Animations */
     @keyframes slideIn {
         from { transform: translateY(-10px); opacity: 0; }
         to { transform: translateY(0); opacity: 1; }
-    }
-    
-    .category-item {
-        animation: slideIn 0.3s ease-out;
-        transition: all 0.3s ease;
-    }
-    
-    .category-item:hover {
-        transform: translateY(-2px);
-    }
-    
-    .category-icon {
-        transition: all 0.3s ease;
-    }
-    
-    .category-item:hover .category-icon {
-        transform: scale(1.1);
-    }
-    
-    /* Custom Scrollbar */
-    .subcategories {
-        max-height: 200px;
-        overflow-y: auto;
-        scrollbar-width: thin;
-        scrollbar-color: #9CA3AF transparent;
-    }
-    
-    .subcategories::-webkit-scrollbar {
-        width: 6px;
-    }
-    
-    .subcategories::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    
-    .subcategories::-webkit-scrollbar-thumb {
-        background-color: #9CA3AF;
-        border-radius: 3px;
     }
     
     /* Button Styles */
@@ -292,29 +298,6 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        .category-item {
-            background: white;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .subcategory-list {
-            margin-top: 1rem;
-            padding-left: 1.5rem;
-        }
-
-        .subcategory-list .item {
-            background: #f9fafb;
-            padding: 0.75rem;
-            border-radius: 0.375rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
         .delete-btn {
             background: #ef4444;
             color: white;
@@ -406,62 +389,62 @@
     </div>
 </header>
 
-<!-- Main Content Section -->
-<main class="container mx-auto px-4 py-8">
-    <!-- Hero Section -->
-    <section class="hero mb-12">
-        <div class="carousel bg-white rounded-lg shadow-lg p-6">
-            <div class="carousel-item active">
-                <h2 class="text-2xl font-bold mb-2">Taxonomy</h2>
-                <p class="text-gray-600">Organize your sustainability and appropriate technology content</p>       
-                          <!-- Navigation Links -->
-                          <div class="hidden md:flex space-x-8">
-                            <a href="#categories" class="text-gray-600 hover:text-green-500 px-3 py-2">Categories</a>
-                            <a href="#tags" class="text-gray-600 hover:text-green-500 px-3 py-2">Tags</a>
-                            <a href="#features" class="text-gray-600 hover:text-green-500 px-3 py-2">Features</a>
-                        </div>
-            </div>
-        </div>
-    </section>
+<!-- Content Area -->
+<main class="container mx-auto px-4 py-8 max-w-7xl">
+    <!-- Welcome Section -->
+    <div class="bg-white rounded-lg shadow-lg mb-8 p-6 border-l-4 border-green-500"> TAGS
+    </div>
 
-    <!-- Categories Section -->
-    <section id="categories" class="blueprint-section mb-12">
-        <h2 class="text-2xl font-bold mb-4">Categories & Subcategories</h2>
-        <button class="add-btn bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600" id="add-category-btn">
-            Add Category
-        </button>
-        <div id="category-container" class="mt-4">
-            <div class="loading">Loading categories...</div>
-        </div>
-    </section>
-
-    <!-- Tags Section -->
-    <section id="tags" class="blueprint-section mb-12">
-        <h2 class="text-2xl font-bold mb-4">Tag Management</h2>
-        <button class="add-btn bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600" id="add-tag-btn">
+<!-- Tags Section -->
+<div class="bg-white rounded-lg shadow-lg mb-8 p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">Tag Management</h2>
+        <button id="add-tag-btn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
             Add Tag
         </button>
-        <div id="tag-cloud" class="tag-cloud mt-4">
-            <div class="loading">Loading tags...</div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="blueprint-section">
-        <h2 class="text-2xl font-bold mb-4">Header & Hero Features</h2>
-        <button class="add-btn bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600" id="add-feature-btn">
-            Add Feature
-        </button>
-        <ul id="feature-list" class="item-list mt-4"></ul>
-    </section>
+    </div>
+    <div id="tag-cloud" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Tags will be rendered here -->
+    </div>
+</div>
 </main>
 
+<!-- Modal Template -->
+<div class="modal-template hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+        <div class="p-6">
+            <h3 class="text-xl font-bold mb-4">Add Category</h3>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                    <input type="text" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"/>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Icon Class</label>
+                    <input type="text" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"/>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <textarea class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" rows="3"></textarea>
+                </div>
+                <div class="flex justify-end gap-3">
+                    <button type="button" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 
 
-        <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+import { categoryManager } from './CategoryManager.js';
 const supabaseUrl = 'https://vlvbodwrtblttvwnxkjx.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
@@ -489,57 +472,57 @@ class EventEmitter {
 
 // 2 Loading Manager Class
 class LoadingManager {
-    static show(container) {
-        // Clear existing content
-        container.innerHTML = `
-            <div class="loading">
-                Loading...
+    static show(containerEl) {
+        if (!containerEl) return;
+        
+        containerEl.innerHTML = `
+            <div class="flex items-center justify-center p-8">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
+                <span class="ml-3 text-gray-600">Loading...</span>
             </div>
         `;
     }
 
-    static hide(container) {
-        // Remove loading indicator if it exists
-        const loadingEl = container.querySelector('.loading');
+    static hide(containerEl) {
+        if (!containerEl) return;
+        
+        const loadingEl = containerEl.querySelector('[role="status"]');
         if (loadingEl) {
             loadingEl.remove();
         }
     }
 
-    static error(container, message) {
-        container.innerHTML = `
-            <div class="error">
-                ${message}
-                <button onclick="location.reload()" class="retry-btn">
-                    Retry
-                </button>
-            </div>
-        `;
-    }
-
-    static progress(container, percentage) {
-        container.innerHTML = `
-            <div class="loading">
-                Loading... ${percentage}%
-                <div class="progress-bar">
-                    <div class="progress" style="width: ${percentage}%"></div>
+    static error(containerEl, message) {
+        if (!containerEl) return;
+        
+        containerEl.innerHTML = `
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-red-700">${message}</p>
+                    </div>
+                    <button onclick="location.reload()" 
+                            class="ml-auto bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md text-sm">
+                        Retry
+                    </button>
                 </div>
             </div>
         `;
     }
 }
 
-
+ 
 // 3 Blueprint Store Class
-
-
-// Blueprint Store
 class BlueprintStore extends EventEmitter {
     constructor() {
         super();
         this.supabase = supabase;
-        this.categories = [];
-        this.subcategories = [];
         this.tags = [];
         this.isLoading = false;
         this.error = null;
@@ -550,27 +533,6 @@ class BlueprintStore extends EventEmitter {
             this.isLoading = true;
             this.emit('loading', true);
             
-            // Load categories with their subcategories
-            const { data: categories, error: catError } = await this.supabase
-                .from('categories')
-                .select(`
-                    id,
-                    name,
-                    slug,
-                    icon_class,
-                    description,
-                    subcategories (
-                        id,
-                        name,
-                        slug,
-                        description
-                    )
-                `);
-
-            if (catError) throw catError;
-            console.log('Categories loaded:', categories);
-            this.categories = categories || [];
-
             // Load tags
             const { data: tags, error: tagError } = await this.supabase
                 .from('tags')
@@ -581,7 +543,7 @@ class BlueprintStore extends EventEmitter {
             console.log('Tags loaded:', tags);
             this.tags = tags || [];
 
-            this.emit('dataLoaded', { categories: this.categories, tags: this.tags });
+            this.emit('dataLoaded', { tags: this.tags });
         } catch (error) {
             console.error('Error loading data:', error);
             this.error = error.message;
@@ -592,98 +554,35 @@ class BlueprintStore extends EventEmitter {
         }
     }
 
-    async addCategory(categoryData) {
-        try {
-            const { data, error } = await this.supabase
-                .from('categories')
-                .insert([{
-                    name: categoryData.name,
-                    slug: categoryData.name.toLowerCase().replace(/\s+/g, '-'),
-                    description: categoryData.description || null,
-                    icon_class: categoryData.icon_class || null
-                }])
-                .select();
 
-            if (error) throw error;
-            await this.loadInitialData();
-            this.emit('categoryAdded', data);
-            return data;
-        } catch (error) {
-            console.error('Error adding category:', error);
-            this.emit('error', error.message);
-            throw error;
-        }
+ // In BlueprintStore class
+ 
+
+// In BlueprintStore class
+async addTag(tagData) {
+    try {
+        const { data, error } = await this.supabase
+            .from('tags')
+            .insert([{
+                name: tagData.name,
+                // Add slug generation
+                slug: tagData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+                color: tagData.color || null,
+                description: tagData.description || null
+            }])
+            .select();
+
+        if (error) throw error;
+        await this.loadInitialData();
+        this.emit('tagAdded', data);
+        return data;
+    } catch (error) {
+        console.error('Error adding tag:', error);
+        this.emit('error', error.message);
+        throw error;
     }
+}
 
-    async deleteCategory(categoryId) {
-        try {
-            // First delete all subcategories
-            await this.supabase
-                .from('subcategories')
-                .delete()
-                .eq('category_id', categoryId);
-
-            // Then delete the category
-            const { error } = await this.supabase
-                .from('categories')
-                .delete()
-                .eq('id', categoryId);
-
-            if (error) throw error;
-            await this.loadInitialData();
-            this.emit('categoryDeleted', categoryId);
-        } catch (error) {
-            console.error('Error deleting category:', error);
-            this.emit('error', error.message);
-            throw error;
-        }
-    }
-
-    async addSubcategory(categoryId, subcategoryData) {
-        try {
-            const { data, error } = await this.supabase
-                .from('subcategories')
-                .insert([{
-                    category_id: categoryId,
-                    name: subcategoryData.name,
-                    slug: subcategoryData.name.toLowerCase().replace(/\s+/g, '-'),
-                    description: subcategoryData.description || null
-                }])
-                .select();
-
-            if (error) throw error;
-            await this.loadInitialData();
-            this.emit('subcategoryAdded', data);
-            return data;
-        } catch (error) {
-            console.error('Error adding subcategory:', error);
-            this.emit('error', error.message);
-            throw error;
-        }
-    }
-
-    // Add this method
-    async addTag(tagData) {
-        try {
-            const { data, error } = await this.supabase
-                .from('tags')
-                .insert([{
-                    name: tagData.name,
-                    color: tagData.color || null,
-                    description: tagData.description || null
-                }])
-                .select();
-
-            if (error) throw error;
-            await this.loadInitialData();
-            this.emit('tagAdded', data);
-            return data;
-        } catch (error) {
-            console.error('Error adding tag:', error);
-            this.emit('error', error.message);
-            throw error;
-        }
-    }
  
     // Add this method
     async deleteTag(tagId) {
@@ -855,186 +754,109 @@ class TagManager {
     }
 }
 
- 
 
 
-class CategoryManager {
-    constructor(store) {
-        this.store = store;
-        this.containerEl = document.getElementById('category-container');
-        this.bindEvents();
-        this.bindStoreEvents();
+class VideoManager {
+    static getVideoThumbnail(videoId) {
+        return `https://www.youtube-nocookie.com/vi/${videoId}/maxresdefault.jpg`;
     }
 
-    bindStoreEvents() {
-        this.store.on('loading', (isLoading) => {
-            if (isLoading) {
-                LoadingManager.show(this.containerEl);
-            } else {
-                LoadingManager.hide(this.containerEl);
-            }
-        });
-
-        this.store.on('error', (message) => {
-            LoadingManager.error(this.containerEl, message);
-        });
-
-        this.store.on('dataLoaded', () => {
-            this.render();
-        });
-    }
-
-    bindEvents() {
-        document.getElementById('add-category-btn').addEventListener('click', () => {
-            this.showAddCategoryModal();
-        });
-    }
-
-    showAddCategoryModal() {
-        const modal = document.createElement('div');
-        modal.className = 'modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h2>Add Category</h2>
-                <form id="category-form">
-                    <input type="text" name="name" placeholder="Category Name" required>
-                    <input type="text" name="icon_class" placeholder="Icon Class">
-                    <textarea name="description" placeholder="Description"></textarea>
-                    <button type="submit">Add Category</button>
-                    <button type="button" onclick="this.closest('.modal').remove()">Cancel</button>
-                </form>
+    static embedVideo(videoId) {
+        return `
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube-nocookie.com/embed/${videoId}"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                ></iframe>
             </div>
         `;
-
-        modal.querySelector('form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            try {
-                await this.store.addCategory({
-                    name: formData.get('name'),
-                    icon_class: formData.get('icon_class'),
-                    description: formData.get('description')
-                });
-                modal.remove();
-            } catch (error) {
-                alert('Error adding category: ' + error.message);
-            }
-        });
-
-        document.body.appendChild(modal);
-    }
-
-    async addSubcategory(categoryId) {
-        const modal = document.createElement('div');
-        modal.className = 'modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h2>Add Subcategory</h2>
-                <form id="subcategory-form">
-                    <input type="text" name="name" placeholder="Subcategory Name" required>
-                    <textarea name="description" placeholder="Description"></textarea>
-                    <button type="submit">Add Subcategory</button>
-                    <button type="button" onclick="this.closest('.modal').remove()">Cancel</button>
-                </form>
-            </div>
-        `;
-
-        modal.querySelector('form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            try {
-                await this.store.addSubcategory(categoryId, {
-                    name: formData.get('name'),
-                    description: formData.get('description')
-                });
-                modal.remove();
-            } catch (error) {
-                alert('Error adding subcategory: ' + error.message);
-            }
-        });
-
-        document.body.appendChild(modal);
-    }
-
-    async deleteCategory(categoryId) {
-        if (confirm('Are you sure you want to delete this category? This will also delete all subcategories.')) {
-            try {
-                await this.store.deleteCategory(categoryId);
-            } catch (error) {
-                alert('Error deleting category: ' + error.message);
-            }
-        }
-    }
-
-    async deleteSubcategory(subcategoryId) {
-        if (confirm('Are you sure you want to delete this subcategory?')) {
-            try {
-                const { error } = await this.store.supabase
-                    .from('subcategories')
-                    .delete()
-                    .eq('id', subcategoryId);
-                
-                if (error) throw error;
-                await this.store.loadInitialData();
-            } catch (error) {
-                alert('Error deleting subcategory: ' + error.message);
-            }
-        }
-    }
-
-    render() {
-        if (this.store.error) {
-            this.containerEl.innerHTML = `<div class="error">${this.store.error}</div>`;
-            return;
-        }
-
-        this.containerEl.innerHTML = this.store.categories.map(category => `
-            <div class="category-item" data-id="${category.id}">
-                <div class="item">
-                    <div class="category-icons">
-                        
-                        ${category.icon_class ? `<i 
-                        class="${category.icon_class}"></i><strong>${category.name}</strong>` : ''}
-                    </div>
-                    <div class="category-actions indent">
-                        <button class="border-1" onclick="categoryManager.addSubcategory('${category.id}')">Add Sub</button>
-                        <button onclick="categoryManager.deleteCategory('${category.id}')" class="delete-btn">Delete</button>
-                    </div>
-                </div>
-                ${category.description ? `<p class="category-description">${category.description}</p>` : ''}
-                <ul class="subcategory-list">
-                    ${(category.subcategories || []).map(sub => `
-                        <li class="item">
-                            <span>${sub.name}</span>
-                            <button class="delete-btn" 
-                                    onclick="categoryManager.deleteSubcategory('${sub.id}')">
-                                Delete
-                            </button>
-                        </li>
-                    `).join('')}
-                </ul>
-            </div>
-        `).join('');
     }
 }
 
 
 
 
+// 4. Update your video embedding code
+function embedVideo(videoId) {
+    return `
+        <div class="video-container">
+            <iframe 
+                src="https://www.youtube-nocookie.com/embed/${videoId}"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+            ></iframe>
+        </div>
+    `;
+}
+ 
+
+
+
+
+ 
+
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const store = new BlueprintStore();
-        window.categoryManager = new CategoryManager(store);
-        window.tagManager = new TagManager(store);  // Add this line
+        window.categoryManager = new categoryManager(store);
+        window.tagManager = new TagManager(store);
+        // Load data after managers are initialized
         await store.loadInitialData();
     } catch (error) {
         console.error('Error initializing app:', error);
-        document.getElementById('category-container').innerHTML = 
-            `<div class="error">Error loading data: ${error.message}</div>`;
+        const container = document.getElementById('category-container');
+        if (container) {
+            container.innerHTML = `
+                <div class="bg-red-50 border-l-4 border-red-500 p-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-red-700">
+                                Error loading data: ${error.message}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
     }
+
+    // Ensure categoryManager is ready
+    const addSubButtons = document.querySelectorAll('.add-sub-btn'); // Query all "Add Sub" buttons
+
+    addSubButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            if (window.categoryManager) {
+                // Retrieve the categoryId from the button's data attribute or a parent element
+                const categoryId = button.dataset.categoryId || button.closest('.category-item')?.dataset.categoryId;
+
+                if (categoryId) {
+                    console.log(`Adding subcategory to category ID: ${categoryId}`);
+                    window.categoryManager.addSubcategory(categoryId);
+                } else {
+                    console.error('No category ID found for the button clicked.');
+                }
+            } else {
+                console.error('categoryManager is not initialized yet.');
+            }
+        });
+    });
+
+
+
+
 });
 
 
     </script>
 </body>
 </html>
+

@@ -457,3 +457,364 @@ body {
 .dark-mode #searchInput::placeholder {
   color: #9ca3af;
 }
+
+
+
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+}
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.video-thumbnail {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 8px;
+}
+.video-thumbnail img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+.video-thumbnail:hover img {
+    transform: scale(1.05);
+}
+.video-thumbnail::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 24px;
+}
+    /* Animations */
+    @keyframes slideIn {
+        from { transform: translateY(-10px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .category-item {
+        animation: slideIn 0.3s ease-out;
+        transition: all 0.3s ease;
+    }
+    
+    .category-item:hover {
+        transform: translateY(-2px);
+    }
+    
+    .category-icon {
+        transition: all 0.3s ease;
+    }
+    
+    .category-item:hover .category-icon {
+        transform: scale(1.1);
+    }
+    
+    /* Custom Scrollbar */
+    .subcategories {
+        max-height: 200px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #9CA3AF transparent;
+    }
+    
+    .subcategories::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .subcategories::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    .subcategories::-webkit-scrollbar-thumb {
+        background-color: #9CA3AF;
+        border-radius: 3px;
+    }
+    
+    /* Button Styles */
+    .action-button {
+        transition: all 0.2s ease;
+    }
+    
+    .action-button:hover {
+        transform: scale(1.05);
+    }
+    
+    .action-button:active {
+        transform: scale(0.95);
+    }
+    
+    /* Tag Styles */
+    .tag-item {
+        transition: all 0.3s ease;
+    }
+    
+    .tag-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+         
+
+    .tag-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+        padding: 1rem 0;
+    }
+    
+    .tag-item {
+        background: white;
+        padding: 1rem;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    
+    .tag-content {
+        flex: 1;
+    }
+    
+    .tag-name {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+    
+    .tag-description {
+        font-size: 0.9rem;
+        color: #666;
+        margin: 0;
+    }
+    
+    
+            /* Add new styles for modals */
+            .modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+            }
+    
+            .modal-content {
+                background: white;
+                padding: 2rem;
+                border-radius: 8px;
+                max-width: 500px;
+                width: 90%;
+            }
+    
+            .modal form {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+    
+            .modal input,
+            .modal textarea {
+                padding: 0.5rem;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+    
+            /* Loading state */
+            .loading {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 2rem;
+                color: #666;
+            }
+    
+            .loading::after {
+                content: '';
+                width: 1.5rem;
+                height: 1.5rem;
+                border: 2px solid #3498db;
+                border-radius: 50%;
+                border-top-color: transparent;
+                animation: spin 1s linear infinite;
+                margin-left: 0.5rem;
+            }
+    
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+    
+            /* Error state */
+            .error {
+                background: #fee;
+                color: #e74c3c;
+                padding: 1rem;
+                border-radius: 4px;
+                margin-bottom: 1rem;
+ 
+
+.tag-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.tag-item {
+    background: white;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.tag-content {
+    flex: 1;
+}
+
+.tag-name {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.tag-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+}
+
+
+        /* Add new styles for modals */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .modal input,
+        .modal textarea {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* Loading state */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .loading::after {
+            content: '';
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid #3498db;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error state */
+        .error {
+            background: #fee;
+            color: #e74c3c;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+                
+        /* Additional Styles */
+        .blueprint-section {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .category-item {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .subcategory-list {
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .subcategory-list .item {
+            background: #f9fafb;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+        }

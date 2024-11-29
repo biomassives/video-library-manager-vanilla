@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+  <title>ApproVideo Video Portal Manager 🎥🎥🎥</title>
+  
+  <link href="style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Add these styles to your HTML head or in a style tag */
+    .profile-dropdown {
+      transform: scale(0.95);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease-in-out;
+      background-color: white;
+    }
+
+    .profile-dropdown.dropdown-active {
+      transform: scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .profile-dropdown.dropdown-inactive {
+      transform: scale(0.95);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .profile-dropdown a {
+      transition: all 0.2s ease-in-out;
+    }
+
+    .profile-dropdown a:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .hero-carousel {
+      max-width: 90%;
+      margin: auto;
+      padding: 2rem 0;
+    }
+
+    .multi-panel-carousel {
+      max-width: 90%;
+      margin: auto;
+      padding: 2rem 0;
+      background-color: #f9fafb;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .multi-panel-slide {
+      min-width: 100%;
+      transition: transform 0.5s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem;
+      position: relative;
+    }
+
+    .multi-panel-slide::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.05);
+      z-index: 1;
+    }
+
+    .multi-panel-text {
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      color: #1f2937;
+    }
+
+    .multi-panel-text h2 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .multi-panel-text p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .multi-panel-text i {
+      font-size: 10rem;
+      position: absolute;
+      color: rgba(74, 144, 226, 0.1);
+      z-index: 0;
+    }
+
+    .carousel-buttons {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+    }
+
+    .carousel-button {
+      background-color: rgba(255, 255, 255, 0.7);
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 50%;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    body.dark-mode {
+      background-color: #1a202c;
+      color: white;
+    }
+
+    body.dark-mode .multi-panel-slide {
+      background-color: #2d3748;
+    }
+
+    body.dark-mode .multi-panel-text {
+      color: white;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100">
+  <div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm">
+    🎥 Welcome to ApproVideo - DIY Solutions Video Portal 🎥
+  </div>
+
+  <div class="container mx-auto p-4">
+    <!-- Enhanced Navigation Bar -->
+    <nav class="bg-white shadow-lg rounded-lg mb-8 transition-colors duration-300" id="mainNav">
+      <!-- Navigation Code as provided earlier -->
+    </nav>
+
+    <!-- Multi-Panel Carousel Section -->
+    <div class="multi-panel-carousel" id="multiPanelCarousel">
+      <div class="multi-panel-slide">
+        <div class="multi-panel-text">
+          <i class="fas fa-leaf"></i>
+          <h2>Welcome to ApproVideo</h2>
+          <p>Explore DIY projects on sustainability, renewable energy, and more.</p>
+        </div>
+      </div>
+      <div class="multi-panel-slide">
+        <div class="multi-panel-text">
+          <i class="fas fa-tint"></i>
+          <h2>Water Management Projects</h2>
+          <p>Learn about rainwater harvesting and greywater recycling with our guides.</p>
+        </div>
+      </div>
+      <div class="multi-panel-slide">
+        <div class="multi-panel-text">
+          <i class="fas fa-solar-panel"></i>
+          <h2>Renewable Energy Solutions</h2>
+          <p>Build your own solar or wind power systems with easy instructions.</p>
+        </div>
+      </div>
+      <div class="multi-panel-slide">
+        <div class="multi-panel-text">
+          <i class="fas fa-seedling"></i>
+          <h2>Natural Health & Wellness</h2>
+          <p>Discover natural remedies and sustainable health solutions.</p>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-buttons">
+      <button class="carousel-button" id="prevButton">&#8249;</button>
+      <button class="carousel-button" id="nextButton">&#8250;</button>
+    </div>
+
+    <!-- Hero Section with YouTube Carousel -->
+    <div class="hero-carousel" id="heroCarousel">
+      <!-- Dummy YouTube Embedded Videos -->
+      <div class="w-full">
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="w-full">
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/3JZ_D3ELwOQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="w-full">
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/L_jWHffIx5E" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <!-- Sorting and Filtering Controls -->
+    <div class="mb-6 space-y-2">
+      <!-- Sorting and Filtering Controls as provided earlier -->
+    </div>
+
+    <!-- Video Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="videoGrid"></div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    // JavaScript as provided earlier
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // Existing JavaScript for multi-panel carousel
+      const multiPanelCarousel = document.getElementById('multiPanelCarousel');
+      const slides = document.querySelectorAll('.multi-panel-slide');
+      let currentIndex = 0;
+
+      function updateCarousel() {
+        const offset = -currentIndex * 100;
+        slides.forEach((slide, index) => {
+          slide.style.transform = `translateX(${offset}%)`;
+        });
+      }
+
+      document.getElementById('prevButton').addEventListener('click', function () {
+        currentIndex = (currentIndex === 0) ? slides.length - 1 : currentIndex - 1;
+        updateCarousel();
+      });
+
+      document.getElementById('nextButton').addEventListener('click', function () {
+        currentIndex = (currentIndex === slides.length - 1) ? 0 : currentIndex + 1;
+        updateCarousel();
+      });
+
+      // Auto-slide every 3 seconds
+      setInterval(function () {
+        currentIndex = (currentIndex === slides.length - 1) ? 0 : currentIndex + 1;
+        updateCarousel();
+      }, 3000);
+
+      // Night/Day mode toggle
+      const toggleNightDayMode = () => {
+        document.body.classList.toggle('dark-mode');
+      };
+
+      // Example trigger for the night/day toggle (can be replaced with a button or other UI element)
+      document.body.addEventListener('dblclick', toggleNightDayMode);
+    });
+  </script>
+</body>
+</html>
+

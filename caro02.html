@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <title>Appro🎞Video Portal</title>
+  <style>
+    /* Loading spinner styles */
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 4px solid #3498db;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Custom animations for the hero section */
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: scale(0.95); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .carousel-item.active {
+      animation: fadeIn 1.5s ease-in-out;
+    }
+  </style>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.0/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+  <div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm">
+    🎞 Welcome to ApproVideo - Your Sustainable Video Management Portal
+  </div>
+  <div class="container mx-auto p-4">
+    <nav class="bg-white shadow-lg rounded-lg mb-8">
+      <div class="flex items-center justify-between px-4">
+        <a href="index.html" class="flex items-center space-x-3">
+          <svg class="h-8 w-8 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25" />
+          </svg>
+          <span class="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">ApproVideo</span>
+        </a>
+        <div class="flex space-x-4">
+          <a href="feed-config.html" class="text-gray-600 hover:text-green-500">Feed Settings</a>
+          <a href="newcreate1.html" class="text-gray-600 hover:text-green-500">New Video</a>
+        </div>
+      </div>
+    </nav>
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">Video Library</h1>
+      <p class="text-gray-600">Manage and organize your sustainable video content</p>
+    </div>
+
+    <!-- Hero Carousel -->
+    <div id="hero-carousel" class="relative bg-black text-white h-96 mb-8 overflow-hidden">
+      <div class="carousel-item active flex flex-col justify-center items-center h-full text-center bg-cover bg-center"
+           style="background-image: url('https://via.placeholder.com/800x400?text=1');">
+        <h2 class="text-3xl font-bold">Category 1: Renewable Energy</h2>
+        <p class="mt-2 text-lg">"Affordable and Clean Energy" - How can we ensure access to affordable, reliable, sustainable energy for all?</p>
+      </div>
+      <div class="carousel-item flex flex-col justify-center items-center h-full text-center bg-cover bg-center"
+           style="background-image: url('https://via.placeholder.com/800x400?text=2');">
+        <h2 class="text-3xl font-bold">Category 2: Water Management</h2>
+        <p class="mt-2 text-lg">"Clean Water and Sanitation" - What can we do to provide clean water and sanitation for everyone?</p>
+      </div>
+      <div class="carousel-item flex flex-col justify-center items-center h-full text-center bg-cover bg-center"
+           style="background-image: url('https://via.placeholder.com/800x400?text=3');">
+        <h2 class="text-3xl font-bold">Category 3: Waste Management</h2>
+        <p class="mt-2 text-lg">"Responsible Consumption and Production" - How can we minimize waste and promote sustainable consumption?</p>
+      </div>
+      <div class="carousel-item flex flex-col justify-center items-center h-full text-center bg-cover bg-center"
+           style="background-image: url('https://via.placeholder.com/800x400?text=4');">
+        <h2 class="text-3xl font-bold">Category 4: Sustainable Agriculture</h2>
+        <p class="mt-2 text-lg">"Zero Hunger" - How can we end hunger and promote sustainable food production systems?</p>
+      </div>
+      <div class="carousel-item flex flex-col justify-center items-center h-full text-center bg-cover bg-center"
+           style="background-image: url('https://via.placeholder.com/800x400?text=5');">
+        <h2 class="text-3xl font-bold">Category 5: Climate Action</h2>
+        <p class="mt-2 text-lg">"Climate Action" - What actions can we take today to combat climate change and its impacts?</p>
+      </div>
+      <div class="carousel-item flex flex-col justify-center items-center h-full text-center bg-cover bg-center"
+           style="background-image: url('https://via.placeholder.com/800x400?text=6');">
+        <h2 class="text-3xl font-bold">Join ApproVideo Community</h2>
+        <p class="mt-2 text-lg">"Learn, Share, Participate" - Join us in making sustainable solutions a reality. Share your stories, contribute ideas, and learn from others to drive impactful change.</p>
+        <a href="#" class="mt-4 inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full">Get Involved</a>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <button id="prev-btn" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white text-black p-3 rounded-full shadow-lg hover:bg-gray-200">&lt;</button>
+      <button id="next-btn" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white text-black p-3 rounded-full shadow-lg hover:bg-gray-200">&gt;</button>
+    </div>
+
+    <script>
+      let currentSlide = 0;
+      const slides = document.querySelectorAll('.carousel-item');
+      const totalSlides = slides.length;
+
+      function goToSlide(slideIndex) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (slideIndex + totalSlides) % totalSlides;
+        slides[currentSlide].classList.add('active');
+        animatePanels();
+      }
+
+      function animatePanels() {
+        const panelContent = slides[currentSlide].querySelectorAll('h2, p, a');
+        panelContent.forEach((panel, index) => {
+          panel.style.opacity = '0';
+          panel.style.transform = 'translateY(20px)';
+          setTimeout(() => {
+            panel.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            panel.style.opacity = '1';
+            panel.style.transform = 'translateY(0)';
+          }, index * 200);
+        });
+      }
+
+      document.getElementById('prev-btn').addEventListener('click', () => {
+        goToSlide(currentSlide - 1);
+      });
+
+      document.getElementById('next-btn').addEventListener('click', () => {
+        goToSlide(currentSlide + 1);
+      });
+
+      // Optional: Auto-Slide (Set to every 5 seconds)
+      setInterval(() => {
+        goToSlide(currentSlide + 1);
+      }, 5000);
+
+      // Initial animation on page load
+      document.addEventListener('DOMContentLoaded', () => {
+        animatePanels();
+      });
+    </script>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('Hero Carousel Loaded Successfully!');
+    });
+  </script>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="videoGrid"></div>
+  <div id="loader" class="loader hidden"></div> 
+  <div id="videoOverlay" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50">
+    <div class="relative bg-white rounded-lg shadow-lg mx-auto mt-20 max-w-2xl p-6 overflow-y-auto max-h-[80vh]"> 
+      <button id="closeOverlay" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+        <i class="fas fa-times"></i>
+      </button>
+      <div id="overlayContent"></div>
+    </div>
+  </div>
+</body>
+</html>
+
