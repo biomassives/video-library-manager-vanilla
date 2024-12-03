@@ -97,7 +97,7 @@
           </a>
 
 	
-	<a href="new.html" class="nav-link group flex items-center space-x-2 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-600">
+	<a href="/admin/new.html" class="nav-link group flex items-center space-x-2 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-600">
 	  <svg class="w-6 h-6 transform transition-all duration-300 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
 	    <circle cx="12" cy="12" r="10"></circle>
 	    <path d="M12 8v8"></path>
@@ -124,12 +124,10 @@
             <div id="profileDropdown"
             class="profile-dropdown dropdown-inactive absolute right-0 mt-2 w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
               <div class="py-1">
-                <a href="pending.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pending</a>
+                <a href="/admin/pending.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pending</a>
 		      
-                <a href="homepage.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">DB Content</a>
-                <a href="panels.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Panels</a>
-                <a href="taxonomy.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Categories</a>
-                <a href="tags.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Tags</a>
+                <a href="/index.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Live site</a>
+                <a href="/admin/taxonomy.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Categories</a>
 
                 <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
               </div>
@@ -608,7 +606,7 @@ if (localStorage.getItem('darkMode') === 'true') {
         
         if (storedId === videoId && forageId === videoId) {
           console.log('Storage verification successful, navigating to edit page');
-          window.location.href = `edit4.html?id=${videoId}`;
+          window.location.href = `/admin/edit4.html?id=${videoId}`;
         } else {
           throw new Error('Storage verification failed');
         }
