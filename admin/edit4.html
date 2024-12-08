@@ -254,7 +254,7 @@
 
 
             <div class="mb-4">
-                <label for="newCategory" class="block text-gray-700 text-sm font-bold mb-2">Category:</label>
+                <label for="newCategory" class="block text-gray-700 text-sm font-bold mb-2">Category: ( <a href="/admin/taxonommy.html">edit taxonomy</a>)</label>
                 <select id="newCategory" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                 <option value="none">Select a category</option>
                 ${Object.keys(categorySubcategories).map(category => `
@@ -463,7 +463,7 @@ function updateDarkMode() {
   // Update text colors
   const labels = document.querySelectorAll('label');
   labels.forEach(label => {
-    label.classList.toggle('text-gray-200', isDarkMode);
+    label.classList.toggle('text-yellow-950', isDarkMode);
     label.classList.toggle('text-gray-700', !isDarkMode);
   });
 

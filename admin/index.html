@@ -498,8 +498,6 @@ async function initializeApp() {
   }
 }
 
-
-
     // Profile dropdown functionality
     let isProfileOpen = false;
     const profileButton = document.getElementById('profileButton');
@@ -521,10 +519,10 @@ async function initializeApp() {
     });
 
 	
-    // Consolidated dark mode functionality
-    const darkModeToggle = document.getElementById('darkModeToggle');
-const body = document.body;
-let isDarkMode = false;
+// Consolidated dark mode functionality
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  const body = document.body;
+  let isDarkMode = false;
 
 function updateDarkMode() {
   isDarkMode = body.classList.contains('dark-mode');
@@ -560,9 +558,6 @@ function updateDarkMode() {
   inputs.forEach(input => {
     input.classList.toggle('dark-input', isDarkMode);
   });
-
-
-
 
   // Update text colors
   const labels = document.querySelectorAll('label');
@@ -622,7 +617,7 @@ if (localStorage.getItem('darkMode') === 'true') {
       try {
         localStorage.setItem('deleteVideoId', videoId);
         await localforage.setItem('deleteVideoId', videoId);
-        window.location.href = 'delete1.html';
+        window.location.href = '/admin/delete1.html';
       } catch (error) {
         console.error('Error:', error);
         alert('Error preparing to delete. Please try again.');
