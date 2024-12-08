@@ -27,11 +27,12 @@
 
         <!-- Navigation Items -->
         <div class="flex items-center space-x-4">
-          <a href="index.html" class="text-gray-300 hover:text-green-500 px-3 py-2">Home</a>
+          <a href="index.html" class="text-white-300 hover:text-green-500 px-3 py-2">Home</a>
           
           <!-- Theme Toggle -->
           <button id="darkModeToggle" class="p-2 rounded-lg hover:bg-gray-700/50 text-gray-300">
-            <i class="fas fa-sun text-yellow-500 dark:hidden"></i>
+            <i class="fas fa-sun text-yellow-500 dark:hidden">About Approvideo</i>
+            <i class="fas fa-sun text-yellow-500 dark:hidden">Support Approvideo</i>
             <i class="fas fa-moon text-blue-400 hidden dark:inline"></i>
           </button>
 
@@ -42,7 +43,7 @@
             </button>
             <div id="profileDropdown" class="profile-dropdown absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white dark:bg-gray-800">
               <div class="py-1">
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100 dark:hover:bg-gray-700">Profile</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Sign out</a>
               </div>
@@ -177,10 +178,6 @@
 
 
 
-
-
-
-
   <script>
     // Theme Toggle
     const darkModeToggle = document.getElementById('darkModeToggle');
@@ -274,6 +271,9 @@
         this.selectedCategory = null;
         this.searchQuery = '';
 
+        // Initialize slider counter
+        this.sliderCounter = 0;
+
         // Start initialization
         this.init();
       }
@@ -314,27 +314,15 @@
             });
         });
 
-
-   
-
         // Infinite scroll
         this.setupInfiniteScroll();
       }
 
-
-
-
-
-
-  resetAndReload() {
-    this.currentPage = 0;
-    this.hasMore = true;
-    this.loadVideos();
-  }
-
-
- 
-
+      resetAndReload() {
+	    this.currentPage = 0;
+	    this.hasMore = true;
+	    this.loadVideos();
+      }
       
       setupInfiniteScroll() {
         const observer = new IntersectionObserver(
@@ -381,11 +369,9 @@
           </div>
         `;
       }
-
-      
       
 
-      handleCategoryClick(button) {
+    handleCategoryClick(button) {
     // Get the category from the data attribute
     const newCategory = button.dataset.category;
     console.log('Clicking category:', newCategory);
@@ -430,6 +416,35 @@
     
     // Reset and reload videos
     this.resetAndReload();
+}
+
+
+
+async loadPanels(videoId) {
+  try {
+    const { data: panels, error } = await this.supabase
+      .from('panels')
+      .select('*')
+      .eq('video_id', videoId);
+
+    if (error) throw error;
+
+    const panelsContainer = document.getElementById(`panels-container-${videoId}`);
+    if (panelsContainer) {
+      // Check if panels exist before rendering
+      if (panels && panels.length > 0) {
+        panelsContainer.innerHTML = this.renderPanels(panels);
+        this.initializeSliders();
+      } else {
+        // If no panels, hide the accordion item
+        const accordionItem = document.getElementById(`panels-heading-${videoId}`).parentElement;
+        accordionItem.style.display = 'none';
+      }
+    }
+  } catch (error) {
+    console.error('Error loading panels:', error);
+    // Handle the error (e.g., display an error message)
+  }
 }
 
 // Update loadVideos to search across both title and category
@@ -494,6 +509,10 @@ async loadVideos() {
         } else {
           videoGrid.insertAdjacentHTML('beforeend', videoHTML);
         }
+
+        // Initialize sliders after rendering videos
+        this.initializeSliders();
+        this.initializeAccordions();
       }
 
 
@@ -510,54 +529,165 @@ async loadVideos() {
      }
 
 
-
-      createVideoCard(video) {
+     createVideoCard(video) {
         const safeVideo = this.safeHtml.escapeObject(video);
-        
         return `
           <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-            <div class="relative aspect-video">
+            <div class="relative aspect-video" id="video-container-${safeVideo.id}">
               <img 
-                src="https://img.youtube.com/vi/${safeVideo.youtubeId}/maxresdefault.jpg"
-                alt="${safeVideo.title}"
-                class="w-full h-full object-cover"
-                onerror="this.src='https://img.youtube.com/vi/${safeVideo.youtubeId}/0.jpg'"
+                src="https://img.youtube.com/vi/$${safeVideo.youtubeId}/maxresdefault.jpg" 
+                alt="${safeVideo.title}" 
+                class="w-full h-full object-cover" 
+                onerror="this.src='https://img.youtube.com/vi/$${safeVideo.youtubeId}/0.jpg'" 
               >
+              <button class="play-button absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" data-video-id="${safeVideo.youtubeId}">
+                <i class="fas fa-play text-white text-4xl"></i>
+              </button>
             </div>
-            
             <div class="p-4">
               <h3 class="text-lg font-semibold mb-2 line-clamp-2">${safeVideo.title}</h3>
               <p class="text-gray-600 text-sm mb-3 line-clamp-2">${safeVideo.description}</p>
-              
               <div class="flex items-center gap-2 mb-3">
                 <i class="fas ${this.getCategoryIcon(safeVideo.category)} text-gray-500"></i>
                 <span class="text-sm text-gray-600">${safeVideo.category || 'General'}</span>
               </div>
-              
-              ${this.renderPanels(safeVideo.panels)}
-              
+
+              <div class="accordion" id="accordion-${safeVideo.id}">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="panels-heading-${safeVideo.id}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panels-${safeVideo.id}" aria-expanded="false" aria-controls="panels-${safeVideo.id}">
+                      Panels
+                    </button>
+                  </h2>
+                  <div id="panels-${safeVideo.id}" class="accordion-collapse collapse" aria-labelledby="panels-heading-${safeVideo.id}" data-bs-parent="#accordion-${safeVideo.id}">
+                    <div class="accordion-body">
+                      <div id="panels-container-${safeVideo.id}"></div> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="flex flex-wrap gap-2 mt-3">
                 ${this.renderTags(safeVideo.tags)}
               </div>
             </div>
           </div>
         `;
-      }
+    }
 
-      renderPanels(panels) {
-        if (!panels || !panels.length) return '';
-        
-        return `
-          <div class="mt-4 space-y-2">
-            ${panels.map(panel => `
-              <div class="bg-gray-50 p-3 rounded-lg">
-                <h4 class="font-medium text-sm mb-1">${this.safeHtml.escape(panel.title)}</h4>
-                <p class="text-sm text-gray-600">${this.safeHtml.escape(panel.content)}</p>
-              </div>
-            `).join('')}
+  renderPanels(panels) {
+    if (!panels || !panels.length) return '';
+
+    // Initially show skeleton loader
+    let panelHTML = `
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        ${Array(panels.length).fill(this.createPanelSkeleton()).join('')}
+      </div>
+    `;
+
+    // Replace skeleton with actual panels when they load (simulated delay)
+    setTimeout(() => {
+      panelHTML = `
+        <div class="mt-4">
+          <div class="relative w-[380px] h-[200px] overflow-hidden">
+            <div class="slides flex transition-transform duration-500">
+              ${panels.map(panel => `
+                <div class="slide w-full flex-shrink-0 P-3">
+                  <div class="bg-gray-50 p-3 rounded-lg">
+                    <h4 class="font-medium text-grey-700 text-sm mb-1">${this.safeHtml.escape(panel.title)}</h4>
+                    <p class="text-sm text-gray-600">${this.safeHtml.escape(panel.content)}</p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+            <button class="prev absolute top-1/2 left-0 transform -translate-y-1/2 bg-white bg-opacity-75 p-2 rounded-full">◀</button>
+            <button class="next absolute top-1/2 right-0 transform -translate-y-1/2 bg-white bg-opacity-75 p-2 rounded-full">▶</button>
           </div>
-        `;
+        </div>
+      `;
+      const panelsContainer = document.getElementById(`panels-container-${panels[0].video_id}`);
+      if (panelsContainer) {
+        panelsContainer.innerHTML = panelHTML;
+        this.initializeSliders();
       }
+    }, 500);
+
+    return panelHTML;
+  }
+
+  createPanelSkeleton() {
+    return `
+      <div class="bg-gray-200 rounded-lg animate-pulse h-24"></div>
+    `;
+  }
+
+  initializeAccordions() {
+    const accordionButtons = document.querySelectorAll('.accordion-button');
+    accordionButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const accordionItem = button.closest('.accordion-item');
+        const accordionContent = accordionItem.querySelector('.accordion-collapse');
+
+        // Toggle the content visibility
+        accordionContent.classList.toggle('hidden');
+
+        // Update button state
+        button.classList.toggle('collapsed');
+        button.setAttribute('aria-expanded', button.classList.contains('collapsed') ? 'false' : 'true');
+
+        // Optional: Rotate the arrow icon (if you have one)
+        const icon = button.querySelector('.arrow-icon'); // Replace '.arrow-icon' with your icon's selector
+        if (icon) {
+          icon.classList.toggle('rotate-180');
+        }
+      });
+    });
+  }
+
+
+  initializeSliders() {
+
+    const sliders = document.querySelectorAll('.slides');
+    sliders.forEach(slidesContainer => {
+    const slider = slidesContainer.parentElement;
+    const slides = slidesContainer.querySelectorAll('.slide');
+    const prevButton = slider.querySelector('.prev');
+    const nextButton = slider.querySelector('.next');
+    let currentIndex = 0;
+
+
+    function updateSlider() {
+    slidesContainer.style.transform = 'translateX(' + (-currentIndex * 100) + '%)';
+    }
+
+
+    prevButton.addEventListener('click', () => {
+        if (currentIndex > 0) {
+
+          currentIndex--;
+          updateSlider();
+        }
+    });
+
+
+    nextButton.addEventListener('click', () => {
+
+      if (currentIndex < slides.length - 1) {
+
+      currentIndex++;
+
+      updateSlider();
+
+         }
+     });
+     
+    });
+
+    }
+
+
+
+
 
       renderTags(tags) {
         if (!tags) return '';
@@ -630,4 +760,3 @@ async loadVideos() {
 </footer>
 </body>
 </html>
-

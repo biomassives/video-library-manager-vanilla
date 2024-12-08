@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appro🎥video Video Portal Manager🎥</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9fafb;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        .btn-green {
+            background-color: #10b981;
+            color: white;
+        }
+        .btn-green:hover {
+            background-color: #059669;
+        }
+        .btn-red {
+            background-color: #ef4444;
+            color: white;
+        }
+        .btn-red:hover {
+            background-color: #dc2626;
+        }
+        .btn-blue {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .btn-blue:hover {
+            background-color: #2563eb;
+        }
+        .category-item {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .subcategory-item {
+            background: #f3f4f6;
+            padding: 0.5rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .category-controls, .subcategory-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+    
+                
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .video-thumbnail {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .video-thumbnail img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+        .video-thumbnail:hover img {
+            transform: scale(1.05);
+        }
+        .video-thumbnail::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 24px;
+        }
+            /* Animations */
+            @keyframes slideIn {
+                from { transform: translateY(-10px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            
+            .category-item {
+                animation: slideIn 0.3s ease-out;
+                transition: all 0.3s ease;
+            }
+            
+            .category-item:hover {
+                transform: translateY(-2px);
+            }
+            
+            .category-icon {
+                transition: all 0.3s ease;
+            }
+            
+            .category-item:hover .category-icon {
+                transform: scale(1.1);
+            }
+            
+            .subcategories {
+                max-height: 200px;
+                overflow-y: auto;
+                scrollbar-width: thin;
+                scrollbar-color: #9CA3AF transparent;
+            }
+            
+            .subcategories::-webkit-scrollbar {
+                width: 6px;
+            }
+            
+            .subcategories::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            
+            .subcategories::-webkit-scrollbar-thumb {
+                background-color: #9CA3AF;
+                border-radius: 3px;
+            }
+            
+            .action-button {
+                transition: all 0.2s ease;
+            }
+            
+            .action-button:hover {
+                transform: scale(1.05);
+            }
+            
+            .action-button:active {
+                transform: scale(0.95);
+            }
+            
+            .tag-item {
+                transition: all 0.3s ease;
+            }
+            
+            .tag-item:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+
+            .tag-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1rem;
+                padding: 1rem 0;
+            }
+            
+            .tag-item {
+                background: white;
+                padding: 1rem;
+                border-radius: 4px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+            
+            .tag-content {
+                flex: 1;
+            }
+            
+            .tag-name {
+                font-weight: 600;
+                display: block;
+                margin-bottom: 0.5rem;
+            }
+            
+            .tag-description {
+                font-size: 0.9rem;
+                color: #666;
+                margin: 0;
+            }
+            
+            .modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+            }
+    
+            .modal-content {
+                background: white;
+                padding: 2rem;
+                border-radius: 8px;
+                max-width: 500px;
+                width: 90%;
+            }
+    
+            .modal form {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+    
+            .modal input,
+            .modal textarea {
+                padding: 0.5rem;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+    
+            .loading {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 2rem;
+                color: #666;
+            }
+    
+            .loading::after {
+                content: '';
+                width: 1.5rem;
+                height: 1.5rem;
+                border: 2px solid #3498db;
+                border-radius: 50%;
+                border-top-color: transparent;
+                animation: spin 1s linear infinite;
+                margin-left: 0.5rem;
+            }
+    
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+    
+            .error {
+                background: #fee;
+                color: #e74c3c;
+                padding: 1rem;
+                border-radius: 4px;
+                margin-bottom: 1rem;
+    
+
+            .tag-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1rem;
+                padding: 1rem 0;
+            }
+
+            .tag-item {
+                background: white;
+                padding: 1rem;
+                border-radius: 4px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
+            .tag-content {
+                flex: 1;
+            }
+
+            .tag-name {
+                font-weight: 600;
+                display: block;
+                margin-bottom: 0.5rem;
+            }
+
+            .tag-description {
+                font-size: 0.9rem;
+                color: #666;
+                margin: 0;
+            }
+
+
+            .modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+            }
+
+            .modal-content {
+                background: white;
+                padding: 2rem;
+                border-radius: 8px;
+                max-width: 500px;
+                width: 90%;
+            }
+
+            .modal form {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .modal input,
+            .modal textarea {
+                padding: 0.5rem;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+            .loading {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 2rem;
+                color: #666;
+            }
+
+            .loading::after {
+                content: '';
+                width: 1.5rem;
+                height: 1.5rem;
+                border: 2px solid #3498db;
+                border-radius: 50%;
+                border-top-color: transparent;
+                animation: spin 1s linear infinite;
+                margin-left: 0.5rem;
+            }
+
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+
+            .error {
+                background: #fee;
+                color: #e74c3c;
+                padding: 1rem;
+                border-radius: 4px;
+                margin-bottom: 1rem;
+            }
+                    
+            .blueprint-section {
+                background: white;
+                border-radius: 0.5rem;
+                padding: 1.5rem;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            }
+
+            .category-item {
+                background: white;
+                border-radius: 0.5rem;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            }
+
+            .subcategory-list {
+                margin-top: 1rem;
+                padding-left: 1.5rem;
+            }
+
+            .subcategory-list .item {
+                background: #f9fafb;
+                padding: 0.75rem;
+                border-radius: 0.375rem;
+                margin-bottom: 0.5rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .delete-btn {
+                background: #ef4444;
+                color: white;
+                padding: 0.25rem 0.75rem;
+                border-radius: 0.375rem;
+                font-size: 0.875rem;
+            }
+
+            .delete-btn:hover {
+                background: #dc2626;
+            }
+</style>
+</head>
+<body>
+    <div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm">
+        🎥 Welcome to ApproVideo - Your Sustainable Video Management Portal
+    </div>
+
+    <header class="bg-white shadow-lg">
+        <div class="container mx-auto">
+           
+            <nav class="bg-white shadow-lg rounded-lg mb-8 transition-colors duration-300" id="mainNav">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <!-- Logo Section -->
+                    <div class="flex items-center space-x-4">
+                    <a href="index.html" class="flex items-center space-x-3 group">
+                        <svg class="h-10 w-10 text-green-500 transform transition-all duration-300 group-hover:scale-110" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            stroke-width="1.5"
+                            id="logoIcon">
+                        <circle class="tool-circle" cx="12" cy="12" r="10" stroke-dasharray="4 4"/>
+                        <path class="tool-wrench" d="M3 21h4l9-9"/>
+                        <path class="tool-screwdriver" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                        <circle class="tool-gear" cx="12" cy="12" r="3"/>
+                        <path class="tool-arrows" d="M8 12h8m-4-4v8" stroke-linecap="round"/>
+                        </svg>
+                        <span class="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                        ApproAdmin
+                        </span>
+                    </a>
+                    </div>
+
+                    <!-- Navigation Items -->
+                    <div class="flex items-center space-x-6">
+                    <!-- Website Link -->
+                    <a href="http://www.approvideo.org" 
+                        class="nav-link group flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50">
+                        <span class="hidden md:inline">Live site</span>
+                    </a>
+
+                
+                <a href="new.html" class="nav-link group flex items-center space-x-2 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-600">
+                <svg class="w-6 h-6 transform transition-all duration-300 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 8v8"></path>
+                    <path d="M8 12h8"></path>
+                </svg>	
+                </a>  
+
+                    <!-- Dark Mode Toggle -->
+                    <button id="darkModeToggle" 
+                            class="p-2 rounded-lg transition-all duration-300 space-x-2 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50 ">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path class="dark-toggle" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                    </button>
+
+                    <!-- Profile Button -->
+                    <div class="relative">
+                        <button id="profileButton" 
+                        class="icon-button p-2 rounded-lg transition-colors duration-300 space-x-2 text-gray-800 dark:text-white hover:text-green-500 transition-all px-3 hover:bg-gray-50">
+                        <svg class="w-[39px] h-[39px] "  stroke="currentColor"  class="text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 4h12M6 4v16M6 4H5m13 0v16m0-16h1m-1 16H6m12 0h1M6 20H5M9 7h1v1H9V7Zm5 0h1v1h-1V7Zm-5 4h1v1H9v-1Zm5 0h1v1h-1v-1Zm-3 4h2a1 1 0 0 1 1 1v4h-4v-4a1 1 0 0 1 1-1Z"/>
+                    </svg>
+                        </button>
+                        <div id="profileDropdown"
+                        class="profile-dropdown dropdown-inactive absolute right-0 mt-2 w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+                        <div class="py-1">
+                            <a href="https://www.approvideo.org" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Approvideo</a>
+                            <a href="pending.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pending</a>
+                            <a href="homepage.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Homepage</a>
+                            <a href=".html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Feature</a>
+                            <a href=".html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cat/Subcat/Tags</a>
+
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </nav>
+  
+        </div>
+    </header>
+
+    <!-- Content Area -->
+    <main class="container mx-auto px-4 py-8 max-w-5xl">
+        <!-- Welcome Section -->
+        <div class="bg-white rounded-lg shadow-lg mb-8 p-6 border-l-4 border-green-500">
+            <h1 class="text-3xl font-bold mb-2">Approvideo Content Blueprint</h1>
+            <p class="text-gray-600">Water, Waste, Energy, Food systems, Shelter and Health in the DIY Realms</p>
+        </div>
+
+        <!-- Categories Section -->
+        <div class="bg-white rounded-lg shadow-lg mb-8 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Categories & Subcategories</h2>
+                <button class="btn btn-green" id="add-category-btn">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Add Category
+                </button>
+            </div>
+            <div id="categories-container" class="categories-wrapper">
+                <!-- Dynamic content will be rendered here -->
+            </div>
+        </div>
+
+        <!-- Tags Section -->
+        <div class="bg-white rounded-lg shadow-lg mb-8 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Tag Management</h2>
+                <button id="add-tag-btn" class="btn btn-green">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Add Tag
+                </button>
+            </div>
+            <div id="tag-cloud" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Tags will be rendered here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript Section -->
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+        const supabaseUrl = 'https://vlvbodwrtblttvwnxkjx.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg';
+        const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+        class EventEmitter {
+            constructor() {
+                this.events = {};
+            }
+
+            on(event, callback) {
+                if (!this.events[event]) {
+                    this.events[event] = [];
+                }
+                this.events[event].push(callback);
+            }
+
+            emit(event, data) {
+                if (this.events[event]) {
+                    this.events[event].forEach(callback => callback(data));
+                }
+            }
+        }
+
+        class BlueprintStore extends EventEmitter {
+            constructor() {
+                super();
+                this.supabase = supabase;
+                this.categories = [];
+                this.isLoading = false;
+                this.error = null;
+            }
+
+            async loadInitialData() {
+                try {
+                    this.isLoading = true;
+                    this.emit('loading', true);
+
+                    const { data: categories, error } = await this.supabase
+                        .from('categories')
+                        .select('*, subcategories(*)');
+
+                    if (error) throw error;
+                    this.categories = categories || [];
+                    this.emit('dataLoaded', { categories: this.categories });
+                } catch (error) {
+                    console.error('Error loading data:', error);
+                    this.error = error.message;
+                    this.emit('error', error.message);
+                } finally {
+                    this.isLoading = false;
+                    this.emit('loading', false);
+                }
+            }
+
+            async addCategory(categoryData) {
+                try {
+                    // Generate a slug from the category name
+                    if (!categoryData.name) {
+                        throw new Error('Category name is required');
+                    }
+                    const slug = categoryData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+                    // Prepare category data for insertion without the subcategories array
+                    const newCategoryData = {
+                        ...categoryData,
+                        slug: slug
+                    };
+
+                    // Insert the new category into Supabase
+                    const { data, error } = await this.supabase
+                        .from('categories')
+                        .insert([newCategoryData])
+                        .select();
+
+                    if (error) throw error;
+
+                    // Update local state with the new category and initialize subcategories
+                    const newCategory = {
+                        ...data[0],
+                        subcategories: [] // Add an empty subcategories array to maintain the local structure
+                    };
+
+                    this.categories.push(newCategory);
+                    this.emit('dataLoaded', { categories: this.categories });
+                } catch (error) {
+                    console.error('Error adding category:', error);
+                    this.emit('error', error.message);
+                }
+            }
+
+
+
+            async addSubcategory(categoryId, subcategoryData) {
+                try {
+                    // Generate a slug for the subcategory name
+                    const slug = subcategoryData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+                    const { data, error } = await this.supabase
+                        .from('subcategories')
+                        .insert([{ ...subcategoryData, category_id: categoryId, slug }])
+                        .select();
+
+                    if (error) throw error;
+
+                    const category = this.categories.find(cat => cat.id === categoryId);
+
+                    // Initialize subcategories array if it is undefined
+                    if (!category.subcategories) {
+                        category.subcategories = [];
+                    }
+
+                    // Push the new subcategory to the category's subcategories array
+                    category.subcategories.push(data[0]);
+
+                    this.emit('dataLoaded', { categories: this.categories });
+                } catch (error) {
+                    console.error('Error adding subcategory:', error);
+                    this.emit('error', error.message);
+                }
+            }
+
+
+            async deleteSubcategory(subcategoryId, categoryId) {
+                try {
+                    const { error } = await this.supabase
+                        .from('subcategories')
+                        .delete()
+                        .eq('id', subcategoryId);
+
+                    if (error) throw error;
+                    const category = this.categories.find(cat => cat.id === categoryId);
+                    if (category) {
+                        category.subcategories = category.subcategories.filter(sub => sub.id !== subcategoryId);
+                    }
+                    this.emit('dataLoaded', { categories: this.categories });
+                } catch (error) {
+                    console.error('Error deleting subcategory:', error);
+                    this.emit('error', error.message);
+                }
+            }
+
+
+            async deleteCategory(categoryId) {
+                try {
+                    const { error } = await this.supabase
+                        .from('categories')
+                        .delete()
+                        .eq('id', categoryId);
+
+                    if (error) throw error;
+
+                    this.categories = this.categories.filter(cat => cat.id !== categoryId);
+                    this.emit('dataLoaded', { categories: this.categories });
+                } catch (error) {
+                    console.error('Error deleting category:', error);
+                    this.emit('error', error.message);
+                }
+            }
+
+
+            async updateSubcategory(subcategoryId, categoryId, subcategoryData) {
+                try {
+                    const { data, error } = await this.supabase
+                        .from('subcategories')
+                        .update({ ...subcategoryData, slug: subcategoryData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') })
+                        .eq('id', subcategoryId)
+                        .select();
+
+                    if (error) throw error;
+                    const category = this.categories.find(cat => cat.id === categoryId);
+                    if (category) {
+                        const subcategoryIndex = category.subcategories.findIndex(sub => sub.id === subcategoryId);
+                        if (subcategoryIndex > -1) {
+                            category.subcategories[subcategoryIndex] = data[0];
+                        }
+                    }
+                    this.emit('dataLoaded', { categories: this.categories });
+                } catch (error) {
+                    console.error('Error updating subcategory:', error);
+                    this.emit('error', error.message);
+                }
+            }
+        }
+
+        class CategoryManager {
+            constructor(store) {
+                this.store = store;
+                this.containerEl = document.getElementById('categories-container');
+                this.bindEvents();
+                this.bindStoreEvents();
+            }
+
+            bindEvents() {
+                document.getElementById('add-category-btn').addEventListener('click', () => {
+                    this.showAddCategoryModal();
+                });
+            }
+
+            bindStoreEvents() {
+                this.store.on('loading', (isLoading) => {
+                    if (isLoading) {
+                        this.containerEl.innerHTML = '<div>Loading...</div>';
+                    } else {
+                        this.render();
+                    }
+                });
+
+                this.store.on('dataLoaded', () => {
+                    this.render();
+                });
+            }
+
+
+
+            // Method to delete a category
+            async deleteCategory(categoryId) {
+                if (confirm('Are you sure you want to delete this category?')) {
+                    try {
+                        await this.store.deleteCategory(categoryId);
+                    } catch (error) {
+                        alert('Error deleting category: ' + error.message);
+                    }
+                }
+            }
+
+
+
+            showAddCategoryModal() {
+                const modal = document.createElement('div');
+                modal.className = 'modal';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <h2>Add Category</h2>
+                        <form id="category-form">
+                            <input type="text" name="name" placeholder="Category Name" required>
+                            <button type="submit" class="btn btn-green">Add Category</button>
+                            <button type="button" onclick="this.closest('.modal').remove()" class="btn">Cancel</button>
+                        </form>
+                    </div>
+                `;
+                modal.querySelector('form').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    try {
+                        await this.store.addCategory({
+                            name: formData.get('name')
+                        });
+                        modal.remove();
+                    } catch (error) {
+                        alert('Error adding category: ' + error.message);
+                    }
+                });
+                document.body.appendChild(modal);
+            }
+
+            showAddSubcategoryModal(categoryId) {
+                const modal = document.createElement('div');
+                modal.className = 'modal';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <h2>Add Subcategory</h2>
+                        <form id="subcategory-form">
+                            <input type="text" name="name" placeholder="Subcategory Name" required>
+                            <button type="submit" class="btn btn-green">Add Subcategory</button>
+                            <button type="button" onclick="this.closest('.modal').remove()" class="btn">Cancel</button>
+                        </form>
+                    </div>
+                `;
+                modal.querySelector('form').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    try {
+                        await this.store.addSubcategory(categoryId, {
+                            name: formData.get('name')
+                        });
+                        modal.remove();
+                    } catch (error) {
+                        alert('Error adding subcategory: ' + error.message);
+                    }
+                });
+                document.body.appendChild(modal);
+            }
+
+            render() {
+                if (this.store.error) {
+                    this.containerEl.innerHTML = `<div class="error">${this.store.error}</div>`;
+                    return;
+                }
+
+                this.containerEl.innerHTML = this.store.categories.map(category => `
+                    <div class="category-item" data-category-id="${category.id}">
+                        <div class="category-header">
+                            <div>
+                                <h3 class="text-xl font-bold">${category.name}</h3>
+                            </div>
+                            <div class="category-controls">
+                                <button class="btn btn-green" onclick="categoryManager.showAddSubcategoryModal('${category.id}')">
+                                    Add Subcategory
+                                </button>
+                                <button class="btn btn-red" onclick="categoryManager.deleteCategory('${category.id}')">
+                                    Delete Category
+                                </button>
+                            </div>
+                        </div>
+                        <div class="subcategories mt-4">
+                            ${category.subcategories ? category.subcategories.map(subcategory => `
+                                <div class="subcategory-item">
+                                    <p class="font-medium">${subcategory.name}</p>
+                                    <div class="subcategory-controls">
+                                    </div>
+                                </div>
+                            `).join('') : '<p class="text-gray-500">No subcategories yet.</p>'}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            async deleteSubcategory(subcategoryId, categoryId) {
+                if (confirm('Are you sure you want to delete this subcategory?')) {
+                    try {
+                        await this.store.deleteSubcategory(subcategoryId, categoryId);
+                    } catch (error) {
+                        alert('Error deleting subcategory: ' + error.message);
+                    }
+                }
+            }
+
+                modal.querySelector('form').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    try {
+                        await this.store.updateSubcategory(subcategoryId, categoryId, {
+                            name: formData.get('name')
+                        });
+                        modal.remove();
+                    } catch (error) {
+                        alert('Error updating subcategory: ' + error.message);
+                    }
+                });
+                document.body.appendChild(modal);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const store = new BlueprintStore();
+                window.categoryManager = new CategoryManager(store);
+                await store.loadInitialData();
+            } catch (error) {
+                console.error('Error initializing app:', error);
+            }
+        });
+    </script>
+</body>
+</html>

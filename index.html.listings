@@ -27,11 +27,12 @@
 
         <!-- Navigation Items -->
         <div class="flex items-center space-x-4">
-          <a href="index.html" class="text-gray-300 hover:text-green-500 px-3 py-2">Home</a>
+          <a href="index.html" class="text-white-300 hover:text-green-500 px-3 py-2">Home</a>
           
           <!-- Theme Toggle -->
           <button id="darkModeToggle" class="p-2 rounded-lg hover:bg-gray-700/50 text-gray-300">
-            <i class="fas fa-sun text-yellow-500 dark:hidden"></i>
+            <i class="fas fa-sun text-yellow-500 dark:hidden">About Approvideo</i>
+            <i class="fas fa-sun text-yellow-500 dark:hidden">Support Approvideo</i>
             <i class="fas fa-moon text-blue-400 hidden dark:inline"></i>
           </button>
 
@@ -42,7 +43,7 @@
             </button>
             <div id="profileDropdown" class="profile-dropdown absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white dark:bg-gray-800">
               <div class="py-1">
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100 dark:hover:bg-gray-700">Profile</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Sign out</a>
               </div>
@@ -274,6 +275,9 @@
         this.selectedCategory = null;
         this.searchQuery = '';
 
+        // Initialize slider counter
+        this.sliderCounter = 0;
+
         // Start initialization
         this.init();
       }
@@ -314,27 +318,15 @@
             });
         });
 
-
-   
-
         // Infinite scroll
         this.setupInfiniteScroll();
       }
 
-
-
-
-
-
-  resetAndReload() {
-    this.currentPage = 0;
-    this.hasMore = true;
-    this.loadVideos();
-  }
-
-
- 
-
+      resetAndReload() {
+	    this.currentPage = 0;
+	    this.hasMore = true;
+	    this.loadVideos();
+      }
       
       setupInfiniteScroll() {
         const observer = new IntersectionObserver(
@@ -381,11 +373,9 @@
           </div>
         `;
       }
-
-      
       
 
-      handleCategoryClick(button) {
+    handleCategoryClick(button) {
     // Get the category from the data attribute
     const newCategory = button.dataset.category;
     console.log('Clicking category:', newCategory);
@@ -494,6 +484,9 @@ async loadVideos() {
         } else {
           videoGrid.insertAdjacentHTML('beforeend', videoHTML);
         }
+
+        // Initialize sliders after rendering videos
+        this.initializeSliders()
       }
 
 
@@ -546,18 +539,61 @@ async loadVideos() {
 
       renderPanels(panels) {
         if (!panels || !panels.length) return '';
-        
+       
+	this.sliderCounter++;
+        const sliderId = `panel-slider-${this.sliderCounter}`;
+ 
         return `
-          <div class="mt-4 space-y-2">
+   	<div class="mt-4">
+          <div id="${sliderId}" class="relative w-[380px] h-[200px] overflow-hidden">
+            <div class="slides flex transition-transform duration-500">
             ${panels.map(panel => `
-              <div class="bg-gray-50 p-3 rounded-lg">
-                <h4 class="font-medium text-sm mb-1">${this.safeHtml.escape(panel.title)}</h4>
+              <div class="slide w-full flex-shrink-0 P-3" >
+              	<div class="bg-gray-50 p-3 rounded-lg">
+                <h4 class="font-medium text-grey-700 text-sm mb-1">${this.safeHtml.escape(panel.title)}</h4>
                 <p class="text-sm text-gray-600">${this.safeHtml.escape(panel.content)}</p>
+                </div>
               </div>
             `).join('')}
           </div>
+  		<button class="prev absolute top-1/2 left-0 transform -translate-y-1/2 bg-white bg-opacity-75 p-2 rounded-full">◀</button>
+                <button class="next absolute top-1/2 right-0 transform -translate-y-1/2 bg-white bg-opacity-75 p-2 rounded-full">▶</button>
+          </div>
+        </div>
         `;
       }
+
+      initializeSliders() {
+        const sliders = document.querySelectorAll('.slides');
+        sliders.forEach(slidesContainer => {
+          const slider = slidesContainer.parentElement;
+          const slides = slidesContainer.querySelectorAll('.slide');
+          const prevButton = slider.querySelector('.prev');
+          const nextButton = slider.querySelector('.next');
+          let currentIndex = 0;
+
+          function updateSlider() {
+            slidesContainer.style.transform = 'translateX(' + (-currentIndex * 100) + '%)';
+          }
+
+          prevButton.addEventListener('click', () => {
+            if (currentIndex > 0) {
+              currentIndex--;
+              updateSlider();
+            }
+          });
+
+          nextButton.addEventListener('click', () => {
+            if (currentIndex < slides.length - 1) {
+              currentIndex++;
+              updateSlider();
+            }
+          });
+        });
+      }
+
+
+
 
       renderTags(tags) {
         if (!tags) return '';
@@ -630,4 +666,3 @@ async loadVideos() {
 </footer>
 </body>
 </html>
-

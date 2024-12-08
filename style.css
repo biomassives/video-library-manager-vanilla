@@ -43,6 +43,152 @@
       z-index: 50;
     }
 
+/* Video Container for Modal */
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.video-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* For the video thumbnails */
+.aspect-video {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.aspect-video img,
+.aspect-video iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Ensure the modal is above other content */
+#videoModal {
+  z-index: 1000;
+}
+
+
+
+
+
+/* Aspect Ratio Container */
+.aspect-w-16 {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.aspect-w-16 iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Ensure the modal is above other content */
+#videoModal {
+  z-index: 1000;
+}
+
+
+
+
+.panel-container {
+  position: relative;
+  width: 380px;
+  height: 200px;
+  overflow: hidden;
+}
+
+.info-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 16px; /* Adjust as needed */
+  background-color: #f9fafb; /* Tailwind's bg-gray-50 */
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.info-panel.active {
+  opacity: 1;
+}
+
+.panel-icon {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  font-size: 24px;
+  color: #6b7280; /* Tailwind's text-gray-500 */
+}
+
+.panel-prev,
+.panel-next {
+  background-color: rgba(255, 255, 255, 0.75);
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.panel-prev:hover,
+.panel-next:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+
+
+    /* Accordion styles */
+    .accordion-item {
+      @apply border-b border-gray-200;
+    }
+
+    .accordion-header {
+      @apply py-2;
+    }
+
+    .accordion-button {
+      @apply w-full text-left font-medium;
+    }
+
+    .accordion-collapse {
+      @apply transition-max-height duration-300 overflow-hidden;
+    }
+
+    .accordion-collapse.hidden {
+      @apply max-h-0;
+    }
+
+    /* Optional: Arrow icon styles */
+    .arrow-icon {
+      @apply ml-2 transition-transform duration-200;
+    }
+
+    .arrow-icon.rotate-180 {
+      @apply transform rotate-180;
+    }
+
+
+
+
+
+
+
     /* Hero Slider Styles */
     .hero-slider {
       margin-top: 5rem; /* Space for fixed nav */

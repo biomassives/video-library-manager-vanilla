@@ -66,7 +66,7 @@
             <i class="fas fa-graduation-cap"></i>
             Drinking Water
           </a>
-          <a href="/sanitation" class="cta-button cta-secondary">
+          <a href="/?category=sanitation" class="cta-button cta-secondary">
             <i class="fas fa-shield-alt"></i>
             Sanitation
           </a>
@@ -81,7 +81,34 @@
         <p class="text-lg opacity-90">Building together</p>
       </div>
     </div>
-
+    <div class="slide">
+      <img src="images/1.jpg" alt="Community impact">
+      <div class="slide-content">
+        <h2 class="text-2xl font-bold mb-2">Shelter</h2>
+        <p class="text-lg opacity-90">DIY Housing Traditions</p>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="images/noaa-8EXZXZrj3Tw-unsplash.jpg" alt="Community impact">
+      <div class="slide-content">
+        <h2 class="text-2xl font-bold mb-2">Transparency Tools</h2>
+        <p class="text-lg opacity-90">Preventing contamination</p>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="images/mussels.jpg" alt="Community impact">
+      <div class="slide-content">
+        <h2 class="text-2xl font-bold mb-2">Estuaries</h2>
+        <p class="text-lg opacity-90">Context: Ecological services</p>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="images/hillary-ungson-y0VAG6tKjxU-unsplash.jpg" alt="Community impact">
+      <div class="slide-content">
+        <h2 class="text-2xl font-bold mb-2">Healthy Food</h2>
+        <p class="text-lg opacity-90">Small is beautiful - E.F. Shumacher </p>
+      </div>
+    </div>
     <div class="slide">
       <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop" alt="Natural solutions">
       <div class="slide-content">
@@ -102,6 +129,10 @@
 
     <div class="slider-nav">
       <button class="nav-dot active"></button>
+      <button class="nav-dot"></button>
+      <button class="nav-dot"></button>
+      <button class="nav-dot"></button>
+      <button class="nav-dot"></button>
       <button class="nav-dot"></button>
       <button class="nav-dot"></button>
     </div>
@@ -175,13 +206,8 @@
     <div id="infiniteScrollTrigger" class="h-20"></div>
   </div>
 
-
-
-
-
-
-
   <script>
+
     // Theme Toggle
     const darkModeToggle = document.getElementById('darkModeToggle');
     const html = document.documentElement;
@@ -251,10 +277,6 @@
       slider.addEventListener('mouseleave', startAutoSlide);
     });
 </script>
-
-
-
-
 <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
     import safeHtml from './safeHtmlUtils.js';
@@ -314,27 +336,15 @@
             });
         });
 
-
-   
-
         // Infinite scroll
         this.setupInfiniteScroll();
       }
 
-
-
-
-
-
-  resetAndReload() {
-    this.currentPage = 0;
-    this.hasMore = true;
-    this.loadVideos();
-  }
-
-
- 
-
+      resetAndReload() {
+      this.currentPage = 0;
+      this.hasMore = true;
+      this.loadVideos();
+      }
       
       setupInfiniteScroll() {
         const observer = new IntersectionObserver(
@@ -540,7 +550,7 @@ async loadVideos() {
                 ${this.renderTags(safeVideo.tags)}
               </div>
             </div>
-          </div>
+        </div>
         `;
       }
 
@@ -551,7 +561,7 @@ async loadVideos() {
           <div class="mt-4 space-y-2">
             ${panels.map(panel => `
               <div class="bg-gray-50 p-3 rounded-lg">
-                <h4 class="font-medium text-sm mb-1">${this.safeHtml.escape(panel.title)}</h4>
+                <h4 class="font-medium text-gray-600 text-sm mb-1">${this.safeHtml.escape(panel.title)}</h4>
                 <p class="text-sm text-gray-600">${this.safeHtml.escape(panel.content)}</p>
               </div>
             `).join('')}

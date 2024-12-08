@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,42 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link href="style.css" rel="stylesheet">
+  <style>
+    /* Existing styles */
+
+    /* Panel Slider Styles */
+    .panel-container {
+      position: relative;
+    }
+
+    .info-panel {
+      display: none;
+      /* Hide all panels by default */
+    }
+
+    .info-panel.active {
+      display: block;
+      /* Show only the active panel */
+    }
+
+    .panel-prev,
+    .panel-next {
+      @apply absolute top-1/2 transform -translate-y-1/2 bg-white bg-opacity-75 p-2 rounded-full;
+    }
+
+    .panel-prev {
+      left: 4px;
+    }
+
+    .panel-next {
+      right: 4px;
+    }
+  </style>
 </head>
+
 <body class="theme-transition">
+
+
   <!-- Navigation -->
   <nav class="theme-transition shadow-lg">
     <div class="max-w-7xl mx-auto px-4">
@@ -27,11 +62,12 @@
 
         <!-- Navigation Items -->
         <div class="flex items-center space-x-4">
-          <a href="index.html" class="text-gray-300 hover:text-green-500 px-3 py-2">Home</a>
+          <a href="index.html" class="text-white-300 hover:text-green-500 px-3 py-2">Home</a>
           
           <!-- Theme Toggle -->
           <button id="darkModeToggle" class="p-2 rounded-lg hover:bg-gray-700/50 text-gray-300">
-            <i class="fas fa-sun text-yellow-500 dark:hidden"></i>
+            <i class="fas fa-sun text-yellow-500 dark:hidden">About Approvideo</i>
+            <i class="fas fa-sun text-yellow-500 dark:hidden">Support Approvideo</i>
             <i class="fas fa-moon text-blue-400 hidden dark:inline"></i>
           </button>
 
@@ -42,7 +78,7 @@
             </button>
             <div id="profileDropdown" class="profile-dropdown absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white dark:bg-gray-800">
               <div class="py-1">
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-green-100 dark:hover:bg-gray-700">Profile</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Sign out</a>
               </div>
@@ -175,7 +211,23 @@
     <div id="infiniteScrollTrigger" class="h-20"></div>
   </div>
 
-
+  <!-- Video Modal -->
+  <div id="videoModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg overflow-hidden w-full max-w-2xl relative">
+      <button id="modalCloseButton" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+        <i class="fas fa-times text-2xl"></i>
+      </button>
+      <div class="relative" style="padding-top: 56.25%;"> <!-- 16:9 Aspect Ratio -->
+        <iframe 
+          id="modalVideoIframe" 
+          class="absolute top-0 left-0 w-full h-full" 
+          src="" 
+          frameborder="0" 
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+  </div>
 
 
 
@@ -274,6 +326,9 @@
         this.selectedCategory = null;
         this.searchQuery = '';
 
+        // Initialize slider counter
+        this.sliderCounter = 0;
+
         // Start initialization
         this.init();
       }
@@ -282,6 +337,20 @@
         this.setupEventListeners();
         this.showSkeletonLoader();
         await this.loadVideos();
+     
+        // Close modal when clicking on close button
+        const modalCloseButton = document.getElementById('modalCloseButton');
+        modalCloseButton.addEventListener('click', () => {
+          this.closeVideoModal();
+        });
+
+        // Close modal when clicking outside the video
+        const modal = document.getElementById('videoModal');
+        modal.addEventListener('click', (event) => {
+          if (event.target === modal) {
+            this.closeVideoModal();
+          }
+        });
       }
 
       setupEventListeners() {
@@ -314,27 +383,15 @@
             });
         });
 
-
-   
-
         // Infinite scroll
         this.setupInfiniteScroll();
       }
 
-
-
-
-
-
-  resetAndReload() {
-    this.currentPage = 0;
-    this.hasMore = true;
-    this.loadVideos();
-  }
-
-
- 
-
+      resetAndReload() {
+	    this.currentPage = 0;
+	    this.hasMore = true;
+	    this.loadVideos();
+      }
       
       setupInfiniteScroll() {
         const observer = new IntersectionObserver(
@@ -366,6 +423,57 @@
         }
       }
 
+
+
+initializeVideoThumbnails() {
+  const thumbnails = document.querySelectorAll('.video-thumbnail');
+  thumbnails.forEach(thumbnail => {
+    thumbnail.addEventListener('click', () => {
+      const youtubeId = thumbnail.dataset.youtubeId;
+      this.openVideoModal(youtubeId);
+    });
+  });
+}
+
+openVideoModal(youtubeId) {
+  const modal = document.getElementById('videoModal');
+  const iframe = document.getElementById('modalVideoIframe');
+  iframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
+  modal.classList.remove('hidden');
+}
+
+closeVideoModal() {
+  const modal = document.getElementById('videoModal');
+  const iframe = document.getElementById('modalVideoIframe');
+  iframe.src = ''; // Stop the video
+  modal.classList.add('hidden');
+}
+
+
+
+initializeSliders() {
+  const panelContainers = document.querySelectorAll('.panel-container');
+  panelContainers.forEach(container => {
+    const panels = container.querySelectorAll('.info-panel');
+    const prevButton = container.querySelector('.panel-prev');
+    const nextButton = container.querySelector('.panel-next');
+    let currentIndex = 0;
+
+    prevButton.addEventListener('click', () => {
+      panels[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex - 1 + panels.length) % panels.length;
+      panels[currentIndex].classList.add('active');
+    });
+
+    nextButton.addEventListener('click', () => {
+      panels[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex + 1) % panels.length;
+      panels[currentIndex].classList.add('active');
+    });
+  });
+}
+
+
       createSkeletonCard() {
         return `
           <div class="bg-white rounded-lg shadow-md overflow-hidden">
@@ -381,11 +489,9 @@
           </div>
         `;
       }
-
-      
       
 
-      handleCategoryClick(button) {
+    handleCategoryClick(button) {
     // Get the category from the data attribute
     const newCategory = button.dataset.category;
     console.log('Clicking category:', newCategory);
@@ -433,68 +539,78 @@
 }
 
 // Update loadVideos to search across both title and category
+
 async loadVideos() {
-    if (this.isLoading || !this.hasMore) return;
-    
-    this.isLoading = true;
-    
-    try {
-        // Start building the query
-        let query = this.supabase
-            .from('Video')
-            .select('*, panels(*)');
+  if (this.isLoading || !this.hasMore) return;
+  
+  this.isLoading = true;
+  
+  try {
+    // Start building the query
+    let query = this.supabase
+      .from('Video')
+      .select(`
+        *,
+        panels(*)
+      `);
 
-        // Apply search filter if present - now searches both title and category
-        if (this.searchQuery) {
-            query = query.or(`title.ilike.%${this.searchQuery}%,category.ilike.%${this.searchQuery}%`);
-        }
-
-        // Complete the query with range and order
-        query = query
-            .range(this.currentPage * this.BATCH_SIZE, (this.currentPage + 1) * this.BATCH_SIZE - 1)
-            .order('createdAt', { ascending: false });
-
-        // Execute the query
-        const { data: videos, error } = await query;
-
-        if (error) throw error;
-
-        console.log('Loaded videos:', videos);
-
-        if (videos.length < this.BATCH_SIZE) {
-            this.hasMore = false;
-        }
-
-        this.renderVideos(videos);
-        this.currentPage++;
-        
-    } catch (error) {
-        console.error('Error loading videos:', error);
-        this.showError('Failed to load videos');
-    } finally {
-        this.isLoading = false;
-        document.getElementById('skeletonLoader').classList.add('hidden');
-        document.getElementById('videoGrid').classList.remove('hidden');
+    // Apply search filter if present
+    if (this.searchQuery) {
+      query = query.or(`title.ilike.%${this.searchQuery}%,category.ilike.%${this.searchQuery}%`);
     }
-}
+
+    // Complete the query with range and order
+    query = query
+      .range(this.currentPage * this.BATCH_SIZE, (this.currentPage + 1) * this.BATCH_SIZE - 1)
+      .order('createdAt', { ascending: false });
+
+    // Execute the query
+    const { data: videos, error } = await query;
+
+    if (error) throw error;
+
+    console.log('Loaded videos:', videos); // For debugging
+
+    if (videos.length < this.BATCH_SIZE) {
+      this.hasMore = false;
+    }
+
+    this.renderVideos(videos);
+    this.currentPage++;
       
+  } catch (error) {
+    console.error('Error loading videos:', error);
+    this.showError('Failed to load videos');
+  } finally {
+    this.isLoading = false;
+    document.getElementById('skeletonLoader').classList.add('hidden');
+    document.getElementById('videoGrid').classList.remove('hidden');
+  }
+}
 
 
 
+renderVideos(videos) {
+  const videoGrid = document.getElementById('videoGrid');
+  if (!videoGrid) return;
+
+  const videoHTML = videos.map(video => this.createVideoCard(video)).join('');
+  
+  if (this.currentPage === 0) {
+    videoGrid.innerHTML = videoHTML;
+  } else {
+    videoGrid.insertAdjacentHTML('beforeend', videoHTML);
+  }
+
+  // Initialize sliders after rendering videos
+  this.initializeSliders();
+
+  // Initialize video thumbnail click handlers
+  this.initializeVideoThumbnails();
+}
 
 
-      renderVideos(videos) {
-        const videoGrid = document.getElementById('videoGrid');
-        if (!videoGrid) return;
 
-        const videoHTML = videos.map(video => this.createVideoCard(video)).join('');
-        
-        if (this.currentPage === 0) {
-          videoGrid.innerHTML = videoHTML;
-        } else {
-          videoGrid.insertAdjacentHTML('beforeend', videoHTML);
-        }
-      }
 
 
 
@@ -511,53 +627,101 @@ async loadVideos() {
 
 
 
-      createVideoCard(video) {
-        const safeVideo = this.safeHtml.escapeObject(video);
+createVideoCard(video) {
+  return `
+    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+      <div class="video-thumbnail cursor-pointer" data-youtube-id="${this.safeHtml.escape(video.youtubeId)}">
+        <img 
+          src="https://img.youtube.com/vi/${this.safeHtml.escape(video.youtubeId)}/maxresdefault.jpg"
+          alt="${this.safeHtml.escape(video.title)}"
+          class="w-full h-full object-cover"
+          onerror="this.src='https://img.youtube.com/vi/${this.safeHtml.escape(video.youtubeId)}/0.jpg'"
+        >
+        <div class="absolute inset-0 flex items-center justify-center">
+          <i class="fas fa-play-circle text-white text-6xl"></i>
+        </div>
+      </div>
+      
+      <div class="p-4">
+        <h3 class="text-lg font-semibold mb-2 line-clamp-2">${this.safeHtml.escape(video.title)}</h3>
+        <p class="text-gray-600 text-sm mb-3 line-clamp-2">${this.safeHtml.escape(video.description)}</p>
         
-        return `
-          <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-            <div class="relative aspect-video">
-              <img 
-                src="https://img.youtube.com/vi/${safeVideo.youtubeId}/maxresdefault.jpg"
-                alt="${safeVideo.title}"
-                class="w-full h-full object-cover"
-                onerror="this.src='https://img.youtube.com/vi/${safeVideo.youtubeId}/0.jpg'"
-              >
-            </div>
-            
-            <div class="p-4">
-              <h3 class="text-lg font-semibold mb-2 line-clamp-2">${safeVideo.title}</h3>
-              <p class="text-gray-600 text-sm mb-3 line-clamp-2">${safeVideo.description}</p>
-              
-              <div class="flex items-center gap-2 mb-3">
-                <i class="fas ${this.getCategoryIcon(safeVideo.category)} text-gray-500"></i>
-                <span class="text-sm text-gray-600">${safeVideo.category || 'General'}</span>
-              </div>
-              
-              ${this.renderPanels(safeVideo.panels)}
-              
-              <div class="flex flex-wrap gap-2 mt-3">
-                ${this.renderTags(safeVideo.tags)}
-              </div>
-            </div>
-          </div>
-        `;
-      }
+        <div class="flex items-center gap-2 mb-3">
+          <i class="fas ${this.getCategoryIcon(video.category)} text-gray-500"></i>
+          <span class="text-sm text-gray-600">${this.safeHtml.escape(video.category) || 'General'}</span>
+        </div>
+        
+        ${this.renderPanels(video.panels)}
+        
+        <div class="flex flex-wrap gap-2 mt-3">
+          ${this.renderTags(video.tags)}
+        </div>
+      </div>
+    </div>
+  `;
+}
 
-      renderPanels(panels) {
-        if (!panels || !panels.length) return '';
-        
-        return `
-          <div class="mt-4 space-y-2">
-            ${panels.map(panel => `
-              <div class="bg-gray-50 p-3 rounded-lg">
-                <h4 class="font-medium text-sm mb-1">${this.safeHtml.escape(panel.title)}</h4>
-                <p class="text-sm text-gray-600">${this.safeHtml.escape(panel.content)}</p>
-              </div>
-            `).join('')}
+
+    renderPanels(panels) {
+      if (!panels || !panels.length) return '';
+      this.sliderCounter++;
+      const containerId = `panel-container-${this.sliderCounter}`;
+      return `
+        <div class="panel-container relative mt-4" id="${containerId}">
+          <div class="overflow-hidden"> 
+            <div class="flex transition-transform duration-500">
+              ${panels.map((panel, index) => `
+                <div class="info-panel w-full flex-shrink-0 p-3 ${index === 0 ? 'active' : ''}" data-panel-index="${index}">
+                  <h3 class="text-lg font-semibold mb-2">${this.safeHtml.escape(panel.title)}</h3>
+                  <p class="text-sm">${this.safeHtml.escape(panel.content)}</p>
+                </div>
+              `).join('')}
+            </div>
           </div>
-        `;
-      }
+          <button class="panel-prev absolute top-1/2 left-0 transform -translate-y-1/2 bg-white bg-opacity-75 p-2 rounded-full z-10">◀</button>
+          <button class="panel-next absolute top-1/2 right-0 transform -translate-y-1/2 bg-white bg-opacity-75 p-2 rounded-full z-10">▶</button>
+        </div>
+      `;
+    }
+
+    initializeSliders() {
+      const panelContainers = document.querySelectorAll('.panel-container');
+      panelContainers.forEach(container => {
+        const panels = container.querySelectorAll('.info-panel');
+        const prevButton = container.querySelector('.panel-prev');
+        const nextButton = container.querySelector('.panel-next');
+        let currentIndex = 0;
+
+        function updateSlider() {
+          const panelWidth = panels[0].offsetWidth; // Get the width of a panel
+          container.querySelector('.flex').style.transform = `translateX(-${currentIndex * panelWidth}px)`;
+        }
+
+        prevButton.addEventListener('click', () => {
+          panels[currentIndex].classList.remove('active');
+          currentIndex = (currentIndex - 1 + panels.length) % panels.length;
+          panels[currentIndex].classList.add('active');
+          updateSlider();
+        });
+
+        nextButton.addEventListener('click', () => {
+          panels[currentIndex].classList.remove('active');
+          currentIndex = (currentIndex + 1) % panels.length;
+          panels[currentIndex].classList.add('active');
+          updateSlider();
+        });
+
+        // Initial update
+        updateSlider();
+      });
+    }
+
+
+
+
+
+
+
 
       renderTags(tags) {
         if (!tags) return '';
@@ -619,6 +783,7 @@ async loadVideos() {
 
 
 
+
 <footer>
 
 	<p>
@@ -631,3 +796,14 @@ async loadVideos() {
 </body>
 </html>
 
+
+
+
+
+
+
+  </script>
+
+  </body>
+
+</html>

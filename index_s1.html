@@ -1,15 +1,76 @@
-<!DOCTYPE html>
+CTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ApproVideo - DIY Solutions Portal</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com">
+      // ... (existing JavaScript code) ...
+
+      async init() {
+        // ... (existing init code) ...
+
+        // Close modal when clicking on close button
+        const panelModalCloseButton = document.getElementById('panelModalCloseButton');
+        panelModalCloseButton.addEventListener('click', () => {
+          this.closePanelModal();
+        });
+
+        // Close modal when clicking outside the modal content
+        const panelModal = document.getElementById('panelModal');
+        panelModal.addEventListener('click', (event) => {
+          if (event.target === panelModal) {
+            this.closePanelModal();
+          }
+        });
+      }
+
+      renderPanels(panels) {
+        if (!panels || !panels.length) return '';
+        return `
+          <div class="mt-4 space-y-2">
+            ${panels.map(panel => `
+              <div class="bg-gray-50 p-3 rounded-lg cursor-pointer" onclick="window.panelModal.openPanelModal('${this.safeHtml.escape(panel.title)}', '${this.safeHtml.escape(panel.content)}')">
+                <h4 class="font-medium text-sm mb-1">${this.safeHtml.escape(panel.title)}</h4>
+                <p class="text-sm text-gray-600">${this.safeHtml.escape(panel.content)}</p>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      openPanelModal(title, content) {
+        const modal = document.getElementById('panelModal');
+        const modalContent = document.getElementById('panelModalContent');
+        modalContent.innerHTML = `
+          <h3 class="text-lg font-semibold mb-2">${title}</h3>
+          <p class="text-sm">${content}</p>
+        `;
+        modal.classList.remove('hidden');
+      }
+
+      closePanelModal() {
+        const modal = document.getElementById('panelModal');
+        modal.classList.add('hidden');
+      }
+
+      // ... (rest of your JavaScript code) ...
+    
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link href="style.css" rel="stylesheet">
 </head>
 <body class="theme-transition">
+    <div id="panelModal" class="modal">
+      <div class="bg-white rounded-lg overflow-hidden w-full max-w-4xl relative p-4">
+        <button id="panelModalCloseButton" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+        <div id="panelModalContent" class="p-4"></div>
+      </div>
+    </div>
+    
   <!-- Navigation -->
   <nav class="theme-transition shadow-lg">
     <div class="max-w-7xl mx-auto px-4">
@@ -250,7 +311,59 @@
       slider.addEventListener('mouseenter', () => clearInterval(interval));
       slider.addEventListener('mouseleave', startAutoSlide);
     });
-</script>
+
+      // ... (existing JavaScript code) ...
+
+      async init() {
+        // ... (existing init code) ...
+
+        // Close modal when clicking on close button
+        const panelModalCloseButton = document.getElementById('panelModalCloseButton');
+        panelModalCloseButton.addEventListener('click', () => {
+          this.closePanelModal();
+        });
+
+        // Close modal when clicking outside the modal content
+        const panelModal = document.getElementById('panelModal');
+        panelModal.addEventListener('click', (event) => {
+          if (event.target === panelModal) {
+            this.closePanelModal();
+          }
+        });
+      }
+
+      renderPanels(panels) {
+        if (!panels || !panels.length) return '';
+        return `
+          <div class="mt-4 space-y-2">
+            ${panels.map(panel => `
+              <div class="bg-gray-50 p-3 rounded-lg cursor-pointer" onclick="window.panelModal.openPanelModal('${this.safeHtml.escape(panel.title)}', '${this.safeHtml.escape(panel.content)}')">
+                <h4 class="font-medium text-sm mb-1">${this.safeHtml.escape(panel.title)}</h4>
+                <p class="text-sm text-gray-600">${this.safeHtml.escape(panel.content)}</p>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      openPanelModal(title, content) {
+        const modal = document.getElementById('panelModal');
+        const modalContent = document.getElementById('panelModalContent');
+        modalContent.innerHTML = `
+          <h3 class="text-lg font-semibold mb-2">${title}</h3>
+          <p class="text-sm">${content}</p>
+        `;
+        modal.classList.remove('hidden');
+      }
+
+      closePanelModal() {
+        const modal = document.getElementById('panelModal');
+        modal.classList.add('hidden');
+      }
+
+      // ... (rest of your JavaScript code) ...
+    
+  </script>
 
 
 
@@ -614,7 +727,59 @@ async loadVideos() {
     document.addEventListener('DOMContentLoaded', () => {
       new PublicVideoPortal();
     });
-    </script>
+    
+      // ... (existing JavaScript code) ...
+
+      async init() {
+        // ... (existing init code) ...
+
+        // Close modal when clicking on close button
+        const panelModalCloseButton = document.getElementById('panelModalCloseButton');
+        panelModalCloseButton.addEventListener('click', () => {
+          this.closePanelModal();
+        });
+
+        // Close modal when clicking outside the modal content
+        const panelModal = document.getElementById('panelModal');
+        panelModal.addEventListener('click', (event) => {
+          if (event.target === panelModal) {
+            this.closePanelModal();
+          }
+        });
+      }
+
+      renderPanels(panels) {
+        if (!panels || !panels.length) return '';
+        return `
+          <div class="mt-4 space-y-2">
+            ${panels.map(panel => `
+              <div class="bg-gray-50 p-3 rounded-lg cursor-pointer" onclick="window.panelModal.openPanelModal('${this.safeHtml.escape(panel.title)}', '${this.safeHtml.escape(panel.content)}')">
+                <h4 class="font-medium text-sm mb-1">${this.safeHtml.escape(panel.title)}</h4>
+                <p class="text-sm text-gray-600">${this.safeHtml.escape(panel.content)}</p>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      openPanelModal(title, content) {
+        const modal = document.getElementById('panelModal');
+        const modalContent = document.getElementById('panelModalContent');
+        modalContent.innerHTML = `
+          <h3 class="text-lg font-semibold mb-2">${title}</h3>
+          <p class="text-sm">${content}</p>
+        `;
+        modal.classList.remove('hidden');
+      }
+
+      closePanelModal() {
+        const modal = document.getElementById('panelModal');
+        modal.classList.add('hidden');
+      }
+
+      // ... (rest of your JavaScript code) ...
+    
+  </script>
 
 
 
@@ -630,4 +795,5 @@ async loadVideos() {
 </footer>
 </body>
 </html>
+
 

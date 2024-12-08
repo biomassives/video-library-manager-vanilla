@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApproVideo 1 - Updated DIY Solutions Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Styles for accordion and sliders */
+    .accordion-item { border-bottom: 1px solid #ddd; }
+    .accordion-header { padding: 8px; cursor: pointer; }
+    .accordion-collapse { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+    .accordion-collapse.show { max-height: 200px; }
+    .slider-container { position: relative; width: 100%; overflow: hidden; }
+    .slides { display: flex; transition: transform 0.5s ease; }
+    .slide { flex-shrink: 0; width: 100%; }
+    .prev, .next {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5); color: white; padding: 8px; cursor: pointer; border: none; border-radius: 50%;
+    }
+    .prev { left: 10px; }
+    .next { right: 10px; }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <header class="bg-green-600 text-white p-4">
+    <h1 class="text-xl font-bold">ApproVideo - Updated Solutions Portal</h1>
+  </header>
+  
+  <main class="p-4">
+    <!-- Slider Section -->
+    <div class="slider-container">
+      <div class="slides">
+        <div class="slide">
+          <img src="https://via.placeholder.com/800x400" alt="Slide 1">
+          <div class="p-4">Slide 1 Content</div>
+        </div>
+        <div class="slide">
+          <img src="https://via.placeholder.com/800x400" alt="Slide 2">
+          <div class="p-4">Slide 2 Content</div>
+        </div>
+      </div>
+      <button class="prev">&lt;</button>
+      <button class="next">&gt;</button>
+    </div>
+
+    <!-- Accordion Section -->
+    <div class="accordion mt-4">
+      <div class="accordion-item">
+        <div class="accordion-header">Video Panel 1</div>
+        <div class="accordion-collapse">
+          <iframe 
+            width="560" 
+            height="315" 
+            src="https://www.youtube.com/embed/example" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen></iframe>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">Video Panel 2</div>
+        <div class="accordion-collapse">
+          <iframe 
+            width="560" 
+            height="315" 
+            src="https://www.youtube.com/embed/example2" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Slider Functionality
+    document.querySelectorAll('.prev, .next').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const slides = document.querySelector('.slides');
+        const slideWidth = slides.querySelector('.slide').offsetWidth;
+        let currentTransform = parseInt(getComputedStyle(slides).transform.split(',')[4]) || 0;
+
+        if (btn.classList.contains('prev')) {
+          currentTransform += slideWidth;
+        } else {
+          currentTransform -= slideWidth;
+        }
+        slides.style.transform = `translateX(${currentTransform}px)`;
+      });
+    });
+
+    // Accordion Functionality
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const collapse = header.nextElementSibling;
+        collapse.classList.toggle('show');
+      });
+    });
+  </script>
+</body>
+</html>

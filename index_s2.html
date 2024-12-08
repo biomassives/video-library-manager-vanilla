@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApproVideo - DIY Solutions Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="theme-transition">
+  <!-- Modal -->
+  <div id="panelModal" class="modal hidden">
+    <div class="bg-white rounded-lg overflow-hidden w-full max-w-4xl relative p-4">
+      <button id="panelModalCloseButton" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+        <i class="fas fa-times text-2xl"></i>
+      </button>
+      <div id="panelModalContent" class="p-4"></div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="theme-transition shadow-lg">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center space-x-3">
+          <svg class="h-8 w-8 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v8m-4-4h8" />
+          </svg>
+          <span class="text-xl font-bold bg-gradient-to-r from-green-500 to-blue-500 bg-clip-text text-transparent">
+            ApproVideo
+          </span>
+        </a>
+        <div class="flex items-center space-x-4">
+          <a href="index.html" class="text-gray-300 hover:text-green-500 px-3 py-2">Home</a>
+          <button id="darkModeToggle" class="p-2 rounded-lg hover:bg-gray-700/50 text-gray-300">
+            <i class="fas fa-sun text-yellow-500 dark:hidden"></i>
+            <i class="fas fa-moon text-blue-400 hidden dark:inline"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Slider -->
+  <div class="hero-slider">
+    <div class="slide active">
+      <img src="https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop" alt="Clean water solutions">
+      <div class="slide-content">
+        <h2 class="text-2xl font-bold mb-2">Clean Water Solutions</h2>
+        <p class="text-lg opacity-90">Discover sustainable technologies</p>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop" alt="Community impact">
+      <div class="slide-content">
+        <h2 class="text-2xl font-bold mb-2">Community Impact</h2>
+        <p class="text-lg opacity-90">Building together</p>
+      </div>
+    </div>
+    <div class="slider-nav">
+      <button class="nav-dot active"></button>
+      <button class="nav-dot"></button>
+      <button class="nav-dot"></button>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    class PublicVideoPortal {
+      constructor() {
+        this.supabase = createClient(
+          'https://vlvbodwrtblttvwnxkjx.supabase.co',
+          'YOUR_ANON_KEY'
+        );
+        this.init();
+      }
+
+      async init() {
+        document.getElementById('panelModalCloseButton').addEventListener('click', () => this.closePanelModal());
+        document.getElementById('panelModal').addEventListener('click', (event) => {
+          if (event.target === document.getElementById('panelModal')) {
+            this.closePanelModal();
+          }
+        });
+      }
+
+      openPanelModal(title, content) {
+        const modal = document.getElementById('panelModal');
+        const modalContent = document.getElementById('panelModalContent');
+        modalContent.innerHTML = `
+          <h3 class="text-lg font-semibold mb-2">${title}</h3>
+          <p class="text-sm">${content}</p>
+        `;
+        modal.classList.remove('hidden');
+      }
+
+      closePanelModal() {
+        const modal = document.getElementById('panelModal');
+        modal.classList.add('hidden');
+      }
+    }
+
+    // Initialize the portal
+    document.addEventListener('DOMContentLoaded', () => new PublicVideoPortal());
+  </script>
+</body>
+</html>
+

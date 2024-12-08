@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApproVideo - DIY Solutions Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="style.css" rel="stylesheet">
+  <style>
+    /* Accordion styles */
+    .accordion-item {
+      @apply border-b border-gray-200;
+    }
+
+    .accordion-header {
+      @apply py-2;
+    }
+
+    .accordion-button {
+      @apply w-full text-left font-medium;
+    }
+
+    .accordion-collapse {
+      @apply transition-max-height duration-300 overflow-hidden;
+    }
+
+    .accordion-collapse.hidden {
+      @apply max-h-0;
+    }
+
+    /* Optional: Arrow icon styles */
+    .arrow-icon {
+      @apply ml-2 transition-transform duration-200;
+    }
+
+    .arrow-icon.rotate-180 {
+      @apply transform rotate-180;
+    }
+
+    /* Video Modal */
+    .video-modal {
+      @apply fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50;
+    }
+  </style>
+</head>
+
+<body class="theme-transition">
+  <nav class="theme-transition shadow-lg">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center space-x-3">
+          <svg class="h-8 w-8 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v8m-4-4h8" />
+          </svg>
+          <span class="text-xl font-bold bg-gradient-to-r from-green-500 to-blue-500 bg-clip-text text-transparent">
+            ApproVideo
+          </span>
+        </a>
+        <div class="flex items-center space-x-4">
+          <a href="index.html" class="text-gray-300 hover:text-green-500 px-3 py-2">Home</a>
+
+          <button id="darkModeToggle" class="p-2 rounded-lg hover:bg-gray-700/50 text-gray-300">
+            <i class="fas fa-sun text-yellow-500 dark:hidden"></i>
+            <i class="fas fa-moon text-blue-400 hidden dark:inline"></i>
+          </button>
+          <div class="relative">
+            <button id="profileButton" class="p-2 rounded-lg hover:bg-gray-700/50">
+              <i class="fas fa-user text-gray-300"></i>
+            </button>
+            <div id="profileDropdown"
+              class="profile-dropdown absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white dark:bg-gray-800">
+              <div class="py-1">
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Sign out</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="hero-slider">
+    <div class="slide active">
+      <img src="https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop"
+        alt="Clean water solutions">
+      <div class="slide-content">
+        <h2 class="text-2xl font-bold mb-2">Clean Water Solutions</h2>
+        <p class="text-lg opacity-90">Discover sustainable technologies</p>
+        <div class="button-group">
+          <a href="/skills" class="cta-button cta-primary">
+            <i class="fas fa-graduation-cap"></i>
+            Drinking Water
+          </a>
+          <a href="/sanitation" class="cta-button cta-secondary">
+            <i class="fas fa-shield-alt"></i>
+            Sanitation
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop" alt="Community impact">
+      <div class="slide-content">
+        <h2 class="text-2xl font-bold mb-2">Community Impact</h2>
+        <p class="text-lg opacity-90">Building together</p>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop" alt="Natural solutions">
+      <div class="slide-content">
+        <h2 class="text-2xl font-bold mb-2">Natural Solutions</h2>
+        <p class="text-lg opacity-90">Working with nature</p>
+        <div class="button-group">
+          <a href="/skills" class="cta-button cta-primary">
+            <i class="fas fa-graduation-cap"></i>
+            Drinking water
+          </a>
+          <a href="/sanitation" class="cta-button cta-secondary">
+            <i class="fas fa-shield-alt"></i>
+            Hygiene
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="slider-nav">
+      <button class="nav-dot active"></button>
+      <button class="nav-dot"></button>
+      <button class="nav-dot"></button>
+    </div>
+  </div>
+  <div class="container mx-auto p-4">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+      <button class="category-icon active flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md"
+        data-category="diy">
+        <i class="fas fa-home text-2xl mb-2 text-blue-500"></i>
+        <span class="text-sm text-gray-600">DIY</span>
+      </button>
+      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md"
+        data-category="water">
+        <i class="fas fa-tint text-2xl mb-2 text-cyan-500"></i>
+        <span class="text-sm text-gray-600">Water</span>
+      </button>
+      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md"
+        data-category="waste">
+        <i class="fas fa-recycle text-2xl mb-2 text-green-500"></i>
+        <span class="text-sm text-gray-600">Waste</span>
+      </button>
+      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md"
+        data-category="energy">
+        <i class="fas fa-solar-panel text-2xl mb-2 text-yellow-500"></i>
+        <span class="text-sm text-gray-600">Energy</span>
+      </button>
+      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md"
+        data-category="food">
+        <i class="fas fa-seedling text-2xl mb-2 text-emerald-500"></i>
+        <span class="text-sm text-gray-600">Agriculture</span>
+      </button>
+      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md"
+        data-category="health">
+        <i class="fas fa-heart text-2xl mb-2 text-red-500"></i>
+        <span class="text-sm text-gray-600">Health</span>
+      </button>
+    </div>
+    <div class="flex flex-col md:flex-row gap-4 mb-8">
+      <div class="flex-1">
+        <input type="text" id="searchInput" placeholder="Search solutions..."
+          class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+      </div>
+      <div class="flex-shrink-0">
+        <select id="sortSelect"
+          class="w-full md:w-auto px-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+          <option value="newest">Newest First</option>
+          <option value="popular">Most Popular</option>
+          <option value="az">A-Z</option>
+        </select>
+      </div>
+    </div>
+    <div id="skeletonLoader" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    </div>
+    <div id="videoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+    </div>
+    <div id="infiniteScrollTrigger" class="h-20"></div>
+  </div>
+
+  <div id="videoModal" class="video-modal">
+    <div class="bg-white rounded-lg overflow-hidden w-full max-w-4xl relative p-4">
+      <button id="modalCloseButton" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+        <i class="fas fa-times text-2xl"></i>
+      </button>
+      <div class="aspect-video">
+        <iframe id="modalVideoIframe" class="w-full h-full" src="" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Theme Toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const html = document.documentElement;
+
+    function updateTheme(isDark) {
+      html.classList.toggle('dark', isDark);
+      localStorage.setItem('darkMode', isDark);
+    }
+
+    // Check saved preference
+    if (localStorage.getItem('darkMode') === 'true' ||
+      (!localStorage.getItem('darkMode') &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      updateTheme(true);
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+      updateTheme(!html.classList.contains('dark'));
+    });
+
+    // Profile Dropdown
+    const profileButton = document.getElementById('profileButton');
+    const profileDropdown = document.getElementById('profileDropdown');
+
+    profileButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      profileDropdown.classList.toggle('dropdown-active');
+    });
+
+    document.addEventListener('click', () => {
+      profileDropdown.classList.remove('dropdown-active');
+    });
+
+    // Slider Functionality
+    document.addEventListener('DOMContentLoaded', () => {
+      const slides = document.querySelectorAll('.slide');
+      const dots = document.querySelectorAll('.nav-dot');
+      let currentSlide = 0;
+      let interval;
+
+      function showSlide(n) {
+        slides[currentSlide].classList.remove('active');
+        dots[currentSlide].classList.remove('active');
+
+        currentSlide = (n + slides.length) % slides.length;
+
+        slides[currentSlide].classList.add('active');
+        dots[currentSlide].classList.add('active');
+      }
+
+      function startAutoSlide() {
+        interval = setInterval(() => showSlide(currentSlide + 1), 5000);
+      }
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          clearInterval(interval);
+          showSlide(index);
+          startAutoSlide();
+        });
+      });
+
+      startAutoSlide();
+
+      const slider = document.querySelector('.hero-slider');
+      slider.addEventListener('mouseenter', () => clearInterval(interval));
+      slider.addEventListener('mouseleave', startAutoSlide);
+    });
+  </script>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    import safeHtml from './safeHtmlUtils.js';
+
+    class PublicVideoPortal {
+      constructor() {
+        this.supabase = createClient(
+          'https://vlvbodwrtblttvwnxkjx.supabase.co',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg'
+        );
+        this.safeHtml = safeHtml;
+        this.currentPage = 0;
+        this.isLoading = false;
+        this.hasMore = true;
+        this.BATCH_SIZE = 12;
+        this.selectedCategory = null;
+        this.searchQuery = '';
+
+        this.init();
+      }
+
+      async init() {
+        this.setupEventListeners();
+        this.showSkeletonLoader();
+        await this.loadVideos();
+
+        const modalCloseButton = document.getElementById('modalCloseButton');
+        modalCloseButton.addEventListener('click', () => {
+          this.closeVideoModal();
+        });
+
+        const modal = document.getElementById('videoModal');
+        modal.addEventListener('click', (event) => {
+          if (event.target === modal) {
+            this.closeVideoModal();
+          }
+        });
+      }
+
+      setupEventListeners() {
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+          searchInput.addEventListener('input', (e) => {
+            this.searchQuery = e.target.value;
+            this.resetAndReload();
+          });
+        }
+
+        const categoryButtons = document.querySelectorAll('.category-icon');
+        categoryButtons.forEach(button => {
+          button.addEventListener('click', () => this.handleCategoryClick(button));
+        });
+
+        const sortSelect = document.getElementById('sortSelect');
+        if (sortSelect) {
+          sortSelect.addEventListener('change', (e) => {
+            this.handleSort(e.target.value);
+          });
+        }
+
+        document.querySelectorAll('.category-icon').forEach(button => {
+          button.addEventListener('click', () => {
+            this.handleCategoryClick(button);
+          });
+        });
+
+        this.setupInfiniteScroll();
+      }
+
+      resetAndReload() {
+        this.currentPage = 0;
+        this.hasMore = true;

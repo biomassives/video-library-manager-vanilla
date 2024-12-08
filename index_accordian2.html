@@ -1,46 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ApproVideo - DIY Solutions Portal</title>
+  <title>ApproVideo 1  - DIY Solutions Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link href="style.css" rel="stylesheet">
+  <style>
+    /* Accordion styles */
+    .accordion-item {
+      @apply border-b border-gray-200;
+    }
+
+    .accordion-header {
+      @apply py-2;
+    }
+
+    .accordion-button {
+      @apply w-full text-left font-medium;
+    }
+
+    .accordion-collapse {
+      @apply transition-max-height duration-300 overflow-hidden;
+    }
+
+    .accordion-collapse.hidden {
+      @apply max-h-0;
+    }
+
+    /* Optional: Arrow icon styles */
+    .arrow-icon {
+      @apply ml-2 transition-transform duration-200;
+    }
+
+    .arrow-icon.rotate-180 {
+      @apply transform rotate-180;
+    }
+  </style>
 </head>
+
 <body class="theme-transition">
-  <!-- Navigation -->
   <nav class="theme-transition shadow-lg">
     <div class="max-w-7xl mx-auto px-4">
       <div class="flex items-center justify-between h-16">
-        <!-- Logo -->
         <a href="index.html" class="flex items-center space-x-3">
           <svg class="h-8 w-8 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 8v8m-4-4h8"/>
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v8m-4-4h8" />
           </svg>
           <span class="text-xl font-bold bg-gradient-to-r from-green-500 to-blue-500 bg-clip-text text-transparent">
             ApproVideo
           </span>
         </a>
-
-        <!-- Navigation Items -->
         <div class="flex items-center space-x-4">
           <a href="index.html" class="text-gray-300 hover:text-green-500 px-3 py-2">Home</a>
-          
-          <!-- Theme Toggle -->
           <button id="darkModeToggle" class="p-2 rounded-lg hover:bg-gray-700/50 text-gray-300">
             <i class="fas fa-sun text-yellow-500 dark:hidden"></i>
             <i class="fas fa-moon text-blue-400 hidden dark:inline"></i>
           </button>
-
-          <!-- Profile -->
           <div class="relative">
             <button id="profileButton" class="p-2 rounded-lg hover:bg-gray-700/50">
               <i class="fas fa-user text-gray-300"></i>
             </button>
-            <div id="profileDropdown" class="profile-dropdown absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white dark:bg-gray-800">
+            <div id="profileDropdown"
+              class="profile-dropdown absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white dark:bg-gray-800">
               <div class="py-1">
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
@@ -52,12 +78,10 @@
       </div>
     </div>
   </nav>
-
-  <!-- Hero Slider -->
-
   <div class="hero-slider">
     <div class="slide active">
-      <img src="https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop" alt="Clean water solutions">
+      <img src="https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop"
+        alt="Clean water solutions">
       <div class="slide-content">
         <h2 class="text-2xl font-bold mb-2">Clean Water Solutions</h2>
         <p class="text-lg opacity-90">Discover sustainable technologies</p>
@@ -73,7 +97,6 @@
         </div>
       </div>
     </div>
-
     <div class="slide">
       <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop" alt="Community impact">
       <div class="slide-content">
@@ -81,7 +104,6 @@
         <p class="text-lg opacity-90">Building together</p>
       </div>
     </div>
-
     <div class="slide">
       <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop" alt="Natural solutions">
       <div class="slide-content">
@@ -99,88 +121,65 @@
         </div>
       </div>
     </div>
-
     <div class="slider-nav">
       <button class="nav-dot active"></button>
       <button class="nav-dot"></button>
       <button class="nav-dot"></button>
     </div>
   </div>
-
-
-
-
   <div class="container mx-auto p-4">
-    <!-- Category Navigation -->
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-      <button class="category-icon active flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md" data-category="diy">
+      <button class="category-icon active flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md"
+        data-category="diy">
         <i class="fas fa-home text-2xl mb-2 text-blue-500"></i>
         <span class="text-sm text-gray-600">DIY</span>
       </button>
-      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md" data-category="water">
+      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md"
+        data-category="water">
         <i class="fas fa-tint text-2xl mb-2 text-cyan-500"></i>
         <span class="text-sm text-gray-600">Water</span>
       </button>
-      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md" data-category="waste">
+      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md"
+        data-category="waste">
         <i class="fas fa-recycle text-2xl mb-2 text-green-500"></i>
         <span class="text-sm text-gray-600">Waste</span>
       </button>
-      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md" data-category="energy">
+      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md"
+        data-category="energy">
         <i class="fas fa-solar-panel text-2xl mb-2 text-yellow-500"></i>
         <span class="text-sm text-gray-600">Energy</span>
       </button>
-      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md" data-category="food">
+      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md"
+        data-category="food">
         <i class="fas fa-seedling text-2xl mb-2 text-emerald-500"></i>
         <span class="text-sm text-gray-600">Agriculture</span>
       </button>
-      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md" data-category="health">
+      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md"
+        data-category="health">
         <i class="fas fa-heart text-2xl mb-2 text-red-500"></i>
         <span class="text-sm text-gray-600">Health</span>
       </button>
     </div>
-
-    <!-- Search and Sort Controls -->
     <div class="flex flex-col md:flex-row gap-4 mb-8">
       <div class="flex-1">
-        <input 
-          type="text" 
-          id="searchInput"
-          placeholder="Search solutions..." 
-          class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-        >
+        <input type="text" id="searchInput" placeholder="Search solutions..."
+          class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
       </div>
       <div class="flex-shrink-0">
-        <select 
-          id="sortSelect" 
-          class="w-full md:w-auto px-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-        >
+        <select id="sortSelect"
+          class="w-full md:w-auto px-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
           <option value="newest">Newest First</option>
           <option value="popular">Most Popular</option>
           <option value="az">A-Z</option>
         </select>
       </div>
     </div>
-
-    <!-- Loading Skeleton -->
     <div id="skeletonLoader" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Skeleton cards will be injected here -->
-    </div>
-
-    <!-- Video Grid -->
+      </div>
     <div id="videoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
-      <!-- Videos will be dynamically inserted here -->
-    </div>
-
-    <!-- Infinite Scroll Trigger -->
+      </div>
     <div id="infiniteScrollTrigger" class="h-20"></div>
   </div>
-
-
-
-
-
-
-
   <script>
     // Theme Toggle
     const darkModeToggle = document.getElementById('darkModeToggle');
@@ -193,8 +192,8 @@
 
     // Check saved preference
     if (localStorage.getItem('darkMode') === 'true' ||
-        (!localStorage.getItem('darkMode') && 
-         window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      (!localStorage.getItem('darkMode') &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       updateTheme(true);
     }
 
@@ -205,7 +204,7 @@
     // Profile Dropdown
     const profileButton = document.getElementById('profileButton');
     const profileDropdown = document.getElementById('profileDropdown');
-    
+
     profileButton.addEventListener('click', (e) => {
       e.stopPropagation();
       profileDropdown.classList.toggle('dropdown-active');
@@ -225,9 +224,9 @@
       function showSlide(n) {
         slides[currentSlide].classList.remove('active');
         dots[currentSlide].classList.remove('active');
-        
+
         currentSlide = (n + slides.length) % slides.length;
-        
+
         slides[currentSlide].classList.add('active');
         dots[currentSlide].classList.add('active');
       }
@@ -249,13 +248,9 @@
       const slider = document.querySelector('.hero-slider');
       slider.addEventListener('mouseenter', () => clearInterval(interval));
       slider.addEventListener('mouseleave', startAutoSlide);
-    });
-</script>
-
-
-
-
-<script type="module">
+    });  
+  </script>
+  <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
     import safeHtml from './safeHtmlUtils.js';
 
@@ -295,47 +290,34 @@
         }
 
         const categoryButtons = document.querySelectorAll('.category-icon');
-            categoryButtons.forEach(button => {
-            button.addEventListener('click', () => this.handleCategoryClick(button));
+        categoryButtons.forEach(button => {
+          button.addEventListener('click', () => this.handleCategoryClick(button));
         });
 
-            // Sort select
+        // Sort select
         const sortSelect = document.getElementById('sortSelect');
-            if (sortSelect) {
-                sortSelect.addEventListener('change', (e) => {
-                    this.handleSort(e.target.value);
-            });
+        if (sortSelect) {
+          sortSelect.addEventListener('change', (e) => {
+            this.handleSort(e.target.value);
+          });
         }
 
-                // Category buttons with proper selection and data passing
+        // Category buttons with proper selection and data passing
         document.querySelectorAll('.category-icon').forEach(button => {
-            button.addEventListener('click', () => {
+          button.addEventListener('click', () => {
             this.handleCategoryClick(button);
-            });
+          });
         });
-
-
-   
-
         // Infinite scroll
         this.setupInfiniteScroll();
       }
 
+      resetAndReload() {
+        this.currentPage = 0;
+        this.hasMore = true;
+        this.loadVideos();
+      }
 
-
-
-
-
-  resetAndReload() {
-    this.currentPage = 0;
-    this.hasMore = true;
-    this.loadVideos();
-  }
-
-
- 
-
-      
       setupInfiniteScroll() {
         const observer = new IntersectionObserver(
           (entries) => {
@@ -359,33 +341,32 @@
         const skeletons = Array(6).fill().map(() => this.createSkeletonCard()).join('');
         loader.innerHTML = skeletons;
         loader.classList.remove('hidden');
-        
+
         const videoGrid = document.getElementById('videoGrid');
         if (videoGrid) {
-          videoGrid.classList.add('hidden');
-        }
-      }
+          videoGrid.classList
+          .add('hidden');
+        }
+      }
 
-      createSkeletonCard() {
-        return `
-          <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <div class="w-full h-48 shimmer"></div>
-            <div class="p-4">
-              <div class="h-6 w-3/4 shimmer rounded mb-2"></div>
-              <div class="h-4 w-full shimmer rounded mb-4"></div>
-              <div class="flex gap-2 mb-4">
-                <div class="h-6 w-20 shimmer rounded-full"></div>
-                <div class="h-6 w-20 shimmer rounded-full"></div>
-              </div>
-            </div>
-          </div>
-        `;
-      }
+      createSkeletonCard() {
+        return `
+          <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="w-full h-48 shimmer"></div>
+            <div class="p-4">
+              <div class="h-6 w-3/4 shimmer rounded mb-2"></div>
+              <div class="h-4 w-full shimmer rounded mb-4"></div>
+              <div class="flex gap-2 mb-4">
+                <div class="h-6 w-20 shimmer rounded-full"></div>
+                <div class="h-6 w-20 shimmer rounded-full"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
 
-      
-      
 
-      handleCategoryClick(button) {
+handleCategoryClick(button) {
     // Get the category from the data attribute
     const newCategory = button.dataset.category;
     console.log('Clicking category:', newCategory);
@@ -431,6 +412,8 @@
     // Reset and reload videos
     this.resetAndReload();
 }
+
+
 
 // Update loadVideos to search across both title and category
 async loadVideos() {
@@ -480,86 +463,151 @@ async loadVideos() {
       
 
 
+      renderVideos(videos) {
+        const videoGrid = document.getElementById('videoGrid');
+        if (!videoGrid) return;
 
+        const videoHTML = videos.map(video => this.createVideoCard(video)).join('');
 
+        if (this.currentPage === 0) {
+          videoGrid.innerHTML = videoHTML;
+        } else {
+          videoGrid.insertAdjacentHTML('beforeend', videoHTML);
+        }
 
-      renderVideos(videos) {
-        const videoGrid = document.getElementById('videoGrid');
-        if (!videoGrid) return;
+        // Initialize accordions after rendering videos
+        this.initializeAccordions();
+      }
 
-        const videoHTML = videos.map(video => this.createVideoCard(video)).join('');
-        
-        if (this.currentPage === 0) {
-          videoGrid.innerHTML = videoHTML;
-        } else {
-          videoGrid.insertAdjacentHTML('beforeend', videoHTML);
-        }
+resetAndReload() {
+	    this.currentPage = 0;
+	    this.hasMore = true;
+	    this.loadVideos();
       }
+      
+
+      createVideoCard(video) {
+        const safeVideo = this.safeHtml.escapeObject(video);
+        return `
+          <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <div class="relative aspect-video" id="video-container-${safeVideo.id}">
+              <img 
+                src="https://img.youtube.com/vi/$${safeVideo.youtubeId}/maxresdefault.jpg" 
+                alt="${safeVideo.title}" 
+                class="w-full h-full object-cover" 
+                onerror="this.src='https://img.youtube.com/vi/$${safeVideo.youtubeId}/0.jpg'" 
+              >
+              <button class="play-button absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" data-video-id="${safeVideo.youtubeId}">
+                <i class="fas fa-play text-white text-4xl"></i>
+              </button>
+            </div>
+            <div class="p-4">
+              <h3 class="text-lg font-semibold mb-2 line-clamp-2">${safeVideo.title}</h3>
+              <p class="text-gray-600 text-sm mb-3 line-clamp-2">${safeVideo.description}</p>
+              <div class="flex items-center gap-2 mb-3">
+                <i class="fas ${this.getCategoryIcon(safeVideo.category)} text-gray-500"></i>
+                <span class="text-sm text-gray-600">${safeVideo.category || 'General'}</span>
+              </div>
+
+              <div class="accordion" id="accordion-${safeVideo.id}">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="panels-heading-${safeVideo.id}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panels-${safeVideo.id}" aria-expanded="false" aria-controls="panels-${safeVideo.id}">
+                      Panels <i class="fas fa-chevron-down arrow-icon"></i> 
+                    </button>
+                  </h2>
+                  <div id="panels-${safeVideo.id}" class="accordion-collapse collapse hidden" aria-labelledby="panels-heading-${safeVideo.id}" data-bs-parent="#accordion-${safeVideo.id}">
+                    <div class="accordion-body">
+                      <div id="panels-container-${safeVideo.id}"></div> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-2 mt-3">
+                ${this.renderTags(safeVideo.tags)}
+              </div>
+            </div>
+          </div>
+        `;
+      }
 
 
+renderPanels(panels) {
+    if (!panels || !panels.length) return '';
 
-      resetAndReload() {
-        this.currentPage = 0;
-        this.hasMore = true;
-        const videoGrid = document.getElementById('videoGrid');
-        if (videoGrid) {
-        videoGrid.innerHTML = ''; // Clear existing videos
-        }
-        this.showSkeletonLoader();
-        this.loadVideos();
-     }
+    // Initially show skeleton loader
+    let panelHTML = `
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        ${Array(panels.length).fill(this.createPanelSkeleton()).join('')}
+      </div>
+    `;
 
-
-
-      createVideoCard(video) {
-        const safeVideo = this.safeHtml.escapeObject(video);
-        
-        return `
-          <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-            <div class="relative aspect-video">
-              <img 
-                src="https://img.youtube.com/vi/${safeVideo.youtubeId}/maxresdefault.jpg"
-                alt="${safeVideo.title}"
-                class="w-full h-full object-cover"
-                onerror="this.src='https://img.youtube.com/vi/${safeVideo.youtubeId}/0.jpg'"
-              >
+    // Replace skeleton with actual panels when they load (simulated delay)
+    setTimeout(() => {
+      panelHTML = `
+        <div class="mt-4">
+          <div class="relative w-[380px] h-[200px] overflow-hidden">
+            <div class="slides flex transition-transform duration-500">
+              ${panels.map(panel => `
+                <div class="slide w-full flex-shrink-0 P-3">
+                  <div class="bg-gray-50 p-3 rounded-lg">
+                    <h4 class="font-medium text-grey-700 text-sm mb-1">${this.safeHtml.escape(panel.title)}</h4>
+                    <p class="text-sm text-gray-600">${this.safeHtml.escape(panel.content)}</p>
+                  </div>
+                </div>
+              `).join('')}
             </div>
-            
-            <div class="p-4">
-              <h3 class="text-lg font-semibold mb-2 line-clamp-2">${safeVideo.title}</h3>
-              <p class="text-gray-600 text-sm mb-3 line-clamp-2">${safeVideo.description}</p>
-              
-              <div class="flex items-center gap-2 mb-3">
-                <i class="fas ${this.getCategoryIcon(safeVideo.category)} text-gray-500"></i>
-                <span class="text-sm text-gray-600">${safeVideo.category || 'General'}</span>
-              </div>
-              
-              ${this.renderPanels(safeVideo.panels)}
-              
-              <div class="flex flex-wrap gap-2 mt-3">
-                ${this.renderTags(safeVideo.tags)}
-              </div>
-            </div>
+            <button class="prev absolute top-1/2 left-0 transform -translate-y-1/2 bg-white bg-opacity-75 p-2 rounded-full">◀</button>
+            <button class="next absolute top-1/2 right-0 transform -translate-y-1/2 bg-white bg-opacity-75 p-2 rounded-full">▶</button>
           </div>
-        `;
+        </div>
+      `;
+      const panelsContainer = document.getElementById(`panels-container-${panels[0].video_id}`);
+      if (panelsContainer) {
+        panelsContainer.innerHTML = panelHTML;
+        this.initializeSliders();
       }
+    }, 500);
 
-      renderPanels(panels) {
-        if (!panels || !panels.length) return '';
-        
-        return `
-          <div class="mt-4 space-y-2">
-            ${panels.map(panel => `
-              <div class="bg-gray-50 p-3 rounded-lg">
-                <h4 class="font-medium text-sm mb-1">${this.safeHtml.escape(panel.title)}</h4>
-                <p class="text-sm text-gray-600">${this.safeHtml.escape(panel.content)}</p>
-              </div>
-            `).join('')}
-          </div>
-        `;
-      }
+    return panelHTML;
+  }
 
-      renderTags(tags) {
+
+
+
+  createPanelSkeleton() {
+    return `
+      <div class="bg-gray-200 rounded-lg animate-pulse h-24"></div>
+    `;
+  }
+
+
+
+      initializeAccordions() {
+        const accordionButtons = document.querySelectorAll('.accordion-button');
+        accordionButtons.forEach(button => {
+          button.addEventListener('click', () => {
+            const accordionItem = button.closest('.accordion-item');
+            const accordionContent = accordionItem.querySelector('.accordion-collapse');
+
+            // Toggle the content visibility
+            accordionContent.classList.toggle('hidden');
+
+            // Update button state
+            button.classList.toggle('collapsed');
+            button.setAttribute('aria-expanded', button.classList.contains('collapsed') ? 'false' : 'true');
+
+            // Rotate the arrow icon
+            const icon = button.querySelector('.arrow-icon');
+            if (icon) {
+              icon.classList.toggle('rotate-180');
+            }
+          });
+        });
+      }
+
+renderTags(tags) {
         if (!tags) return '';
         
         const processedTags = Array.isArray(tags) 
@@ -595,39 +643,28 @@ async loadVideos() {
       showError(message) {
         const videoGrid = document.getElementById('videoGrid');
         if (!videoGrid) return;
-
-        videoGrid.innerHTML = `
-          <div class="col-span-full text-center py-8">
-            <div class="text-red-600 mb-2">${this.safeHtml.escape(message)}</div>
-            <button 
-              onclick="location.reload()" 
-              class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-            >
-              Try Again
-            </button>
-          </div>
-        `;
-      }
-    }
-
-    // Initialize when DOM is ready
-    document.addEventListener('DOMContentLoaded', () => {
-      new PublicVideoPortal();
-    });
-    </script>
+      }
+    }
 
 
 
 
-<footer>
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      new PublicVideoPortal();
+    });
 
-	<p>
-	<span>
-	<a href="https://github.com/biomassives/video-library-manager-vanilla">Approvideo source code</a>
-	</span>
-	<p>
 
-</footer>
+
+
+  </script>
+  <footer>
+    <p>
+      <span>
+        <a href="https://github.com/biomassives/video-library-manager-vanilla">Approvideo source code</a>
+      </span>
+    <p>
+  </footer>
 </body>
-</html>
 
+</html>
