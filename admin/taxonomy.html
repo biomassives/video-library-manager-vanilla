@@ -370,6 +370,7 @@ body.dark-mode {
                     <div class="flex items-center space-x-4">
                     <a href="index.html" class="flex items-center space-x-3 group">
                         <svg class="h-10 w-10 text-green-500 transform transition-all duration-300 group-hover:scale-110" 
+                            class="text-gray-600"
                             viewBox="0 0 24 24" 
                             fill="none" 
                             stroke="currentColor" 
@@ -393,17 +394,36 @@ body.dark-mode {
                     <a href="/" 
                         class="nav-link group flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50">
 
-                        <span class="hidden md:inline">Index</span>
+                        <span class="hidden md:inline">
+                                                    
+                        <svg class="w-6 h-6 transform transition-all duration-300 text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                            class="text-gray-600">
+                        <circle class="hover-spin" cx="12" cy="12" r="10"></circle>
+                        <path d="M2 12h20"></path>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+
+                        </span>
                     </a>
 
+ 
+                    <a href="new.html" 
+                        class="nav-link group flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50">
+
+                        <span class="hidden md:inline">
+                                                    
+                        <svg class="w-6 h-6 transform transition-all duration-300 text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 8v8"></path>
+                        <path d="M8 12h8"></path>
+                            </svg>
+
+                        </span>
+                    </a>
+
+
                 
-                <a href="new.html" class="nav-link group flex items-center space-x-2 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:text-green-500 hover:text-gray-900 text-gray-600">
-                <svg class="w-6 h-6 transform transition-all duration-300 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M12 8v8"></path>
-                    <path d="M8 12h8"></path>
-                </svg>	
-                </a>  
+      
 
                     <!-- Dark Mode Toggle -->
                     <button id="darkModeToggle" 
