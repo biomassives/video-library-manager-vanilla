@@ -248,7 +248,14 @@ class VideoManager {
     this.state.update({ loading: true });
     console.log("Loading videos with category filter:", this.state.state.filterCategory);
 
-    let query = this.supabase.from('Video').select('*');
+
+
+  let query = await this.supabase
+    .from('Video')
+    .select('*')
+    .is('status', null);
+
+
 
     if (this.state.state.filterCategory) {
       query = query.eq('category', this.state.state.filterCategory);
