@@ -1,17 +1,17 @@
 
     body { 
-       background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+       background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23000000' fill-opacity='0.06' fill-rule='evenodd'/%3E%3C/svg%3E");
     }
 
     body.dark-mode { 
-       background-color: #1a1a2e;
+       background-color: #d4d0ca;
        color: #e1e1e1;
     }
 
     :root {
       --bg-primary: #ffffff;
       --text-primary: #1a1a1a;
-      --nav-bg: rgba(31, 41, 55, 0.95);
+      --nav-bg: rgba(1, 1, 1, 0.95);
       --nav-text: #ffffff;
     }
 
@@ -43,18 +43,19 @@
       z-index: 50;
     }
 
-#mondrian-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 1rem;
-  height: 100%;
-  opacity: 0;
-  transform: scale(0.95);
-  animation: mondrianFadeIn 0.3s ease-out forwards;
-}
 
 @keyframes mondrianFadeIn {
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+}
   to {
     opacity: 1;
     transform: scale(1);

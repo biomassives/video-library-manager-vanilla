@@ -4,11 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ApproVideo - DIY Solutions Portal</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com" defer></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link href="style.css" rel="stylesheet">
-  <script src="prodnav.js"></script>
+  <link href="style8.css" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
 </head>
 <body class="theme-transition">
   <!-- Navigation -->
@@ -55,6 +57,19 @@
   </nav>
 
 
+
+  <BR><BR><BR>
+    
+  <div class="floating-icons">
+    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Drinking Water"><i class="fas fa-tint fa-3x floating-icon" style="--i:1;"></i></a>
+    <i class="fas fa-recycle fa-3x floating-icon" style="--i:2;"></i>
+    <i class="fas fa-solar-panel fa-3x floating-icon" style="--i:3;"></i>
+    <i class="fas fa-heartbeat fa-3x floating-icon" style="--i:4;"></i>
+</div>
+    
+<div class="header relative overflow-hidden">
+
+<div class="container mx-auto flex justify-center space-x-8">
 
 
 
@@ -199,6 +214,17 @@
       </button>
     </div>
 
+
+
+
+    <div id="mondrian-box" class="relative left-0 right-0 bg-white dark:bg-gray-800 p-4 hidden">
+      <div id="subcategory-links" class="flex flex-wrap justify-center"></div>
+    </div>
+
+
+    
+    <div id="categories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
     <!-- Search and Sort Controls -->
     <div class="flex flex-col md:flex-row gap-4 mb-8">
       <div class="flex-1">
@@ -274,46 +300,8 @@
     document.addEventListener('click', () => {
       profileDropdown.classList.remove('dropdown-active');
     });
-
-    // Slider Functionality
-    document.addEventListener('DOMContentLoaded', () => {
-      const slides = document.querySelectorAll('.slide');
-      const dots = document.querySelectorAll('.nav-dot');
-      let currentSlide = 0;
-      let interval;
-
-      function showSlide(n) {
-        slides[currentSlide].classList.remove('active');
-        dots[currentSlide].classList.remove('active');
-        
-        currentSlide = (n + slides.length) % slides.length;
-        
-        slides[currentSlide].classList.add('active');
-        dots[currentSlide].classList.add('active');
-      }
-
-      function startAutoSlide() {
-        interval = setInterval(() => showSlide(currentSlide + 1), 5000);
-      }
-
-      dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-          clearInterval(interval);
-          showSlide(index);
-          startAutoSlide();
-        });
-      });
-
-      startAutoSlide();
-
-      const slider = document.querySelector('.hero-slider');
-      slider.addEventListener('mouseenter', () => clearInterval(interval));
-      slider.addEventListener('mouseleave', startAutoSlide);
-    });
+ 
 </script>
-
-
-
 
 <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
@@ -383,10 +371,9 @@
 
 
 
+ 
 
-
-
-  resetAndReload() {
+   resetAndReload() {
     this.currentPage = 0;
     this.hasMore = true;
     this.loadVideos();
@@ -490,10 +477,78 @@
     
     // Reset and reload videos
     this.resetAndReload();
+
+
+
+
+    function filterAndSortVideos() {
+    const searchTerm = document.getElementById('search').value.toLowerCase();
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+    const tag = urlParams.get('tag');
+
+    let filteredVideos = window.videoData.filter(video => {
+        // Check if video matches the category or tag (if specified)
+        const categoryMatch = !category || video.categories.some(cat => cat.toLowerCase().includes(category.toLowerCase()));
+        const tagMatch = !tag || video.tags.some(t => t.toLowerCase().includes(tag.toLowerCase()));
+
+        // Check if video matches the search term
+        const searchMatch = 
+            video.title.toLowerCase().includes(searchTerm) ||
+            video.description.toLowerCase().includes(searchTerm) ||
+            video.categories.some(cat => cat.toLowerCase().includes(searchTerm)) ||
+            video.tags.some(t => t.toLowerCase().includes(searchTerm));
+
+        // Return true if the video matches the search term AND (matches category OR tag OR neither are specified)
+        return searchMatch && (categoryMatch || tagMatch || (!category && !tag));
+    });
+
+    // Sort videos by rating (assuming higher rating is better)
+    filteredVideos.sort((a, b) => b.rating - a.rating);
+
+    renderCategories(filteredVideos);
+}
+
+function renderCategories(videos) {
+    const categoriesContainer = document.getElementById('categories');
+    if (videos.length === 0) {
+        categoriesContainer.innerHTML = '<p class="text-center text-gray-500">No videos found. Try adjusting your search.</p>';
+    } else {
+        categoriesContainer.innerHTML = videos.map(renderVideo).join('');
+    }
+    setupVideoDetailListeners();
+}
+function handleVideoDetailClick(e) {
+    if (e.target.classList.contains('video-detail-link')) {
+        e.preventDefault();
+        const videoId = e.target.getAttribute('data-id');
+        const video = window.videoData.find(v => v.id === videoId);
+        if (video) {
+            document.getElementById('video-content').innerHTML = renderVideoDetails(video);
+            document.getElementById('video-detail').classList.remove('hidden');
+            setupPanelNavigation();
+        }
+    }
+}
+
+function closeVideoDetail() {
+    document.getElementById('video-detail').classList.add('hidden');
+}
+
+function handleCategoryClick(e) {
+    e.preventDefault();
+    const category = this.getAttribute('data-category');
+    history.pushState(null, '', `?category=${category}`);
+    filterAndSortVideos();
+        const heroVideo = document.getElementById('hero-video');
+        if (heroVideo) {
+            heroVideo.style.display = 'none';
+        }
+    
 }
 
 // Update loadVideos to search across both title and category
-async loadVideos() {
+async function loadVideos() {
     if (this.isLoading || !this.hasMore) return;
     
     this.isLoading = true;
@@ -543,7 +598,7 @@ async loadVideos() {
 
 
 
-      renderVideos(videos) {
+      function renderVideos(videos) {
         const videoGrid = document.getElementById('videoGrid');
         if (!videoGrid) return;
 
@@ -558,7 +613,7 @@ async loadVideos() {
 
 
 
-      resetAndReload() {
+     function  resetAndReload() {
         this.currentPage = 0;
         this.hasMore = true;
         const videoGrid = document.getElementById('videoGrid');
@@ -571,7 +626,7 @@ async loadVideos() {
 
 
 
-      createVideoCard(video) {
+     function  createVideoCard(video) {
         const safeVideo = this.safeHtml.escapeObject(video);
         
         return `
@@ -604,7 +659,7 @@ async loadVideos() {
         `;
       }
 
-      renderPanels(panels) {
+      function renderPanels(panels) {
         if (!panels || !panels.length) return '';
         
         return `
@@ -619,7 +674,7 @@ async loadVideos() {
         `;
       }
 
-      renderTags(tags) {
+     function  renderTags(tags) {
         if (!tags) return '';
         
         const processedTags = Array.isArray(tags) 
@@ -633,7 +688,7 @@ async loadVideos() {
         `).join('');
       }
 
-      getCategoryIcon(category) {
+      function getCategoryIcon(category) {
         const icons = {
           'diy': 'fa-home',
           'water': 'fa-tint',
@@ -645,14 +700,14 @@ async loadVideos() {
         return icons[category?.toLowerCase()] || 'fa-tag';
       }
 
-      resetAndReload() {
+     function resetAndReload() {
         this.currentPage = 0;
         this.hasMore = true;
         this.showSkeletonLoader();
         this.loadVideos();
       }
 
-      showError(message) {
+     function showError(message) {
         const videoGrid = document.getElementById('videoGrid');
         if (!videoGrid) return;
 
@@ -668,12 +723,156 @@ async loadVideos() {
           </div>
         `;
       }
-    }
+    
 
     // Initialize when DOM is ready
     document.addEventListener('DOMContentLoaded', () => {
       new PublicVideoPortal();
     });
+
+
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+  const mainCategories = document.querySelectorAll('.group > a');
+  const mondrianBox = document.getElementById('mondrian-box');
+  const subcategoryLinks = document.getElementById('subcategory-links');
+  const searchInput = document.getElementById('search');
+  let currentCategory = null;
+
+  function showSubcategories(category) {
+    const dropUpMenu = category.nextElementSibling;
+    const subcategories = dropUpMenu.querySelectorAll('.drop-up-item');
+    
+    subcategoryLinks.innerHTML = '';
+    subcategories.forEach((subcategory, index) => {
+      const link = document.createElement('a');
+      link.href = subcategory.href;
+      link.textContent = subcategory.textContent;
+      link.className = `p-4 m-2 text-center flex items-center justify-center transition-all duration-300 ease-in-out
+                        ${getRandomColor()} ${getRandomSize()}`;
+      link.style.minWidth = '100px';
+      link.setAttribute('data-category', category.getAttribute('data-category'));
+      
+      subcategoryLinks.appendChild(link);
+    });
+    mondrianBox.classList.remove('hidden');
+  }
+
+  function getRandomColor() {
+    const colors = [
+      'bg-red-500', 'bg-blue-500', 'bg-yellow-500', 'bg-green-500',
+      'bg-purple-500', 'bg-pink-500', 'bg-indigo-500', 'bg-teal-500'
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
+  function getRandomSize() {
+    const sizes = ['w-1/4', 'w-1/3', 'w-1/2'];
+    return sizes[Math.floor(Math.random() * sizes.length)];
+  }
+
+  function updateURLAndFilter(category, tag) {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (category) {
+      urlParams.set('category', encodeURIComponent(category));
+    } else {
+      urlParams.delete('category');
+    }
+    if (tag) {
+      urlParams.set('tag', encodeURIComponent(tag));
+    } else {
+      urlParams.delete('tag');
+    }
+    const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+    history.pushState(null, '', newUrl);
+    
+    if (typeof filterAndSortVideos === 'function') {
+      filterAndSortVideos();
+    } else {
+      console.error('filterAndSortVideos function not found');
+    }
+  }
+
+  function clearSearchAndFilter(category, tag) {
+    if (searchInput) {
+      if (category && tag) {
+        searchInput.value = `${tag}`;
+      } else if (category) {
+        searchInput.value = category;
+      } else {
+        searchInput.value = '';
+      }
+    }
+    updateURLAndFilter(category, tag);
+  }
+
+  mainCategories.forEach(category => {
+    category.addEventListener('click', (e) => {
+      e.preventDefault();
+      const categoryValue = category.getAttribute('data-category');
+
+      if (currentCategory === category) {
+        mondrianBox.classList.add('hidden');
+        currentCategory = null;
+        clearSearchAndFilter(); // Clear URL when closing category
+      } else {
+        showSubcategories(category);
+        currentCategory = category;
+        clearSearchAndFilter(categoryValue);
+      }
+    });
+  });
+
+  // Close Mondrian box when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.group') && !e.target.closest('#mondrian-box')) {
+      mondrianBox.classList.add('hidden');
+      currentCategory = null;
+    }
+  });
+
+  // Handle subcategory clicks
+  subcategoryLinks.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') {
+      e.preventDefault();
+      const category = e.target.getAttribute('data-category');
+      const tag = e.target.textContent.trim();
+      
+      clearSearchAndFilter(category, tag);
+
+      mondrianBox.classList.add('hidden');
+      currentCategory = null;
+      console.log(`Searching for subcategory: ${tag} in category: ${category}`);
+    }
+  });
+
+  // Handle clicks on category links outside the header
+  document.querySelectorAll('.category-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const category = link.getAttribute('data-category');
+      clearSearchAndFilter(category);
+    });
+  });
+
+  // Initial load: check URL parameters and set search/filter accordingly
+  window.addEventListener('load', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+    const tag = urlParams.get('tag');
+
+    if (category) {
+      const decodedCategory = decodeURIComponent(category);
+      const decodedTag = tag ? decodeURIComponent(tag) : null;
+      clearSearchAndFilter(decodedCategory, decodedTag);
+    }
+  });
+});
+
+      
+
+
     </script>
 
 

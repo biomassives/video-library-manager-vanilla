@@ -4,140 +4,197 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ApproVideo - DIY Solutions Portal</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com" defer></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link href="style.css" rel="stylesheet">
+  <link href="stylenew.css" rel="stylesheet">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
 </head>
+
 <body class="theme-transition">
-  <!-- Navigation -->
-  <nav class="theme-transition shadow-lg">
-    <div class="max-w-7xl mx-auto px-4">
-      <div class="flex items-center justify-between h-16">
-        <!-- Logo -->
-        <a href="index.html" class="flex items-center space-x-3">
-          <svg class="h-8 w-8 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 8v8m-4-4h8"/>
-          </svg>
-          <span class="text-xl font-bold bg-gradient-to-r from-green-500 to-blue-500 bg-clip-text text-transparent">
-            ApproVideo
-          </span>
-        </a>
-
-        <!-- Navigation Items -->
-        <div class="flex items-center space-x-4">
-          <a href="index.html" class="text-gray-300 hover:text-green-500 px-3 py-2">Home</a>
-          
-          <!-- Theme Toggle -->
-          <button id="darkModeToggle" class="p-2 rounded-lg hover:bg-gray-700/50 text-gray-300">
-            <i class="fas fa-sun text-yellow-500 dark:hidden"></i>
-            <i class="fas fa-moon text-blue-400 hidden dark:inline"></i>
-          </button>
-
-          <!-- Profile -->
-          <div class="relative">
-            <button id="profileButton" class="p-2 rounded-lg hover:bg-gray-700/50">
-              <i class="fas fa-user text-gray-300"></i>
-            </button>
-            <div id="profileDropdown" class="profile-dropdown absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white dark:bg-gray-800">
-              <div class="py-1">
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Sign out</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="border-b border-gray-700">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-center space-x-8 py-4">A P P R O V I D E O</div>
+      <div class="flex justify-center space-x-8 py-4"> 
+        <div class="group">                   
+        <a href="#" class="flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Shelter">                        
+            <i class="fas fa-building mr-2"></i>
+        </a>                    
+        <div class="drop-up-menu absolute hidden group-hover:block bg-white shadow-md rounded-md mt-2 py-2 z-10">                        
+            <a href="#" class="drop-up-item category-link" data-category="Temporary Shelter">Temporary Shelter</a>                        
+            <a href="#" class="drop-up-item category-link" data-category="Permanent Housing">Permanent Housing</a>                        
+            <a href="#" class="drop-up-item category-link" data-category="Insulation">Insulation</a>                        
+            <a href="#" class="drop-up-item category-link" data-category="Ventilation">Ventilation</a>                        
+            <a href="#" class="drop-up-item category-link" data-category="Natural Building">Natural Building</a>                    
+        </div>                
+    </div>                       
+    <div class="group">                    
+        <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Water">                        
+            <i class="fas fa-tint mr-2"></i>                    
+        </a>                    
+        <div class="drop-up-menu">                        
+            <a href="#"  class="drop-up-item category-link" data-category="Water Filtration">Filtration</a>                        
+            <a href="#"  class="drop-up-item category-link" data-category="Urban Water">*Urban</a>                        
+            <a href="#" class="drop-up-item category-link" data-category="Water Purification">Purification</a>                        
+            <a href="#" class="drop-up-item category-link" data-category="Drinking Water Storage">Storage</a>                        
+            <a href="#" class="drop-up-item category-link" data-category="Water Distribution">Distribution</a>                    
+        </div>                
+    </div>                
+    <div class="group">                    
+        <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Waste Management">                        
+            <i class="fas fa-recycle mr-2"></i>                    
+        </a>                    
+        <div class="drop-up-menu">                        
+            <a href="#" class="drop-up-item" data-category="Composting">Composting</a>                        
+            <a href="#" class="drop-up-item" data-category="Recycling">Recycling</a>                        
+            <a href="#" class="drop-up-item" data-category="Upcycling">Upcycling</a>                        
+            <a href="#" class="drop-up-item" data-category="Hygiene">Health & Hygiene</a>                        
+            <a href="#" class="drop-up-item" data-category="Zero Waste">Zero Waste</a>   
+            <a href="#" class="drop-up-item" data-category="Producer Responsibility">Write a Letter:  Producer Responsibility for Plastics</a>  
+            <a href="#" class="drop-up-item" data-category="PFOA/PFOS Elimination">Write a Letter: Eliminate PFOA/PFOS in Food Packaging</a>                 
+        </div>                
+    </div>                           
+                           
+    <div class="group">                    
+        <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Energy">                        
+            <i class="fas fa-solar-panel mr-2"></i>                                            
+        </a>                    
+        <div class="drop-up-menu">                     
+            <a href="#" class="drop-up-item" data-category="Solar">Solar</a>                        
+            <a href="#" class="drop-up-item" data-category="Wind">Wind</a>                        
+            <a href="#" class="drop-up-item" data-category="Hydropower">Hydropower</a>                        
+            <a href="#" class="drop-up-item" data-category="Biogas">Biogas</a>                        
+            <a href="#" class="drop-up-item" data-category="Motors">Motors</a>                        
+            <a href="#" class="drop-up-item" data-category="Wiring">Wiring</a>                        
+            <a href="#" class="drop-up-item" data-category="Compressors">Compressors</a>                        
+            <a href="#" class="drop-up-item" data-category="HVAC">HVAC</a>                        
+            <a href="#" class="drop-up-item" data-category="Plumbing">Plumbing</a>                        
+            <a href="#" class="drop-up-item" data-category="Design">Design</a>                    
+        </div>                
+    </div>                
+    <div class="group">                    
+        <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Appropriate Tech.">                        
+            <i class="fas fa-heartbeat mr-2"></i>                                           
+        </a>                    
+        <div class="drop-up-menu">                        
+            <a href="#" class="drop-up-item" data-category="Agriculture">Agriculture</a>                        
+            <a href="#" class="drop-up-item" data-category="Construction">Construction</a>                        
+            <a href="#" class="drop-up-item" data-category="People">People</a>                        
+            <a href="#" class="drop-up-item" data-category="Healthcare">Healthcare</a>                        
+            <a href="#" class="drop-up-item" data-category="ptsd">PTSD Care</a>                        
+            <a href="#" class="drop-up-item" data-category="field-medicine">Field Medicine</a>                        
+            <a href="#" class="drop-up-item" data-category="Education">Education</a>                    
+        </div>                
+    </div>            
+    <div class="group">                
+        <a href="#" class="flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="ingenuity">                    
+            <i class="fas fa-brain mr-2"></i>                
+        </a>                
+        <div class="drop-up-menu">                    
+            <a href="#" class="drop-up-item">Innovation</a>                    
+            <a href="#" class="drop-up-item" data-category="Creative-Solutions">Creativity</a>                    
+            <a href="#" class="drop-up-item" data-category="artistic">Art</a>                    
+            <a href="#" class="drop-up-item" data-category="cultural">Cultural</a>                    
+            <a href="#" class="drop-up-item" data-category="linguistic">Language</a>                    
+            <a href="#" class="drop-up-item" data-category="Food">Food</a>                    
+            <a href="#" class="drop-up-item" data-category="Moda">Moda/Zeiggeist</a>                    
+            <a href="#" class="drop-up-item" data-category="Peacemaking">Peacemaking</a>                    
+            <a href="#" class="drop-up-item" data-category="Transportation">Transportation</a>                
+        </div>            
     </div>
-  </nav>
 
-  <!-- Hero Slider -->
-
-  <div class="hero-slider">
-    <div class="slide active">
-      <img src="https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop" alt="Clean water solutions">
-      <div class="slide-content">
-        <h2 class="text-2xl font-bold mb-2">Clean Water Solutions</h2>
-        <p class="text-lg opacity-90">Discover sustainable technologies</p>
-        <div class="button-group">
-          <a href="/skills" class="cta-button cta-primary">
-            <i class="fas fa-graduation-cap"></i>
-            Drinking Water
-          </a>
-          <a href="/sanitation" class="cta-button cta-secondary">
-            <i class="fas fa-shield-alt"></i>
-            Sanitation
-          </a>
-        </div>
-      </div>
+    <div class="group">                
+        <a href="#" class="flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Agronomy">                    
+            <i class="fas fa-seedling mr-2"></i>                
+        </a>                
+        <div class="drop-up-menu">                    
+            <a href="#" class="drop-up-item">Integrated Pest Management</a>                    
+            <a href="#" class="drop-up-item" data-category="Soil Improvement">Soil Improvement</a>                    
+            <a href="#" class="drop-up-item" data-category="Cover Cropping">Cover Cropping</a>                    
+            <a href="#" class="drop-up-item" data-category="Diversified Agriculture">Diversified Agriculture</a>                    
+            <a href="#" class="drop-up-item" data-category="Specialty Crops">Specialty Crops</a>                    
+            <a href="#" class="drop-up-item" data-category="Organic Techniques">Organic Techniques</a>                
+        </div>            
     </div>
 
-    <div class="slide">
-      <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop" alt="Community impact">
-      <div class="slide-content">
-        <h2 class="text-2xl font-bold mb-2">Community Impact</h2>
-        <p class="text-lg opacity-90">Building together</p>
-      </div>
-    </div>
 
-    <div class="slide">
-      <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop" alt="Natural solutions">
-      <div class="slide-content">
-        <h2 class="text-2xl font-bold mb-2">Natural Solutions</h2>
-        <p class="text-lg opacity-90">Working with nature</p>
-        <div class="button-group">
-          <a href="/skills" class="cta-button cta-primary">
-            <i class="fas fa-graduation-cap"></i>
-            Drinking water
-          </a>
-          <a href="/sanitation" class="cta-button cta-secondary">
-            <i class="fas fa-shield-alt"></i>
-            Hygiene
-          </a>
-        </div>
-      </div>
-    </div>
 
-    <div class="slider-nav">
-      <button class="nav-dot active"></button>
-      <button class="nav-dot"></button>
-      <button class="nav-dot"></button>
     </div>
   </div>
+  
+  <!-- Hero Section with Mondrian Overlay -->
+  <div class="relative">
+    <!-- Hero Content -->
 
-
-
-
-  <div class="container mx-auto p-4">
-    <!-- Category Navigation -->
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-      <button class="category-icon active flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md" data-category="diy">
-        <i class="fas fa-home text-2xl mb-2 text-blue-500"></i>
-        <span class="text-sm text-gray-600">DIY</span>
-      </button>
-      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md" data-category="water">
-        <i class="fas fa-tint text-2xl mb-2 text-cyan-500"></i>
-        <span class="text-sm text-gray-600">Water</span>
-      </button>
-      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md" data-category="waste">
-        <i class="fas fa-recycle text-2xl mb-2 text-green-500"></i>
-        <span class="text-sm text-gray-600">Waste</span>
-      </button>
-      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md" data-category="energy">
-        <i class="fas fa-solar-panel text-2xl mb-2 text-yellow-500"></i>
-        <span class="text-sm text-gray-600">Energy</span>
-      </button>
-      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md" data-category="food">
-        <i class="fas fa-seedling text-2xl mb-2 text-emerald-500"></i>
-        <span class="text-sm text-gray-600">Agriculture</span>
-      </button>
-      <button class="category-icon flex flex-col items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md" data-category="health">
-        <i class="fas fa-heart text-2xl mb-2 text-red-500"></i>
-        <span class="text-sm text-gray-600">Health</span>
+  
+    <!-- Mondrian Overlay -->
+    <div id="mondrian-overlay" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50">
+      <div class="absolute inset-0 p-8">
+        <div id="mondrian-grid" class="w-full h-full grid gap-4 opacity-0 transform scale-95 transition-all duration-300">
+          <!-- Subcategories will be dynamically inserted here -->
+        </div>
+      </div>
+      <button id="mondrian-close" class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300">
+        <i class="fas fa-times"></i>
       </button>
     </div>
+  </div>
+    
+  <div class="floating-icons">
+    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Drinking Water"><i class="fas fa-tint fa-3x floating-icon" style="--i:1;"></i></a>
+    <i class="fas fa-recycle fa-3x floating-icon" style="--i:2;"></i>
+    <i class="fas fa-solar-panel fa-3x floating-icon" style="--i:3;"></i>
+    <i class="fas fa-heartbeat fa-3x floating-icon" style="--i:4;"></i>
+</div>
+    
+<div class="header relative overflow-hidden">
+
+<div class="container mx-auto flex justify-center space-x-8">
+
+
+
+
+
+       
+            </div>
+
+                
+            <div class="floating-icons">
+                <div class="floating-icons">
+                    <i class="fas fa-tint fa-2x floating-icon" style="--i:1;"></i>
+                    <i class="fas fa-recycle fa-2x floating-icon" style="--i:2;"></i>
+                    <i class="fas fa-solar-panel fa-2x floating-icon" style="--i:3;"></i>
+                    <i class="fas fa-heartbeat fa-2x floating-icon" style="--i:4;"></i>
+                    <i class="fas fa-leaf fa-2x floating-icon" style="--i:5;"></i>
+                    <i class="fas fa-seedling fa-2x floating-icon" style="--i:6;"></i>
+                    <i class="fas fa-water fa-2x floating-icon" style="--i:7;"></i>
+                    <i class="fas fa-wind fa-2x floating-icon" style="--i:8;"></i>
+                </div>
+            </div>
+        
+        <div class="subheader">Appropriate Technology Videos for the DIY Sector</div>
+
+
+
+
+          <div id="mondrian-box" class="relative left-0 right-0  dark:white-200 p-4 hidden">
+            <div id="subcategory-links" class="flex flex-wrap dark:bg-white-700 text-white-500 bg-black-200 justify-center"></div>
+          </div>
+
+        <div id="hero" class=" mb-1">
+        </div>
+    
+    </div>
+
+    <div class="container mx-auto px-4">
+
+
+
+    
+    <div id="categories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
 
     <!-- Search and Sort Controls -->
     <div class="flex flex-col md:flex-row gap-4 mb-8">
@@ -180,8 +237,18 @@
 
 
 
+  
+<script>
 
-  <script>
+getRandomColor() {
+  // Using HSL color space for more vibrant colors
+  const hue = Math.random() * 360;
+  const saturation = Math.random() * 100;
+  const lightness = Math.random() * 100;
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}
+
+
     // Theme Toggle
     const darkModeToggle = document.getElementById('darkModeToggle');
     const html = document.documentElement;
@@ -215,419 +282,191 @@
       profileDropdown.classList.remove('dropdown-active');
     });
 
-    // Slider Functionality
-    document.addEventListener('DOMContentLoaded', () => {
-      const slides = document.querySelectorAll('.slide');
-      const dots = document.querySelectorAll('.nav-dot');
-      let currentSlide = 0;
-      let interval;
 
-      function showSlide(n) {
-        slides[currentSlide].classList.remove('active');
-        dots[currentSlide].classList.remove('active');
-        
-        currentSlide = (n + slides.length) % slides.length;
-        
-        slides[currentSlide].classList.add('active');
-        dots[currentSlide].classList.add('active');
-      }
-
-      function startAutoSlide() {
-        interval = setInterval(() => showSlide(currentSlide + 1), 5000);
-      }
-
-      dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-          clearInterval(interval);
-          showSlide(index);
-          startAutoSlide();
-        });
-      });
-
-      startAutoSlide();
-
-      const slider = document.querySelector('.hero-slider');
-      slider.addEventListener('mouseenter', () => clearInterval(interval));
-      slider.addEventListener('mouseleave', startAutoSlide);
-    });
-</script>
-
-
-
-
-<script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-    import safeHtml from './safeHtmlUtils.js';
-
-    class PublicVideoPortal {
-      constructor() {
-        // Initialize properties
-        this.supabase = createClient(
-          'https://vlvbodwrtblttvwnxkjx.supabase.co',
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg'
-        );
-        this.safeHtml = safeHtml;
-        this.currentPage = 0;
-        this.isLoading = false;
-        this.hasMore = true;
-        this.BATCH_SIZE = 12;
-        this.selectedCategory = null;
-        this.searchQuery = '';
-
-        // Start initialization
-        this.init();
-      }
-
-      async init() {
-        this.setupEventListeners();
-        this.showSkeletonLoader();
-        await this.loadVideos();
-      }
-
-      setupEventListeners() {
-        // Search input
-        const searchInput = document.getElementById('searchInput');
-        if (searchInput) {
-          searchInput.addEventListener('input', (e) => {
-            this.searchQuery = e.target.value;
-            this.resetAndReload();
-          });
-        }
-
-        const categoryButtons = document.querySelectorAll('.category-icon');
-            categoryButtons.forEach(button => {
-            button.addEventListener('click', () => this.handleCategoryClick(button));
-        });
-
-            // Sort select
-        const sortSelect = document.getElementById('sortSelect');
-            if (sortSelect) {
-                sortSelect.addEventListener('change', (e) => {
-                    this.handleSort(e.target.value);
-            });
-        }
-
-                // Category buttons with proper selection and data passing
-        document.querySelectorAll('.category-icon').forEach(button => {
-            button.addEventListener('click', () => {
-            this.handleCategoryClick(button);
-            });
-        });
-
-
-   
-
-        // Infinite scroll
-        this.setupInfiniteScroll();
-      }
-
-
-
-
-
-
-  resetAndReload() {
-    this.currentPage = 0;
-    this.hasMore = true;
-    this.loadVideos();
+const style = document.createElement('style');
+style.textContent = `
+  .mondrian-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    padding: 16px;
+    background: #1a1a1a;
+    border-radius: 8px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
+
+  .mondrian-item {
+    position: relative;
+    height: 80px;
+    border: 3px solid #1a1a1a;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .mondrian-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    z-index: 1;
+  }
+
+  .mondrian-item .title {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 10px;
+    background: rgba(0,0,0,0);
+    transition: all 0.3s ease;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    opacity: 0.9;
+  }
+
+  .mondrian-item:hover .title {
+    background: rgba(0,0,0,0.2);
+    opacity: 1;
+    letter-spacing: 0.5px;
+  }
+
+  /* Size classes */
+  .size-large { grid-column: span 3; }
+  .size-medium { grid-column: span 4; }
+  .size-small { grid-column: span 2; }
+
+  @keyframes ripple {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.3); opacity: 0; }
+  }
+
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+  }
+`;
+document.head.appendChild(style);
+
+
+
+
 
 
  
+</script>
 
-      
-      setupInfiniteScroll() {
-        const observer = new IntersectionObserver(
-          (entries) => {
-            if (entries[0].isIntersecting && !this.isLoading && this.hasMore) {
-              this.loadVideos();
-            }
-          },
-          { threshold: 0.1 }
-        );
+<script type="module" src="index.js"></script>
 
-        const trigger = document.getElementById('infiniteScrollTrigger');
-        if (trigger) {
-          observer.observe(trigger);
-        }
-      }
 
-      showSkeletonLoader() {
-        const loader = document.getElementById('skeletonLoader');
-        if (!loader) return;
-
-        const skeletons = Array(6).fill().map(() => this.createSkeletonCard()).join('');
-        loader.innerHTML = skeletons;
-        loader.classList.remove('hidden');
-        
-        const videoGrid = document.getElementById('videoGrid');
-        if (videoGrid) {
-          videoGrid.classList.add('hidden');
-        }
-      }
-
-      createSkeletonCard() {
-        return `
-          <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <div class="w-full h-48 shimmer"></div>
-            <div class="p-4">
-              <div class="h-6 w-3/4 shimmer rounded mb-2"></div>
-              <div class="h-4 w-full shimmer rounded mb-4"></div>
-              <div class="flex gap-2 mb-4">
-                <div class="h-6 w-20 shimmer rounded-full"></div>
-                <div class="h-6 w-20 shimmer rounded-full"></div>
-              </div>
+<footer class="footer-gradient dark:footer-gradient-light text-gray-800 dark:text-gray-200 py-12 mt-12 transition-colors duration-600">
+    <div class="landscape">
+        <img src="images/windmill.svg" alt="Windmill">
+        <img src="images/leaf.svg" alt="Leaf">
+    </div>
+    
+    <div class="container mx-auto px-4">
+        <div class="flex flex-wrap justify-between items-start">
+            <div class="w-full md:w-1/3 mb-8 md:mb-0">
+                <h3 class="footer-title mb-2 text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-500">ApproVideo</h3>
+                <p class="footer-subtitle text-lg">Appropriate Technology Videos for the DIY Sector</p>
+                <div class="mt-4 relative overflow-hidden cursor-pointer" id="mission-reveal">
+                    <p class="text-sm font-semibold">Our Mission (Click to reveal)</p>
+                    <div class="mission-text hidden mt-2 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg transform transition-all duration-500 ease-in-out">
+                        <p>To empower individuals and communities with accessible, sustainable technology solutions through educational videos.</p>
+                    </div>
+                </div>
             </div>
-          </div>
-        `;
-      }
-
-      
-      
-
-      handleCategoryClick(button) {
-    // Get the category from the data attribute
-    const newCategory = button.dataset.category;
-    console.log('Clicking category:', newCategory);
-    
-    // Get search input
-    const searchInput = document.getElementById('searchInput');
-    
-    // Remove active class from all buttons
-    document.querySelectorAll('.category-icon').forEach(btn => {
-        btn.classList.remove('active','bg-gray-100');
-        btn.classList.add('bg-white');
-    });
-    
-    // Toggle category selection
-    if (this.selectedCategory === newCategory) {
-        // If clicking the same category, deselect it
-        this.selectedCategory = null;
-        if (searchInput) {
-            searchInput.value = '';
-            this.searchQuery = '';
-        }
-        console.log('Deselected category, now null');
-    } else {
-        // Select the new category
-        this.selectedCategory = newCategory;
-        button.classList.add('active');
-        // Add visual feedback
-        button.classList.remove('bg-white');
-        button.classList.add('bg-gray-100');
-        // Update search input
-        if (searchInput) {
-            searchInput.value = newCategory;
-            this.searchQuery = newCategory;
-        }
-        console.log('Selected new category:', this.selectedCategory);
-    }
-
-    const videoGrid = document.getElementById('videoGrid');
-    if (videoGrid) {
-        videoGrid.innerHTML = '';
-    }
-    
-    // Reset and reload videos
-    this.resetAndReload();
-}
-
-// Update loadVideos to search across both title and category
-async loadVideos() {
-    if (this.isLoading || !this.hasMore) return;
-    
-    this.isLoading = true;
-    
-    try {
-        // Start building the query
-        let query = this.supabase
-            .from('Video')
-            .select('*, panels(*)');
-
-        // Apply search filter if present - now searches both title and category
-        if (this.searchQuery) {
-            query = query.or(`title.ilike.%${this.searchQuery}%,category.ilike.%${this.searchQuery}%`);
-        }
-
-        // Complete the query with range and order
-        query = query
-            .range(this.currentPage * this.BATCH_SIZE, (this.currentPage + 1) * this.BATCH_SIZE - 1)
-            .order('createdAt', { ascending: false });
-
-        // Execute the query
-        const { data: videos, error } = await query;
-
-        if (error) throw error;
-
-        console.log('Loaded videos:', videos);
-
-        if (videos.length < this.BATCH_SIZE) {
-            this.hasMore = false;
-        }
-
-        this.renderVideos(videos);
-        this.currentPage++;
-        
-    } catch (error) {
-        console.error('Error loading videos:', error);
-        this.showError('Failed to load videos');
-    } finally {
-        this.isLoading = false;
-        document.getElementById('skeletonLoader').classList.add('hidden');
-        document.getElementById('videoGrid').classList.remove('hidden');
-    }
-}
-      
-
-
-
-
-
-      renderVideos(videos) {
-        const videoGrid = document.getElementById('videoGrid');
-        if (!videoGrid) return;
-
-        const videoHTML = videos.map(video => this.createVideoCard(video)).join('');
-        
-        if (this.currentPage === 0) {
-          videoGrid.innerHTML = videoHTML;
-        } else {
-          videoGrid.insertAdjacentHTML('beforeend', videoHTML);
-        }
-      }
-
-
-
-      resetAndReload() {
-        this.currentPage = 0;
-        this.hasMore = true;
-        const videoGrid = document.getElementById('videoGrid');
-        if (videoGrid) {
-        videoGrid.innerHTML = ''; // Clear existing videos
-        }
-        this.showSkeletonLoader();
-        this.loadVideos();
-     }
-
-
-
-      createVideoCard(video) {
-        const safeVideo = this.safeHtml.escapeObject(video);
-        
-        return `
-          <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-            <div class="relative aspect-video">
-              <img 
-                src="https://img.youtube.com/vi/${safeVideo.youtubeId}/maxresdefault.jpg"
-                alt="${safeVideo.title}"
-                class="w-full h-full object-cover"
-                onerror="this.src='https://img.youtube.com/vi/${safeVideo.youtubeId}/0.jpg'"
-              >
+            <div class="w-full md:w-1/3 mb-8 md:mb-0">
+                <h4 class="text-xl font-semibold mb-4 text-blue-600 dark:text-blue-400">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="https://github.com/biomassives/video-library-manager-vanilla" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fab fa-github mr-2"></i>GitHub Repository</a></li>
+                    <li><a href="https://github.com/biomassives/video-library-manager-vanilla/issues" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fab fa-github mr-2"></i>Comments/ Issues </a></li>
+                    <li><a href="https://www.gnu.org/licenses/gpl-3.0.en.html" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fas fa-balance-scale mr-2"></i>GPL v3 License</a></li>
+                    <li><a href="https://scdhub.org" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fas fa-globe mr-2"></i>SCD Hub</a></li>
+                </ul>
             </div>
-            
-            <div class="p-4">
-              <h3 class="text-lg font-semibold mb-2 line-clamp-2">${safeVideo.title}</h3>
-              <p class="text-gray-600 text-sm mb-3 line-clamp-2">${safeVideo.description}</p>
-              
-              <div class="flex items-center gap-2 mb-3">
-                <i class="fas ${this.getCategoryIcon(safeVideo.category)} text-gray-500"></i>
-                <span class="text-sm text-gray-600">${safeVideo.category || 'General'}</span>
-              </div>
-              
-              ${this.renderPanels(safeVideo.panels)}
-              
-              <div class="flex flex-wrap gap-2 mt-3">
-                ${this.renderTags(safeVideo.tags)}
-              </div>
+
+            <div class="w-full md:w-1/3 flex flex-col items-center md:items-end">
+                <button id="sponsor-us" class="footer-button bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white font-bold py-3 px-6 rounded-full transition duration-300 mb-4 transform hover:scale-105">
+                    Donate
+                </button>
+                <button id="be-an-editor" class="footer-button bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-6 rounded-full transform hover:scale-105 transition duration-300">
+                    Share a Video
+                </button>
             </div>
-          </div>
-        `;
-      }
 
-      renderPanels(panels) {
-        if (!panels || !panels.length) return '';
-        
-        return `
-          <div class="mt-4 space-y-2">
-            ${panels.map(panel => `
-              <div class="bg-gray-50 p-3 rounded-lg">
-                <h4 class="font-medium text-sm mb-1">${this.safeHtml.escape(panel.title)}</h4>
-                <p class="text-sm text-gray-600">${this.safeHtml.escape(panel.content)}</p>
-              </div>
-            `).join('')}
-          </div>
-        `;
-      }
 
-      renderTags(tags) {
-        if (!tags) return '';
-        
-        const processedTags = Array.isArray(tags) 
-          ? tags 
-          : tags.toString().replace(/[{}]/g, '').split(',');
-
-        return processedTags.map(tag => `
-          <span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-full text-xs">
-            ${this.safeHtml.escape(tag.trim())}
-          </span>
-        `).join('');
-      }
-
-      getCategoryIcon(category) {
-        const icons = {
-          'diy': 'fa-home',
-          'water': 'fa-tint',
-          'waste': 'fa-recycle',
-          'energy': 'fa-solar-panel',
-          'agriculture': 'fa-seedling',
-          'health': 'fa-heart'
-        };
-        return icons[category?.toLowerCase()] || 'fa-tag';
-      }
-
-      resetAndReload() {
-        this.currentPage = 0;
-        this.hasMore = true;
-        this.showSkeletonLoader();
-        this.loadVideos();
-      }
-
-      showError(message) {
-        const videoGrid = document.getElementById('videoGrid');
-        if (!videoGrid) return;
-
-        videoGrid.innerHTML = `
-          <div class="col-span-full text-center py-8">
-            <div class="text-red-600 mb-2">${this.safeHtml.escape(message)}</div>
-            <button 
-              onclick="location.reload()" 
-              class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-            >
-              Try Again
-            </button>
-          </div>
-        `;
-      }
-    }
-
-    // Initialize when DOM is ready
-    document.addEventListener('DOMContentLoaded', () => {
-      new PublicVideoPortal();
-    });
-    </script>
+        </div>
+        <div class="mt-12 pt-8 border-t border-gray-700 dark:border-gray-300 text-center text-sm">
+            <p>© 2024 ApproVideo. All rights reserved. | <a href="#" class="footer-link hover:text-blue-400 transition duration-300" style="transform: translateX(0px);">Privacy Policy</a> | <a href="#" class="footer-link hover:text-blue-400 transition duration-300" style="transform: translateX(0px);">Terms of Service</a></p>
+            <p class="mt-2">A project of SCD Hub 501(c)(3)</p>
+        </div>
+    </div>
 
 
 
+<div id="sponsor-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Sponsor ApproVideo</h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500">
+                    Help us continue providing valuable educational content on appropriate technology. Your sponsorship makes a difference!
+                </p>
+                <!-- Add sponsorship options or a form here -->
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="close-sponsor-modal" class="px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
-<footer>
-
-	<p>
-	<span>
-	<a href="https://github.com/biomassives/video-library-manager-vanilla">Approvideo source code</a>
-	</span>
-	<p>
-
+<div id="editor-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Share a Video</h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500">
+                    Join our team of editors and help curate high-quality content on appropriate technology. Share your expertise with the world!
+                </p>
+                  <form id="editor-login-form" class="space-y-4">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                        <input type="text" id="username" name="username" required="" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    <div class="sandvpn-logo" style="background-image: url(&quot;moz-extension://1ed09498-89a7-46f7-8fbd-4d831cf53d52/logo192.png&quot;) !important; background-size: 22px 22px !important; cursor: pointer !important; width: 22px !important; height: 22px !important; position: absolute !important; padding: 0px !important; margin-top: auto !important; z-index: 2 !important; animation-name: none; top: -11px !important; left: -34px !important;"></div></div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="password" name="password" required="" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Login
+                        </button>
+                    </div>
+                </form>
+                <p id="login-message" class="mt-2 text-sm text-red-600 hidden"></p>
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="close-editor-modal" class="px-4 py-2 bg-purple-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-300">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 </footer>
+
 </body>
 </html>
-

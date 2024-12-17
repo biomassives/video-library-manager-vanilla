@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Approvideo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+.subcategory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
+.subcategory-grid.hidden {
+  display: none;
+}
+.subcategory-link {
+  display: block;
+  text-decoration: none;
+  color: white;
+  background-color: #6EC1E4;
+  padding: 10px;
+  border: 2px solid black;
+  font-weight: bold;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+.subcategory-link:hover {
+  transform: scale(1.05);
+  background-color: #4A90E2;
+}
+</style>
+
+
+
+</head>
+<body>
+
+
+<!-- Subcategory Display Container -->
+<div id="vibrant-grid-container">
+  <div class="group">
+    <a href="#" class="icon-link" data-category="shelter">
+      <i class="fas fa-building fa-3x"></i>
+    </a>
+    <div class="vibrant-grid hidden" id="shelter-grid">
+      <a href="?category=temporary+shelter" class="vibrant-item shelter">Temporary Shelter</a>
+      <a href="?category=permanent+housing" class="vibrant-item shelter">Permanent Housing</a>
+      <a href="?category=natural+building" class="vibrant-item shelter">Natural Building</a>
+    </div>
+  </div>
+
+  <div class="group">
+    <a href="#" class="icon-link" data-category="water">
+      <i class="fas fa-tint fa-3x"></i>
+    </a>
+    <div class="vibrant-grid hidden" id="water-grid">
+      <a href="?category=water+filtration" class="vibrant-item water">Water Filtration</a>
+      <a href="?category=water+purification" class="vibrant-item water">Water Purification</a>
+      <a href="?category=water+drainage" class="vibrant-item water">Water Drainage</a>
+    </div>
+  </div>
+
+  <div class="group">
+    <a href="#" class="icon-link" data-category="waste">
+      <i class="fas fa-recycle fa-3x"></i>
+    </a>
+    <div class="vibrant-grid hidden" id="waste-grid">
+      <a href="?category=recycling" class="vibrant-item waste">Recycling</a>
+      <a href="?category=composting" class="vibrant-item waste">Composting</a>
+      <a href="?category=upcycling" class="vibrant-item waste">Upcycling</a>
+    </div>
+  </div>
+</div>
+
+<!-- Main Category Icons -->
+<div id="category-icons">
+  <a href="#" class="icon-link" data-category="shelter">
+    <i class="fas fa-building fa-3x"></i>
+  </a>
+  <a href="#" class="icon-link" data-category="water">
+    <i class="fas fa-tint fa-3x"></i>
+  </a>
+  <a href="#" class="icon-link" data-category="waste">
+    <i class="fas fa-recycle fa-3x"></i>
+  </a>
+</div>
+
+<!-- Subcategory Display -->
+<div id="subcategory-container">
+  <div class="subcategory-grid hidden" data-category="shelter">
+    <a href="?category=temporary+shelter" class="subcategory-link">Temporary Shelter</a>
+    <a href="?category=permanent+housing" class="subcategory-link">Permanent Housing</a>
+  </div>
+  <div class="subcategory-grid hidden" data-category="water">
+    <a href="?category=water+filtration" class="subcategory-link">Water Filtration</a>
+    <a href="?category=water+purification" class="subcategory-link">Water Purification</a>
+  </div>
+  <div class="subcategory-grid hidden" data-category="waste">
+    <a href="?category=recycling" class="subcategory-link">Recycling</a>
+    <a href="?category=composting" class="subcategory-link">Composting</a>
+  </div>
+</div>
+
+<!-- Search Results Display -->
+<div id="search-results" class="mt-8">
+  <!-- Results will be dynamically inserted here -->
+</div>
+
+
+
+<!-- Favorites Section -->
+<div id="favorites-section" class="mt-8">
+  <h2 class="text-xl font-bold">Your Favorites</h2>
+  <div id="favorites-container" class="grid gap-4 mt-4"></div>
+</div>
+
+<!-- Recent Visits Section -->
+<div id="recent-section" class="mt-8">
+  <h2 class="text-xl font-bold">Recently Viewed</h2>
+  <div id="recent-container" class="grid gap-4 mt-4"></div>
+</div>
+
+<!-- Teaching Collection Section -->
+<div id="collections-section" class="mt-8">
+  <h2 class="text-xl font-bold">Your Teaching Collections</h2>
+  <div id="collections-container" class="grid gap-4 mt-4"></div>
+</div>
+
+
+<script type="module">
+import localforage from "https://cdn.jsdelivr.net/npm/localforage/+esm";
+
+document.addEventListener("DOMContentLoaded", () => {
+  const searchResultsContainer = document.getElementById("search-results");
+  const favoritesContainer = document.getElementById("favorites-container");
+  const recentContainer = document.getElementById("recent-container");
+  const collectionsContainer = document.getElementById("collections-container");
+
+  // Utility Functions
+  const saveToLocalForage = async (key, value) => {
+    await localforage.setItem(key, value);
+  };
+
+  const getFromLocalForage = async (key) => {
+    return await localforage.getItem(key) || [];
+  };
+
+  // 1. Add to Favorites
+  const handleAddToFavorites = async (item) => {
+    let favorites = await getFromLocalForage("favorites");
+    if (!favorites.some(fav => fav.title === item.title)) {
+      favorites.push(item);
+      await saveToLocalForage("favorites", favorites);
+      displayFavorites(favorites);
+    }
+  };
+
+  const displayFavorites = (favorites) => {
+    favoritesContainer.innerHTML = favorites.map(fav => `
+      <div class="p-4 border rounded bg-yellow-100 shadow-md">
+        <h3 class="text-lg font-bold">${fav.title}</h3>
+        <p>${fav.description}</p>
+      </div>
+    `).join("");
+  };
+
+  // 2. Recent Visits
+  const addRecentVisit = async (category) => {
+    let recent = await getFromLocalForage("recentVisits");
+    if (!recent.includes(category)) {
+      recent.unshift(category);
+      recent = recent.slice(0, 5); // Limit to last 5
+      await saveToLocalForage("recentVisits", recent);
+      displayRecentVisits(recent);
+    }
+  };
+
+  const displayRecentVisits = (recent) => {
+    recentContainer.innerHTML = recent.map(cat => `
+      <div class="p-2 bg-gray-200 rounded text-center font-semibold">
+        ${cat}
+      </div>
+    `).join("");
+  };
+
+  // 3. Teaching Collections
+  const handleAddToCollection = async (item) => {
+    let collections = await getFromLocalForage("collections");
+    collections.push(item);
+    await saveToLocalForage("collections", collections);
+    displayCollections(collections);
+  };
+
+  const displayCollections = (collections) => {
+    collectionsContainer.innerHTML = collections.map((item, index) => `
+      <div class="p-4 border rounded bg-green-100 shadow-md">
+        <h3 class="text-lg font-bold">${item.title}</h3>
+        <p>${item.description}</p>
+        <button class="text-red-500 mt-2" onclick="removeCollection(${index})">Remove</button>
+      </div>
+    `).join("");
+  };
+
+  // Remove collection item
+  window.removeCollection = async (index) => {
+    let collections = await getFromLocalForage("collections");
+    collections.splice(index, 1);
+    await saveToLocalForage("collections", collections);
+    displayCollections(collections);
+  };
+
+  // Search Results Simulation
+  const displaySearchResults = (category) => {
+    const results = [
+      { title: `Solution for ${category}`, description: "Detailed guide for learning." },
+      { title: `${category} Best Practices`, description: "Useful techniques and tips." }
+    ];
+
+    searchResultsContainer.innerHTML = results.map((result, idx) => `
+      <div class="p-4 border rounded bg-blue-100 shadow-md">
+        <h3 class="text-lg font-bold">${result.title}</h3>
+        <p>${result.description}</p>
+        <button class="mt-2 bg-yellow-400 px-2 py-1 rounded" onclick="addFavorite(${idx})">Favorite</button>
+        <button class="mt-2 bg-green-400 px-2 py-1 rounded" onclick="addCollection(${idx})">Add to Collection</button>
+      </div>
+    `).join("");
+
+    // Attach favorite and collection handlers
+    window.addFavorite = (idx) => handleAddToFavorites(results[idx]);
+    window.addCollection = (idx) => handleAddToCollection(results[idx]);
+  };
+
+  // Load initial data
+  (async () => {
+    const favorites = await getFromLocalForage("favorites");
+    const recent = await getFromLocalForage("recentVisits");
+    const collections = await getFromLocalForage("collections");
+
+    displayFavorites(favorites);
+    displayRecentVisits(recent);
+    displayCollections(collections);
+
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get("category");
+    if (category) {
+      addRecentVisit(category);
+      displaySearchResults(category);
+    }
+  })();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const items = document.querySelectorAll(".vibrant-item");
+  const sizes = ["size-small", "size-medium", "size-large"];
+  const themes = ["shelter", "water", "waste", "energy", "tech", "agronomy"];
+
+  items.forEach(item => {
+    const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+    item.classList.add(randomTheme);
+  });
+});
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const iconLinks = document.querySelectorAll(".icon-link");
+
+  iconLinks.forEach(icon => {
+    icon.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      // Hide all grids
+      document.querySelectorAll(".vibrant-grid").forEach(grid => {
+        grid.classList.add("hidden");
+      });
+
+      // Show the relevant grid
+      const category = icon.getAttribute("data-category");
+      const targetGrid = document.getElementById(`${category}-grid`);
+      if (targetGrid) {
+        targetGrid.classList.toggle("hidden");
+      }
+    });
+  });
+});
+
+
+
+
+
+
+
+
+
+</script>
+

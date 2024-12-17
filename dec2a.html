@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApproVideo - DIY Solutions Portal</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="style_new.css" rel="stylesheet"> 
+  <link href="style8_new.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #333;
+      --secondary-color: #f0f0f0;
+      --text-color: #fff;
+      --background-color: #222;
+    }
+
+    .dark-mode {
+      --primary-color: #f0f0f0;
+      --secondary-color: #333;
+      --text-color: #000;
+      --background-color: #fff;
+    }
+
+    /* Funky Mondrian Grid Styles */
+    .mondrian-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr); /* Adjust columns as needed */
+      gap: 1rem;
+      padding: 2rem;
+      background: #1a1a1a;
+      border-radius: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .mondrian-item {
+      position: relative;
+      height: 120px; /* Adjust height as needed */
+      border: 4px solid #1a1a1a;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      /* Random Tile Sizes */
+      grid-column: span 2; 
+      grid-row: span 1; 
+    }
+
+    .mondrian-item:nth-child(3n) { 
+      grid-column: span 3; 
+    }
+
+    .mondrian-item:nth-child(5n) { 
+      grid-row: span 2; 
+    }
+
+    .mondrian-item:hover {
+      transform: scale(1.05) rotate(3deg); /* Slight tilt on hover */
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      z-index: 1;
+    }
+
+    .mondrian-item .title {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 1.4rem;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.1); /* Semi-transparent background */
+      transition: all 0.3s ease;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .mondrian-item:hover .title {
+      background: rgba(0, 0, 0, 0.3); /* More pronounced on hover */
+      letter-spacing: 0.5px;
+    }
+
+    /* Add more styles for different sizes, colors, etc. */
+  </style>
+</head>
+<body class="theme-transition">
+  </body>
+</html>

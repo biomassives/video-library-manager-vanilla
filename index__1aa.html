@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApproVideo - DIY Solutions Portal</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="style.css" rel="stylesheet">
+  <link href="style8.css" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
+</head>
+<body class="theme-transition">
+  
+  
+  
+<!-- Main Navigation -->
+<nav class="bg-gradient-to-r from-green-600 via-teal-600 to-blue-600 p-4">
+  <div class="container mx-auto flex justify-between items-center">
+    <a href="#" class="text-white text-2xl font-bold flex items-center space-x-2">
+      <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 8v8m-4-4h8"/>
+      </svg>
+      <span>ApproVideo</span>
+    </a>
+    <div class="flex items-center space-x-2">
+      <button id="darkModeToggle" class="text-white p-2 hover:bg-white/10 rounded-lg">
+        <i class="fas fa-sun text-xl dark:hidden"></i>
+        <i class="fas fa-moon text-xl hidden dark:inline"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Category Icons Bar -->
+<div class="bg-gray-900 border-b border-gray-700">
+  <div class="container mx-auto px-4">
+    <div class="flex justify-center space-x-12 py-6">
+      <button class="category-icon-btn group" data-category="water">
+        <i class="fas fa-tint fa-2x text-blue-500 group-hover:scale-110 transition-transform"></i>
+        <span class="block text-xs text-gray-400 mt-2">Water</span>
+      </button>
+      <button class="category-icon-btn group" data-category="waste">
+        <i class="fas fa-recycle fa-2x text-green-500 group-hover:scale-110 transition-transform"></i>
+        <span class="block text-xs text-gray-400 mt-2">Waste</span>
+      </button>
+      <!-- Add other category buttons similarly -->
+    </div>
+  </div>
+</div>
+
+<!-- Hero Section -->
+<div class="relative">
+  <!-- Main Hero -->
+  <div id="hero" class="bg-gradient-to-b from-gray-900 to-gray-800 text-white py-24">
+    <div class="container mx-auto text-center px-4">
+      <h1 class="text-4xl font-bold mb-4">Appropriate Technology Videos for the DIY Sector</h1>
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+        Explore sustainable solutions and practical knowledge for self-reliant living
+      </p>
+    </div>
+  </div>
+
+  <!-- Mondrian Overlay -->
+  <div id="mondrian-overlay" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50">
+    <div class="absolute inset-0 p-8">
+      <div id="mondrian-grid" class="w-full h-full grid gap-4 opacity-0 transform scale-95 transition-all duration-300">
+        <!-- Subcategories will be dynamically inserted here -->
+      </div>
+    </div>
+    <button id="mondrian-close" class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Video Content Area -->
+<div class="container mx-auto px-4 py-8">
+  <!-- Search and Sort Controls -->
+  <div class="flex flex-col md:flex-row gap-4 mb-8">
+    <div class="flex-1">
+      <input 
+        type="text" 
+        id="searchInput"
+        placeholder="Search solutions..." 
+        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+      >
+    </div>
+    <div class="flex-shrink-0">
+      <select 
+        id="sortSelect" 
+        class="w-full md:w-auto px-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+      >
+        <option value="newest">Newest First</option>
+        <option value="popular">Most Popular</option>
+        <option value="az">A-Z</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Video Grid and Loading States -->
+  <div id="videoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Videos will be dynamically inserted here -->
+  </div>
+</div>
+
+
+<div class="container mx-auto flex justify-center space-x-8">
+
+
+
+<div class="group">                    
+                    <a href="#" class="flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Shelter">                        
+                        <i class="fas fa-home mr-2"></i>                    
+                    </a>                    
+                    <div class="drop-up-menu absolute hidden group-hover:block bg-white shadow-md rounded-md mt-2 py-2 z-10">                        
+                        <a href="#" class="drop-up-item category-link" data-category="Temporary Shelter">Temporary Shelter</a>                        
+                        <a href="#" class="drop-up-item category-link" data-category="Permanent Housing">Permanent Housing</a>                        
+                        <a href="#" class="drop-up-item category-link" data-category="Insulation">Insulation</a>                        
+                        <a href="#" class="drop-up-item category-link" data-category="Ventilation">Ventilation</a>                        
+                        <a href="#" class="drop-up-item category-link" data-category="Natural Building">Natural Building</a>                    
+                    </div>                
+                </div>                       
+                <div class="group">                    
+                    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Water">                        
+                        <i class="fas fa-tint mr-2"></i>                    
+                    </a>                    
+                    <div class="drop-up-menu">                        
+                        <a href="#"  class="drop-up-item category-link" data-category="Water Filtration">Filtration</a>                        
+                        <a href="#"  class="drop-up-item category-link" data-category="Urban Water">*Urban</a>                        
+                        <a href="#" class="drop-up-item category-link" data-category="Water Purification">Purification</a>                        
+                        <a href="#" class="drop-up-item category-link" data-category="Drinking Water Storage">Storage</a>                        
+                        <a href="#" class="drop-up-item category-link" data-category="Water Distribution">Distribution</a>                    
+                    </div>                
+                </div>                
+                <div class="group">                    
+                    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Waste Management">                        
+                        <i class="fas fa-recycle mr-2"></i>                    
+                    </a>                    
+                    <div class="drop-up-menu">                        
+                        <a href="#" class="drop-up-item" data-category="Composting">Composting</a>                        
+                        <a href="#" class="drop-up-item" data-category="Recycling">Recycling</a>                        
+                        <a href="#" class="drop-up-item" data-category="Upcycling">Upcycling</a>                        
+                        <a href="#" class="drop-up-item" data-category="Hygiene">Health & Hygiene</a>                        
+                        <a href="#" class="drop-up-item" data-category="Zero Waste">Zero Waste</a>   
+                        <a href="#" class="drop-up-item" data-category="Producer Responsibility">Write a Letter:  Producer Responsibility for Plastics</a>  
+                        <a href="#" class="drop-up-item" data-category="PFOA/PFOS Elimination">Write a Letter: Eliminate PFOA/PFOS in Food Packaging</a>                 
+                    </div>                
+                </div>                           
+                ApproVideo                       
+                <div class="group">                    
+                    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Energy">                        
+                        <i class="fas fa-solar-panel mr-2"></i>                                            
+                    </a>                    
+                    <div class="drop-up-menu">u                        
+                        <a href="#" class="drop-up-item" data-category="Solar">Solar</a>                        
+                        <a href="#" class="drop-up-item" data-category="Wind">Wind</a>                        
+                        <a href="#" class="drop-up-item" data-category="Hydropower">Hydropower</a>                        
+                        <a href="#" class="drop-up-item" data-category="Biogas">Biogas</a>                        
+                        <a href="#" class="drop-up-item" data-category="Motors">Motors</a>                        
+                        <a href="#" class="drop-up-item" data-category="Wiring">Wiring</a>                        
+                        <a href="#" class="drop-up-item" data-category="Compressors">Compressors</a>                        
+                        <a href="#" class="drop-up-item" data-category="HVAC">HVAC</a>                        
+                        <a href="#" class="drop-up-item" data-category="Plumbing">Plumbing</a>                        
+                        <a href="#" class="drop-up-item" data-category="Design">Design</a>                    
+                    </div>                
+                </div>                
+                <div class="group">                    
+                    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Appropriate Tech.">                        
+                        <i class="fas fa-heartbeat mr-2"></i>                                           
+                    </a>                    
+                    <div class="drop-up-menu">                        
+                        <a href="#" class="drop-up-item" data-category="Agriculture">Agriculture</a>                        
+                        <a href="#" class="drop-up-item" data-category="Construction">Construction</a>                        
+                        <a href="#" class="drop-up-item" data-category="People">People</a>                        
+                        <a href="#" class="drop-up-item" data-category="Healthcare">Healthcare</a>                        
+                        <a href="#" class="drop-up-item" data-category="ptsd">PTSD Care</a>                        
+                        <a href="#" class="drop-up-item" data-category="field-medicine">Field Medicine</a>                        
+                        <a href="#" class="drop-up-item" data-category="Education">Education</a>                    
+                    </div>                
+                </div>            
+                <div class="group">                
+                    <a href="#" class="flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Agronomy">                    
+                        <i class="fas fa-seedling mr-2"></i>                
+                    </a>                
+                    <div class="drop-up-menu">                    
+                        <a href="#" class="drop-up-item">Integrated Pest Management</a>                    
+                        <a href="#" class="drop-up-item" data-category="Soil Improvement">Soil Improvement</a>                    
+                        <a href="#" class="drop-up-item" data-category="Cover Cropping">Cover Cropping</a>                    
+                        <a href="#" class="drop-up-item" data-category="Diversified Agriculture">Diversified Agriculture</a>                    
+                        <a href="#" class="drop-up-item" data-category="Specialty Crops">Specialty Crops</a>                    
+                        <a href="#" class="drop-up-item" data-category="Organic Techniques">Organic Techniques</a>                
+                    </div>            
+                </div>
+
+
+       
+            </div>
+
+                
+            <div class="floating-icons">
+                <div class="floating-icons">
+                    <i class="fas fa-tint fa-2x floating-icon" style="--i:1;"></i>
+                    <i class="fas fa-recycle fa-2x floating-icon" style="--i:2;"></i>
+                    <i class="fas fa-solar-panel fa-2x floating-icon" style="--i:3;"></i>
+                    <i class="fas fa-heartbeat fa-2x floating-icon" style="--i:4;"></i>
+                    <i class="fas fa-leaf fa-2x floating-icon" style="--i:5;"></i>
+                    <i class="fas fa-seedling fa-2x floating-icon" style="--i:6;"></i>
+                    <i class="fas fa-water fa-2x floating-icon" style="--i:7;"></i>
+                    <i class="fas fa-wind fa-2x floating-icon" style="--i:8;"></i>
+                </div>
+            </div>
+        
+        <div class="subheader">Appropriate Technology Videos for the DIY Sector</div>
+
+        <div id="hero" class="aspect-w-16 aspect-h-9 mb-4">
+        </div>
+    
+    
+
+    <div class="container mx-auto px-4">
+
+    <div id="mondrian-box" class="relative left-0 right-0 bg-white dark:bg-gray-800 p-4 hidden">
+      <div id="subcategory-links" class="flex flex-wrap justify-center"></div>
+    </div>
+
+
+    
+    <div id="categories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+    <!-- Search and Sort Controls -->
+    <div class="flex flex-col md:flex-row gap-4 mb-8">
+      <div class="flex-1">
+        <input 
+          type="text" 
+          id="searchInput"
+          placeholder="Search solutions..." 
+          class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+        >
+      </div>
+      <div class="flex-shrink-0">
+        <select 
+          id="sortSelect" 
+          class="w-full md:w-auto px-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+        >
+          <option value="newest">Newest First</option>
+          <option value="popular">Most Popular</option>
+          <option value="az">A-Z</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Loading Skeleton -->
+    <div id="skeletonLoader" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Skeleton cards will be injected here -->
+    </div>
+
+    <!-- Video Grid -->
+    <div id="videoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+      <!-- Videos will be dynamically inserted here -->
+    </div>
+
+    <!-- Infinite Scroll Trigger -->
+    <div id="infiniteScrollTrigger" class="h-20"></div>
+  </div>
+
+
+
+
+
+
+
+  <script>
+    // Theme Toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const html = document.documentElement;
+
+    function updateTheme(isDark) {
+      html.classList.toggle('dark', isDark);
+      localStorage.setItem('darkMode', isDark);
+    }
+
+    // Check saved preference
+    if (localStorage.getItem('darkMode') === 'true' ||
+        (!localStorage.getItem('darkMode') && 
+         window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      updateTheme(true);
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+      updateTheme(!html.classList.contains('dark'));
+    });
+
+    // Profile Dropdown
+    const profileButton = document.getElementById('profileButton');
+    const profileDropdown = document.getElementById('profileDropdown');
+    
+    profileButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      profileDropdown.classList.toggle('dropdown-active');
+    });
+
+    document.addEventListener('click', () => {
+      profileDropdown.classList.remove('dropdown-active');
+    });
+ 
+</script>
+
+<script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    import safeHtml from './safeHtmlUtils.js';
+
+    class PublicVideoPortal {
+  constructor() {
+    // Initialize properties
+    this.supabase = createClient(
+      'https://vlvbodwrtblttvwnxkjx.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg'
+    );
+    this.safeHtml = safeHtml;
+    this.currentPage = 0;
+    this.isLoading = false;
+    this.hasMore = true;
+    this.BATCH_SIZE = 12;
+    this.selectedCategory = null;
+    this.searchQuery = '';
+
+    // Start initialization
+    this.init();
+  }
+
+  async init() {
+    this.setupEventListeners();
+    this.showSkeletonLoader();
+    await this.loadVideos();
+  }
+
+  setupEventListeners() {
+    // Search input
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        this.searchQuery = e.target.value;
+        this.resetAndReload();
+      });
+    }
+
+    const categoryButtons = document.querySelectorAll('.category-icon');
+    categoryButtons.forEach(button => {
+      button.addEventListener('click', () => this.handleCategoryClick(button));
+    });
+
+    // Sort select
+    const sortSelect = document.getElementById('sortSelect');
+    if (sortSelect) {
+      sortSelect.addEventListener('change', (e) => {
+        this.handleSort(e.target.value);
+      });
+    }
+
+    // Infinite scroll
+    this.setupInfiniteScroll();
+  }
+
+  setupInfiniteScroll() {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !this.isLoading && this.hasMore) {
+          this.loadVideos();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const trigger = document.getElementById('infiniteScrollTrigger');
+    if (trigger) {
+      observer.observe(trigger);
+    }
+  }
+
+  showSkeletonLoader() {
+    const loader = document.getElementById('skeletonLoader');
+    if (!loader) return;
+
+    const skeletons = Array(6).fill().map(() => this.createSkeletonCard()).join('');
+    loader.innerHTML = skeletons;
+    loader.classList.remove('hidden');
+    
+    const videoGrid = document.getElementById('videoGrid');
+    if (videoGrid) {
+      videoGrid.classList.add('hidden');
+    }
+  }
+
+  createSkeletonCard() {
+    return `
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="w-full h-48 shimmer"></div>
+        <div class="p-4">
+          <div class="h-6 w-3/4 shimmer rounded mb-2"></div>
+          <div class="h-4 w-full shimmer rounded mb-4"></div>
+          <div class="flex gap-2 mb-4">
+            <div class="h-6 w-20 shimmer rounded-full"></div>
+            <div class="h-6 w-20 shimmer rounded-full"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  async loadVideos() {
+    if (this.isLoading || !this.hasMore) return;
+    
+    this.isLoading = true;
+    
+    try {
+      // Start building the query
+      let query = this.supabase
+        .from('Video')
+        .select('*, panels(*)');
+
+      // Apply search filter if present
+      if (this.searchQuery) {
+        query = query.or(`title.ilike.%${this.searchQuery}%,category.ilike.%${this.searchQuery}%`);
+      }
+
+      // Complete the query with range and order
+      query = query
+        .range(this.currentPage * this.BATCH_SIZE, (this.currentPage + 1) * this.BATCH_SIZE - 1)
+        .order('createdAt', { ascending: false });
+
+      const { data: videos, error } = await query;
+
+      if (error) throw error;
+
+      if (videos.length < this.BATCH_SIZE) {
+        this.hasMore = false;
+      }
+
+      this.renderVideos(videos);
+      this.currentPage++;
+      
+    } catch (error) {
+      console.error('Error loading videos:', error);
+      this.showError('Failed to load videos');
+    } finally {
+      this.isLoading = false;
+      document.getElementById('skeletonLoader').classList.add('hidden');
+      document.getElementById('videoGrid').classList.remove('hidden');
+    }
+  }
+
+  renderVideos(videos) {
+    const videoGrid = document.getElementById('videoGrid');
+    if (!videoGrid) return;
+
+    const videoHTML = videos.map(video => this.createVideoCard(video)).join('');
+    
+    if (this.currentPage === 0) {
+      videoGrid.innerHTML = videoHTML;
+    } else {
+      videoGrid.insertAdjacentHTML('beforeend', videoHTML);
+    }
+  }
+
+  resetAndReload() {
+    this.currentPage = 0;
+    this.hasMore = true;
+    const videoGrid = document.getElementById('videoGrid');
+    if (videoGrid) {
+      videoGrid.innerHTML = ''; // Clear existing videos
+    }
+    this.showSkeletonLoader();
+    this.loadVideos();
+  }
+
+  createVideoCard(video) {
+    const safeVideo = this.safeHtml.escapeObject(video);
+    
+    return `
+      <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+        <div class="relative aspect-video">
+          <img 
+            src="https://img.youtube.com/vi/${safeVideo.youtubeId}/maxresdefault.jpg"
+            alt="${safeVideo.title}"
+            class="w-full h-full object-cover"
+            onerror="this.src='https://img.youtube.com/vi/${safeVideo.youtubeId}/0.jpg'"
+          >
+        </div>
+        
+        <div class="p-4">
+          <h3 class="text-lg font-semibold mb-2 line-clamp-2">${safeVideo.title}</h3>
+          <p class="text-gray-600 text-sm mb-3 line-clamp-2">${safeVideo.description}</p>
+          
+          <div class="flex items-center gap-2 mb-3">
+            <i class="fas ${this.getCategoryIcon(safeVideo.category)} text-gray-500"></i>
+            <span class="text-sm text-gray-600">${safeVideo.category || 'General'}</span>
+          </div>
+          
+          ${this.renderPanels(safeVideo.panels)}
+          
+          <div class="flex flex-wrap gap-2 mt-3">
+            ${this.renderTags(safeVideo.tags)}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  renderPanels(panels) {
+    if (!panels || !panels.length) return '';
+    
+    return `
+      <div class="mt-4 space-y-2">
+        ${panels.map(panel => `
+          <div class="bg-gray-50 p-3 rounded-lg">
+            <h4 class="font-medium text-sm mb-1">${this.safeHtml.escape(panel.title)}</h4>
+            <p class="text-sm text-gray-600">${this.safeHtml.escape(panel.content)}</p>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  renderTags(tags) {
+    if (!tags) return '';
+    
+    const processedTags = Array.isArray(tags) 
+      ? tags 
+      : tags.toString().replace(/[{}]/g, '').split(',');
+
+    return processedTags.map(tag => `
+      <span class="px-2 py-1 bg-blue-50 text-blue-600 rounded-full text-xs">
+        ${this.safeHtml.escape(tag.trim())}
+      </span>
+    `).join('');
+  }
+
+  getCategoryIcon(category) {
+    const icons = {
+      'diy': 'fa-home',
+      'water': 'fa-tint',
+      'waste': 'fa-recycle',
+      'energy': 'fa-solar-panel',
+      'agriculture': 'fa-seedling',
+      'health': 'fa-heart'
+    };
+    return icons[category?.toLowerCase()] || 'fa-tag';
+  }
+
+
+  handleCategoryClick(button) {
+  // Get the category from the data attribute
+  const newCategory = button.dataset.category;
+  console.log('Clicking category:', newCategory);
+  
+  // Remove active class from all buttons
+  document.querySelectorAll('.category-icon').forEach(btn => {
+    btn.classList.remove('active', 'bg-gray-100');
+    btn.classList.add('bg-white');
+  });
+  
+  // Toggle category selection
+  if (this.selectedCategory === newCategory) {
+    // If clicking the same category, deselect it
+    this.selectedCategory = null;
+    if (this.searchQuery) {
+      this.searchQuery = '';
+      document.getElementById('searchInput').value = '';
+    }
+    console.log('Deselected category, now null');
+  } else {
+    // Select the new category
+    this.selectedCategory = newCategory;
+    button.classList.add('active', 'bg-gray-100');
+    button.classList.remove('bg-white');
+    this.searchQuery = newCategory;
+    document.getElementById('searchInput').value = newCategory;
+    console.log('Selected new category:', this.selectedCategory);
+  }
+
+  // Reset and reload videos with new category
+  this.resetAndReload();
+}
+
+
+class CategoryNavigation {
+  constructor() {
+    this.currentCategory = null;
+    this.mondrianOverlay = document.getElementById('mondrian-overlay');
+    this.mondrianGrid = document.getElementById('mondrian-grid');
+    this.setupEventListeners();
+  }
+
+  setupEventListeners() {
+    // Category button clicks
+    document.querySelectorAll('.category-icon-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => this.handleCategoryClick(e.currentTarget));
+    });
+
+    // Close button
+    document.getElementById('mondrian-close')?.addEventListener('click', 
+      () => this.hideSubcategories()
+    );
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') this.hideSubcategories();
+    });
+
+    // Close on outside click
+    this.mondrianOverlay?.addEventListener('click', (e) => {
+      if (e.target === this.mondrianOverlay) this.hideSubcategories();
+    });
+  }
+
+  handleCategoryClick(button) {
+    const category = button.dataset.category;
+    
+    // Toggle current category
+    if (this.currentCategory === category) {
+      this.hideSubcategories();
+      this.currentCategory = null;
+      return;
+    }
+
+    this.currentCategory = category;
+    this.showSubcategories(category);
+
+    // Update active state
+    document.querySelectorAll('.category-icon-btn').forEach(btn => {
+      btn.classList.toggle('active', btn === button);
+    });
+  }
+
+  showSubcategories(category) {
+    // Get subcategories from configuration
+    const subcategories = this.getSubcategoriesForCategory(category);
+    
+    // Clear and populate grid
+    this.mondrianGrid.innerHTML = '';
+    this.createMondrianLayout(subcategories);
+
+    // Show overlay with animation
+    this.mondrianOverlay.classList.remove('hidden');
+    requestAnimationFrame(() => {
+      this.mondrianGrid.classList.add('opacity-100', 'scale-100');
+      this.mondrianGrid.classList.remove('opacity-0', 'scale-95');
+    });
+  }
+
+  hideSubcategories() {
+    this.mondrianGrid.classList.remove('opacity-100', 'scale-100');
+    this.mondrianGrid.classList.add('opacity-0', 'scale-95');
+    
+    setTimeout(() => {
+      this.mondrianOverlay.classList.add('hidden');
+    }, 300);
+
+    // Remove active states
+    document.querySelectorAll('.category-icon-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+  }
+
+  createMondrianLayout(subcategories) {
+    const colors = [
+      'bg-red-500', 'bg-blue-500', 'bg-green-500', 
+      'bg-yellow-500', 'bg-purple-500', 'bg-pink-500'
+    ];
+
+    subcategories.forEach((sub, index) => {
+      const div = document.createElement('div');
+      div.className = `${colors[index % colors.length]} rounded-lg p-6 cursor-pointer
+                      hover:brightness-110 transition-all duration-300`;
+      
+      // Apply Mondrian-style layout
+      if (index === 0) div.style.gridColumn = 'span 2';
+      if (index === subcategories.length - 1) div.style.gridColumn = '1 / -1';
+      
+      div.innerHTML = `
+        <h3 class="text-white text-xl font-bold">${sub.name}</h3>
+        <p class="text-white/90 mt-2">${sub.description}</p>
+      `;
+
+      div.addEventListener('click', () => this.handleSubcategoryClick(sub));
+      this.mondrianGrid.appendChild(div);
+    });
+  }
+
+  handleSubcategoryClick(subcategory) {
+    // Handle subcategory selection
+    this.hideSubcategories();
+    // Trigger video filter/load
+    document.dispatchEvent(new CustomEvent('subcategorySelected', {
+      detail: { category: this.currentCategory, subcategory: subcategory.name }
+    }));
+  }
+}
+
+
+
+
+
+handleSort(sortValue) {
+  switch (sortValue) {
+    case 'newest':
+      this.sortKey = 'createdAt';
+      this.sortDirection = 'desc';
+      break;
+    case 'popular':
+      this.sortKey = 'views';
+      this.sortDirection = 'desc';
+      break;
+    case 'az':
+      this.sortKey = 'title';
+      this.sortDirection = 'asc';
+      break;
+  }
+  this.resetAndReload();
+}
+
+
+  showError(message) {
+    const videoGrid = document.getElementById('videoGrid');
+    if (!videoGrid) return;
+
+    videoGrid.innerHTML = `
+      <div class="col-span-full text-center py-8">
+        <div class="text-red-600 mb-2">${this.safeHtml.escape(message)}</div>
+        <button 
+          onclick="location.reload()" 
+          class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+        >
+          Try Again
+        </button>
+      </div>
+    `;
+  }
+}
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize PublicVideoPortal
+  new PublicVideoPortal();
+  
+  // Setup category navigation
+  const mainCategories = document.querySelectorAll('.group > a');
+  const mondrianBox = document.getElementById('mondrian-box');
+  const subcategoryLinks = document.getElementById('subcategory-links');
+  const searchInput = document.getElementById('searchInput');
+  let currentCategory = null;
+
+  // 1. Category Navigation Events
+  mainCategories.forEach(category => {
+    category.addEventListener('click', (e) => {
+      e.preventDefault();
+      const categoryValue = category.getAttribute('data-category');
+      
+      // Toggle category selection
+      if (currentCategory === category) {
+        mondrianBox.classList.add('hidden');
+        currentCategory = null;
+      } else {
+        // Show subcategories for selected category
+        const dropUpMenu = category.nextElementSibling;
+        const subcategories = dropUpMenu.querySelectorAll('.drop-up-item');
+        
+        subcategoryLinks.innerHTML = '';
+        subcategories.forEach(subcategory => {
+          subcategoryLinks.appendChild(subcategory.cloneNode(true));
+        });
+        
+        mondrianBox.classList.remove('hidden');
+        currentCategory = category;
+      }
+    });
+  });
+
+  // 2. Search Input Events
+  if (searchInput) {
+    // Real-time search
+    searchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const videoGrid = document.getElementById('videoGrid');
+      
+      // Filter visible videos based on search term
+      const videos = videoGrid.querySelectorAll('.video-card');
+      videos.forEach(video => {
+        const title = video.querySelector('.video-title').textContent.toLowerCase();
+        const description = video.querySelector('.video-description').textContent.toLowerCase();
+        
+        if (title.includes(searchTerm) || description.includes(searchTerm)) {
+          video.classList.remove('hidden');
+        } else {
+          video.classList.add('hidden');
+        }
+      });
+    });
+  }
+
+  // 3. Sort Select Events
+  const sortSelect = document.getElementById('sortSelect');
+  if (sortSelect) {
+    sortSelect.addEventListener('change', (e) => {
+      const sortValue = e.target.value;
+      const videoGrid = document.getElementById('videoGrid');
+      const videos = Array.from(videoGrid.querySelectorAll('.video-card'));
+      
+      videos.sort((a, b) => {
+        const aValue = a.getAttribute(`data-${sortValue}`);
+        const bValue = b.getAttribute(`data-${sortValue}`);
+        return bValue.localeCompare(aValue);
+      });
+      
+      videos.forEach(video => videoGrid.appendChild(video));
+    });
+  }
+
+  // 4. Dark Mode Toggle Events
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  if (darkModeToggle) {
+    darkModeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      const isDark = document.documentElement.classList.contains('dark');
+      localStorage.setItem('darkMode', isDark);
+    });
+  }
+
+  // 5. Profile Dropdown Events
+  const profileButton = document.getElementById('profileButton');
+  const profileDropdown = document.getElementById('profileDropdown');
+  
+  if (profileButton && profileDropdown) {
+    profileButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      profileDropdown.classList.toggle('dropdown-active');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', () => {
+      profileDropdown.classList.remove('dropdown-active');
+    });
+  }
+
+  // 6. Subcategory Link Events
+  subcategoryLinks.addEventListener('click', (e) => {
+    if (e.target.matches('.drop-up-item')) {
+      e.preventDefault();
+      const category = e.target.getAttribute('data-category');
+      updateCategory(category);
+      mondrianBox.classList.add('hidden');
+      currentCategory = null;
+    }
+  });
+
+  // 7. Window Resize Events (for responsive handling)
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      const width = window.innerWidth;
+      document.body.classList.toggle('mobile', width < 768);
+      adjustLayout();
+    }, 250);
+  });
+
+  // 8. Infinite Scroll Events
+  const observerOptions = {
+    root: null,
+    rootMargin: '100px',
+    threshold: 0.1
+  };
+
+  const infiniteScrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        loadMoreContent();
+      }
+    });
+  }, observerOptions);
+
+  const scrollTrigger = document.getElementById('infiniteScrollTrigger');
+  if (scrollTrigger) {
+    infiniteScrollObserver.observe(scrollTrigger);
+  }
+
+  // 9. Video Detail View Events
+  document.addEventListener('click', (e) => {
+    if (e.target.matches('.video-card') || e.target.closest('.video-card')) {
+      const videoId = e.target.closest('.video-card').getAttribute('data-video-id');
+      showVideoDetail(videoId);
+    }
+  });
+
+  // Helper Functions
+  function updateCategory(category) {
+    if (searchInput) {
+      searchInput.value = category;
+      searchInput.dispatchEvent(new Event('input'));
+    }
+  }
+
+  function adjustLayout() {
+    if (mondrianBox && !mondrianBox.classList.contains('hidden')) {
+      const links = subcategoryLinks.querySelectorAll('a');
+      const isMobile = window.innerWidth < 768;
+      
+      links.forEach(link => {
+        link.classList.toggle('w-full', isMobile);
+        link.classList.toggle('w-auto', !isMobile);
+      });
+    }
+  }
+
+  function loadMoreContent() {
+    // Implement your content loading logic here
+    console.log('Loading more content...');
+  }
+
+  function showVideoDetail(videoId) {
+    // Implement your video detail view logic here
+    console.log('Showing video detail for:', videoId);
+  }
+
+  // Initial setup
+  adjustLayout();
+  const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+  document.documentElement.classList.toggle('dark', savedDarkMode);
+
+
+
+  class ErrorHandler {
+  constructor() {
+    this.errorContainer = document.createElement('div');
+    this.errorContainer.className = 'fixed bottom-4 right-4 max-w-sm';
+    document.body.appendChild(this.errorContainer);
+  }
+
+  showError(message, duration = 5000) {
+    const errorElement = document.createElement('div');
+    errorElement.className = 'bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg mb-2 transform transition-all duration-300 translate-x-0';
+    errorElement.textContent = message;
+
+    this.errorContainer.appendChild(errorElement);
+
+    // Fade out and remove after duration
+    setTimeout(() => {
+      errorElement.classList.add('translate-x-full', 'opacity-0');
+      setTimeout(() => errorElement.remove(), 300);
+    }, duration);
+  }
+}
+
+
+
+class LoadingState {
+  constructor() {
+    this.loadingOverlay = document.createElement('div');
+    this.loadingOverlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50';
+    this.loadingOverlay.innerHTML = `
+      <div class="bg-white p-4 rounded-lg shadow-lg flex items-center space-x-3">
+        <div class="animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent"></div>
+        <span class="text-gray-700">Loading...</span>
+      </div>
+    `;
+    document.body.appendChild(this.loadingOverlay);
+  }
+
+  show() {
+    this.loadingOverlay.classList.remove('hidden');
+  }
+
+  hide() {
+    this.loadingOverlay.classList.add('hidden');
+  }
+}
+
+
+
+});
+
+
+</script>
+
+
+</body>
+</html>

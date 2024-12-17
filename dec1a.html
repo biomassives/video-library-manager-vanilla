@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" class="dark"> <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApproVideo - DIY Solutions Portal</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="style.css" rel="stylesheet">
+  <link href="style8.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
+</head>
+
+<body class="theme-transition">
+  <div class="bg-gray-900 dark:bg-gray-100 border-b border-gray-700">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-center space-x-8 py-4">
+        <div class="group">
+          <a href="#" class="flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Shelter">
+            <i class="fas fa-home mr-2"></i> Shelter
+          </a>
+        </div>
+        <div class="group">
+          <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Water">
+            <i class="fas fa-tint mr-2"></i> Water
+          </a>
+        </div>
+        <div class="group">
+          <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Waste Management">
+            <i class="fas fa-recycle mr-2"></i> Waste Management
+          </a>
+        </div>
+        <div class="group">
+          <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Energy">
+            <i class="fas fa-solar-panel mr-2"></i> Energy
+          </a>
+        </div>
+        <div class="group">
+          <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Appropriate Tech.">
+            <i class="fas fa-heartbeat mr-2"></i> Appropriate Tech.
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative">
+    <div id="hero" class="aspect-w-16 aspect-h-9 mb-4 bg-cover bg-center" style="background-image: url('path/to/hero-image.jpg');">
+      <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+      <div class="absolute inset-0 flex items-center justify-center text-white text-3xl font-bold">
+        <h1 class="text-center">Welcome to ApproVideo</h1>
+        <p class="text-center mt-4">Find DIY Solutions for a Better World</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mx-auto px-4">
+    <h2 class="text-2xl font-semibold mb-4">Featured Videos</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+        <div class="relative aspect-video">
+          <img src="path/to/video-thumbnail.jpg" alt="Video Title" class="w-full h-full object-cover">
+        </div>
+        <div class="p-4">
+          <h3 class="text-lg font-semibold mb-2">Video Title 1</h3>
+          <p class="text-gray-600 text-sm mb-3">Video Description 1</p>
+          <div class="flex items-center gap-2 mb-3">
+            <i class="fas fa-tag text-gray-500"></i>
+            <span class="text-sm text-gray-600">Category 1</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="text-2xl font-semibold mb-4 mt-8">Browse Categories</h2>
+    <div id="mondrian-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      </div>
+
+    <h2 class="text-2xl font-semibold mb-4 mt-8">All Videos</h2>
+    <div id="videoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    </div>
+
+  </div>
+
+  <script>
+// Get the Mondrian grid element
+const mondrianGrid = document.getElementById('mondrian-grid');
+
+// Array of colors (adjust as needed)
+const colors = [
+  'bg-blue-500', 'bg-red-500', 'bg-green-500', 'bg-yellow-500',
+  'bg-purple-500', 'bg-orange-500', 'bg-pink-500'
+];
+
+// Array of border colors (adjust as needed)
+const borderColors = [
+  'border-red-600', 'border-blue-600', 'border-green-600',
+  'border-yellow-600', 'border-purple-600'
+];
+
+// Function to generate a random color from the array
+function getRandomColor() {
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+// Function to generate a random border color from the array
+function getRandomBorderColor() {
+  return borderColors[Math.floor(Math.random() * borderColors.length)];
+}
+
+// Function to create a dynamic subcategory card
+function createSubcategoryCard(subcategory) {
+  const card = document.createElement('div');
+  card.classList.add(
+    'bg-white',
+    'dark:bg-gray-800',
+    'p-4',
+    'rounded-lg',
+    'text-center',
+    'hover:bg-gray-100',
+    'dark:hover:bg-gray-700',
+    'transition-colors',
+    getRandomColor()
+  );
+  card.style.border = `4px solid ${getRandomBorderColor()}`; // Add thick border
+
+  const icon = document.createElement('i');
+  icon.classList.add('fas', 'fa-tag', 'fa-2x', 'mb-2');
+
+  const categoryName = document.createElement('p');
+  categoryName.classList.add('text-lg');
+  categoryName.textContent = subcategory;
+
+  card.appendChild(icon);
+  card.appendChild(categoryName);
+
+  return card;
+}
+
+// Sample subcategories (replace with your actual data)
+const subcategories = [
+  'Temporary Shelter',
+  'Permanent Housing',
+  'Insulation',
+  'Ventilation',
+  'Natural Building',
+  'Water Filtration',
+  'Urban Water',
+  'Water Purification',
+  'Drinking Water Storage',
+  'Water Distribution',
+  'Composting',
+  'Recycling',
+  'Upcycling',
+  'Hygiene',
+  'Zero Waste',
+  'Solar',
+  'Wind',
+  'Hydropower',
+  'Biogas',
+  'Motors',
+  'Wiring',
+  'Compressors',
+  'HVAC',
+  'Plumbing',
+  'Design',
+  'Agriculture',
+  'Construction',
+  'People',
+  'Healthcare',
+  'PTSD Care',
+  'Field Medicine',
+  'Education'
+];
+
+// Populate the Mondrian grid with subcategory cards
+subcategories.forEach(subcategory => {
+  const card = createSubcategoryCard(subcategory);
+  mondrianGrid.appendChild(card);
+});
+
+</script>
+</body>
+</html>
