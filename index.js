@@ -39,9 +39,54 @@ class MondrianGrid {
       'default': 'fa-circle'
     };
 
+
     this.createOverlay();
     this.setupEventListeners();
   }
+
+  getRandomColor() {
+    // Using HSL color space for more vibrant colors
+    const hue = Math.random() * 360;
+    const saturation = Math.random() * 50 + 50; // 50-100% for more vibrant colors
+    const lightness = Math.random() * 30 + 35;  // 35-65% for better visibility
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  }
+
+    getRandomSize(min, max) {
+    if (min !== undefined && max !== undefined) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    return this.sizes[Math.floor(Math.random() * this.sizes.length)];
+  }
+
+   getIconForSubcategory(subcategory) {
+    return this.icons[subcategory] || this.icons.default;
+  }
+
+
+  generateGridItems(subcategories) {
+    const grid = document.getElementById('mondrian-grid');
+    grid.innerHTML = '';
+
+    const sizes = ['large', 'medium', 'small'];
+    const colors = ['red', 'blue', 'yellow', 'white', 'black'];
+
+    subcategories.forEach(subcategory => {
+      const sizeClass = sizes[Math.floor(Math.random() * sizes.length)];
+      const colorClass = colors[Math.floor(Math.random() * colors.length)];
+
+      const gridItem = document.createElement('div');
+      gridItem.className = `mondrian-item ${sizeClass} ${colorClass}`;
+      
+      const titleDiv = document.createElement('div');
+      titleDiv.className = 'title';
+      titleDiv.textContent = subcategory;
+      gridItem.appendChild(titleDiv);
+
+      grid.appendChild(gridItem);
+    });
+  }
+
 
   createOverlay() {
     const overlay = document.createElement('div');
@@ -87,9 +132,8 @@ class MondrianGrid {
     });
   }
 
-  getRandomColor() {
-    return this.colors[Math.floor(Math.random() * this.colors.length)];
-  }
+
+
 
   getRandomSize() {
     return this.sizes[Math.floor(Math.random() * this.sizes.length)];
@@ -99,25 +143,6 @@ class MondrianGrid {
     return this.icons[subcategory] || this.icons.default;
   }
 
-
-generateGridItems(subcategories) {
-  const gridContainer = document.getElementById('mondrian-grid');
-  gridContainer.innerHTML = ''; // Clear existing items
-
-  const sizes = ['large', 'medium', 'small'];
-  const colors = ['red', 'blue', 'yellow', 'white', 'black'];
-
-  subcategories.forEach((subcategory, index) => {
-    const sizeClass = sizes[Math.floor(Math.random() * sizes.length)];
-    const colorClass = colors[Math.floor(Math.random() * colors.length)];
-
-    const gridItem = document.createElement('div');
-    gridItem.className = `mondrian-item ${sizeClass} ${colorClass}`;
-    gridItem.innerHTML = `<div class="title">${subcategory}</div>`;
-
-    gridContainer.appendChild(gridItem);
-  });
-}
 
 
 showGridForCategory(category) {
@@ -139,24 +164,7 @@ showGridForCategory(category) {
     }
   }
 
-  generateGridItems(subcategories) {
-    const grid = document.getElementById('mondrian-grid');
-    grid.innerHTML = ''; // Clear previous items
 
-    subcategories.forEach(subcategory => {
-      const gridItem = document.createElement('div');
-      gridItem.textContent = subcategory;
-      gridItem.className = 'grid-item';
-
-      // Apply Mondrian-style random colors and sizes
-      gridItem.style.backgroundColor = this.getRandomColor();
-      gridItem.style.width = `${this.getRandomSize(100, 300)}px`;
-      gridItem.style.height = `${this.getRandomSize(100, 300)}px`;
-      gridItem.style.border = '5px solid #000'; // Mondrian-style black borders
-
-      grid.appendChild(gridItem);
-    });
-  }
 
   hideGrid() {
     const overlay = document.getElementById('mondrian-overlay');
@@ -167,10 +175,6 @@ showGridForCategory(category) {
     }, 300);
   }
 
-  getRandomColor() {
-    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffffff'];
-    return colors[Math.floor(Math.random() * colors.length)];
-  }
 
   getRandomSize(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -492,7 +496,6 @@ handleSort(sortValue) {
     `;
   }
 }
-
 
 
 document.addEventListener('DOMContentLoaded', () => {

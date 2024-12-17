@@ -50,9 +50,11 @@
         <div class="drop-up-menu">                        
             <a href="#" class="drop-up-item" data-category="Composting">Composting</a>                        
             <a href="#" class="drop-up-item" data-category="Recycling">Recycling</a>                        
+            <a href="#" class="drop-up-item" data-category="Plastics">Plastics</a>                        
+            <a href="#" class="drop-up-item" data-category="Composting">Composting</a>                        
+            <a href="#" class="drop-up-item" data-category="remanufacturing">Remanufacturing</a>                        
             <a href="#" class="drop-up-item" data-category="Upcycling">Upcycling</a>                        
             <a href="#" class="drop-up-item" data-category="Hygiene">Health & Hygiene</a>                        
-            <a href="#" class="drop-up-item" data-category="Zero Waste">Zero Waste</a>   
             <a href="#" class="drop-up-item" data-category="Producer Responsibility">Write a Letter:  Producer Responsibility for Plastics</a>  
             <a href="#" class="drop-up-item" data-category="PFOA/PFOS Elimination">Write a Letter: Eliminate PFOA/PFOS in Food Packaging</a>                 
         </div>                
@@ -66,13 +68,23 @@
             <a href="#" class="drop-up-item" data-category="Solar">Solar</a>                        
             <a href="#" class="drop-up-item" data-category="Wind">Wind</a>                        
             <a href="#" class="drop-up-item" data-category="Hydropower">Hydropower</a>                        
-            <a href="#" class="drop-up-item" data-category="Biogas">Biogas</a>                        
-            <a href="#" class="drop-up-item" data-category="Motors">Motors</a>                        
-            <a href="#" class="drop-up-item" data-category="Wiring">Wiring</a>                        
-            <a href="#" class="drop-up-item" data-category="Compressors">Compressors</a>                        
-            <a href="#" class="drop-up-item" data-category="HVAC">HVAC</a>                        
-            <a href="#" class="drop-up-item" data-category="Plumbing">Plumbing</a>                        
-            <a href="#" class="drop-up-item" data-category="Design">Design</a>                    
+            <a href="#" class="drop-up-item" data-category="Biogas">Biogas</a>                                                
+            <a href="#" class="drop-up-item" data-category="H2">H2</a>                                                
+            <a href="#" class="drop-up-item" data-category="Heating">Heating</a>                        
+            <a href="#" class="drop-up-item" data-category="Energy Storage">Storage</a>                        
+            <a href="#" class="drop-up-item" data-category="Energy Transmission">Transmission</a>                        
+            <a href="#" class="drop-up-item" data-category="Shipping">Shipping</a>
+
+            <a href="#" class="drop-up-item" data-category="Plumbing">Plumbing</a>
+
+            <a href="#" class="drop-up-item" data-category="Factories">Factories</a>
+
+            <a href="#" class="drop-up-item" data-category="Motors">Motors & Compressors</a>                        
+            <a href="#" class="drop-up-item" data-category="Wiring">Wiring & Transformers</a>
+            <a href="#" class="drop-up-item" data-category="UPR">Upsream producer responsibility</a>
+
+
+            <a href="#" class="drop-up-item" data-category="Logistics">Planning & Logistics</a>                    
         </div>                
     </div>                
     <div class="group">                    
@@ -80,10 +92,10 @@
             <i class="fas fa-heartbeat mr-2"></i>                                           
         </a>                    
         <div class="drop-up-menu">                        
-            <a href="#" class="drop-up-item" data-category="healthdata">Health Data</a>                        
+            <a href="#" class="drop-up-item" data-category="health data">Health Data</a>                        
             <a href="#" class="drop-up-item" data-category="nutrition">Nutrition</a>                        
-            <a href="#" class="drop-up-item" data-category="prenatal">Prenatal</a>                        
-            <a href="#" class="drop-up-item" data-category="earlyChildhood">Early Childhood</a>                        
+            <a href="#" class="drop-up-item" data-category="pre-natal">Prenatal</a>                        
+            <a href="#" class="drop-up-item" data-category="early childhood">Early Childhood</a>                        
             <a href="#" class="drop-up-item" data-category="climateHealth">Climate & Health</a>                        
             <a href="#" class="drop-up-item" data-category="Healthcare">Healthcare</a>                        
             <a href="#" class="drop-up-item" data-category="ptsd">PTSD Care</a>                        
@@ -241,136 +253,54 @@
     <div id="infiniteScrollTrigger" class="h-20"></div>
   </div>
 
+  
+      <script>
+
+      getRandomColor() {
+        // Using HSL color space for more vibrant colors
+        const hue = Math.random() * 360;
+        const saturation = Math.random() * 100;
+        const lightness = Math.random() * 100;
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+      }
 
 
+          // Theme Toggle
+          const darkModeToggle = document.getElementById('darkModeToggle');
+          const html = document.documentElement;
 
+          function updateTheme(isDark) {
+            html.classList.toggle('dark', isDark);
+            localStorage.setItem('darkMode', isDark);
+          }
+
+          // Check saved preference
+          if (localStorage.getItem('darkMode') === 'true' ||
+              (!localStorage.getItem('darkMode') && 
+               window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            updateTheme(true);
+          }
+
+          darkModeToggle.addEventListener('click', () => {
+            updateTheme(!html.classList.contains('dark'));
+          });
+
+          // Profile Dropdown
+          const profileButton = document.getElementById('profileButton');
+          const profileDropdown = document.getElementById('profileDropdown');
+          
+          profileButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('dropdown-active');
+          });
+
+          document.addEventListener('click', () => {
+            profileDropdown.classList.remove('dropdown-active');
+          });
 
 
   
-<script>
 
-getRandomColor() {
-  // Using HSL color space for more vibrant colors
-  const hue = Math.random() * 360;
-  const saturation = Math.random() * 100;
-  const lightness = Math.random() * 100;
-  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-}
-
-
-    // Theme Toggle
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const html = document.documentElement;
-
-    function updateTheme(isDark) {
-      html.classList.toggle('dark', isDark);
-      localStorage.setItem('darkMode', isDark);
-    }
-
-    // Check saved preference
-    if (localStorage.getItem('darkMode') === 'true' ||
-        (!localStorage.getItem('darkMode') && 
-         window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      updateTheme(true);
-    }
-
-    darkModeToggle.addEventListener('click', () => {
-      updateTheme(!html.classList.contains('dark'));
-    });
-
-    // Profile Dropdown
-    const profileButton = document.getElementById('profileButton');
-    const profileDropdown = document.getElementById('profileDropdown');
-    
-    profileButton.addEventListener('click', (e) => {
-      e.stopPropagation();
-      profileDropdown.classList.toggle('dropdown-active');
-    });
-
-    document.addEventListener('click', () => {
-      profileDropdown.classList.remove('dropdown-active');
-    });
-
-
-const style = document.createElement('style');
-style.textContent = `
-  .mondrian-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 8px;
-    padding: 16px;
-    background: #1a1a1a;
-    border-radius: 8px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .mondrian-item {
-    position: relative;
-    height: 80px;
-    border: 3px solid #1a1a1a;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    overflow: hidden;
-  }
-
-  .mondrian-item:hover {
-    transform: scale(1.02);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    z-index: 1;
-  }
-
-  .mondrian-item .title {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 600;
-    font-size: 1.2rem;
-    text-align: center;
-    padding: 10px;
-    background: rgba(0,0,0,0);
-    transition: all 0.3s ease;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-    opacity: 0.9;
-  }
-
-  .mondrian-item:hover .title {
-    background: rgba(0,0,0,0.2);
-    opacity: 1;
-    letter-spacing: 0.5px;
-  }
-
-  /* Size classes */
-  .size-large { grid-column: span 3; }
-  .size-medium { grid-column: span 4; }
-  .size-small { grid-column: span 2; }
-
-  @keyframes ripple {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(1.3); opacity: 0; }
-  }
-
-  .ripple {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.4);
-    transform: scale(0);
-    animation: ripple 0.6s linear;
-    pointer-events: none;
-  }
-`;
-document.head.appendChild(style);
-
-
-
-
-
-
- 
 </script>
 
 <script type="module" src="index.js"></script>
