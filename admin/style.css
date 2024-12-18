@@ -105,6 +105,74 @@ h1.page-title {
   @apply text-green-400;
 }
 
+
+
+
+.toggle-container { /* Add a container for better spacing and alignment */
+  @apply flex items-center; 
+}
+
+.toggle-input:checked ~ .toggle-label {
+  @apply bg-green-500; 
+}
+
+.toggle-input:checked ~ .toggle-thumb {
+  @apply translate-x-full left-6; /* Adjust left position to align with the end */
+}
+
+.toggle-label {
+  @apply bg-red-500; 
+  /* Other styles remain the same */
+}
+.toggle-input:checked ~ .toggle-label {
+  background-color: #34D399; /* Updated green */
+}
+.toggle-input:checked ~ .toggle-thumb {
+  transform: translateX(100%); 
+  left: calc(100% - 1.25rem); /* Adjust position based on toggle width */
+}
+.toggle-label {
+  background-color: #F87171; /* Red background for off state */
+}
+
+
+.profile-dropdown {
+  transform: scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+  background-color: white;
+}
+
+.profile-dropdown.dropdown-active {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.profile-dropdown.dropdown-inactive {
+  transform: scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.profile-dropdown a {
+  transition: all 0.2s ease-in-out;
+}
+
+.profile-dropdown a:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+
+
+
+
+
+
+
+
+
 /* Header Background */
 #mainNav {
   @apply transition-all duration-300;

@@ -9,34 +9,7 @@
   <link rel="stylesheet" href="style.css">
   
   <style>
-  /* Add these styles to your HTML head or in a style tag */
-  .profile-dropdown {
-    transform: scale(0.95);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.2s ease-in-out;
-    background-color: white;
-  }
-  
-  .profile-dropdown.dropdown-active {
-    transform: scale(1);
-    opacity: 1;
-    pointer-events: auto;
-  }
-  
-  .profile-dropdown.dropdown-inactive {
-    transform: scale(0.95);
-    opacity: 0;
-    pointer-events: none;
-  }
-  
-  .profile-dropdown a {
-    transition: all 0.2s ease-in-out;
-  }
-  
-  .profile-dropdown a:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
+
   </style>
   
   
@@ -207,6 +180,8 @@
       }
     }
 
+
+
     function renderEditForm(video) {
 
         const categorySubcategories = {
@@ -285,7 +260,29 @@
             <div id="tagSuggestions" class="absolute z-10 bg-white rounded-md shadow-lg mt-1 p-2 max-h-40 overflow-y-auto hidden"></div>
           </div>
 
-    
+   
+
+          <div class="mb-4">
+            <span class="block text-gray-700 text-sm font-bold mb-2">Pending:</span>
+            <label for="pendingToggle" class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="pendingToggle" class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-200 rounded-full 
+                          peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300
+                          dark:bg-gray-700
+                          peer-checked:bg-green-500 transition-colors"></div>
+              <div class="absolute left-1 top-1 w-4 h-4 bg-white border border-gray-300 
+                          rounded-full transition-transform 
+                          peer-checked:translate-x-full peer-checked:border-white 
+                          dark:border-gray-600"></div>
+              <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Toggle Pending</span>
+            </label>
+          </div>
+
+
+          
+
+
+ 
           <button type="submit" 
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full transition duration-200">
             Save Changes

@@ -249,11 +249,32 @@ class VideoManager {
     console.log("Loading videos with category filter:", this.state.state.filterCategory);
 
 
-
+/*
   let query = await this.supabase
     .from('Video')
     .select('*')
     .is('status', null);
+*/
+
+
+        async loadVideos() {
+          if (this.isLoading || !this.hasMore) return;
+          
+          this.isLoading = true;
+          
+          try {
+
+
+              const expansions = `
+                *,
+                panels(*)
+              `;
+
+
+              let query = await this.supabase
+                .from('Video')
+                .select(expansions.trim())
+                .is('status', null);
 
 
 

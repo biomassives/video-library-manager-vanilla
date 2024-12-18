@@ -203,6 +203,33 @@ showGridForCategory(category) {
     this.init();
   }
 
+
+      async loadInitialCats() {
+          try {
+              this.isLoading = true;
+              this.emit('loading', true);
+
+              const { data: categories, error } = await this.supabase
+                  .from('categories')
+                  .select('*, subcategories(*)');
+
+              if (error) throw error;
+              this.categories = categories || [];
+              this.emit('dataLoaded', { categories: this.categories });
+          } catch (error) {
+              console.error('Error loading data:', error);
+              this.error = error.message;
+              this.emit('error', error.message);
+          } finally {
+              this.isLoading = false;
+              this.emit('loading', false);
+          }
+      }
+
+
+
+
+
   async init() {
     this.setupEventListeners();
     this.showSkeletonLoader();
@@ -289,9 +316,21 @@ showGridForCategory(category) {
     
     try {
       // Start building the query
+    
+
+
+
+      const expansions = `
+        *,
+        panels(*)
+      `;
+
       let query = this.supabase
         .from('Video')
-        .select('*, panels(*)');
+        .select(expansions.trim()) // `.trim()` to remove newline whitespace
+        .is('status', null);
+
+
 
       // Apply search filter if present
       if (this.searchQuery) {
