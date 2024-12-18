@@ -101,7 +101,7 @@
 
 
 
-          <a href="/admin/taxonomy.html"
+          <a href="taxonomy.html"
              class="nav-link group flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50">
             <svg class="w-6 h-6 transform transition-all duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path d="M2 12h20" />
@@ -111,10 +111,7 @@
             </svg>
           </a>
 
-          <a href="/admin/research_launchpad.html"
-             class="nav-link group flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50">
-          <i class="fa-regular fa-bookmark"></i>          
-          </a>
+
 
           <button id="darkModeToggle"
                 class="p-2 rounded-lg transition-all duration-300 hover:bg-opacity-10">
@@ -127,15 +124,10 @@
           <!-- Profile Button -->
           <div class="relative">
             <button id="profileButton" 
-            class="icon-button p-2 rounded-lg transition-colors duration-300 space-x-2 text-gray-600 dark:text-white hover:text-green-500 transition-all px-3 rounded-lg hover:bg-gray-50"
-
-           
-            >
-            <a href="#"
-               class="nav-link group flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50">
-              <i class="fa-solid fa-igloo"></i>
-            </a>
-
+            class="icon-button p-2 rounded-lg transition-colors duration-300 space-x-2 text-gray-800 dark:text-white hover:text-green-500 transition-all px-3 hover:bg-gray-50">
+              <svg class="w-[39px] h-[39px] "  stroke="currentColor"  class="text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+ 		 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 4h12M6 4v16M6 4H5m13 0v16m0-16h1m-1 16H6m12 0h1M6 20H5M9 7h1v1H9V7Zm5 0h1v1h-1V7Zm-5 4h1v1H9v-1Zm5 0h1v1h-1v-1Zm-3 4h2a1 1 0 0 1 1 1v4h-4v-4a1 1 0 0 1 1-1Z"/>
+	      </svg>
             </button>
             <div id="profileDropdown"
             class="profile-dropdown dropdown-inactive absolute right-0 mt-2 w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
@@ -257,11 +249,32 @@ class VideoManager {
     console.log("Loading videos with category filter:", this.state.state.filterCategory);
 
 
-
+/*
   let query = await this.supabase
     .from('Video')
     .select('*')
     .is('status', null);
+*/
+
+
+        async loadVideos() {
+          if (this.isLoading || !this.hasMore) return;
+          
+          this.isLoading = true;
+          
+          try {
+
+
+              const expansions = `
+                *,
+                panels(*)
+              `;
+
+
+              let query = await this.supabase
+                .from('Video')
+                .select(expansions.trim())
+                .is('status', null);
 
 
 
@@ -334,18 +347,20 @@ sortVideos(videos) {
     videoGrid.innerHTML = videos.map(video => this.createVideoCard(video)).join('');
   }
 
-
   createVideoCard(video) {
     return `
       <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-200 hover:scale-105 hover:shadow-xl">
         <div class="relative group">
+          <!-- Video Thumbnail with Overlay Controls -->
           <div class="relative">
             <img src="https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg" 
                  alt="${this.escapeHtml(video.title)}" 
                  class="w-full h-48 object-cover"
                  onerror="this.src='https://img.youtube.com/vi/${video.youtubeId}/0.jpg'">
             
+            <!-- Control Overlay (appears on hover) -->
             <div class="absolute top-0 right-0 p-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <!-- Edit Button -->
               <button onclick="event.stopPropagation(); handleEditClick('${video.id}')"
                       class="p-2 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
@@ -356,6 +371,7 @@ sortVideos(videos) {
                 </svg>
               </button>
               
+              <!-- Delete Button -->
               <button onclick="event.stopPropagation(); handleDeleteClick('${video.id}')"
                       class="p-2 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
@@ -370,7 +386,7 @@ sortVideos(videos) {
           <div class="p-6">
             <div class="mb-3">
               <h2 class="text-xl font-semibold mb-2 text-gray-800 line-clamp-2">${this.escapeHtml(video.title)}</h2>
-              <p class="text-gray-600 text-sm line-clamp-3"><b><small>${video.youtubeId}</small></b> - ${this.escapeHtml(video.description)}</p>
+              <p class="text-gray-600 text-sm line-clamp-3">${this.escapeHtml(video.description)}</p>
             </div>
             
             <!-- Category and Tags -->
@@ -659,4 +675,3 @@ document.addEventListener('DOMContentLoaded', initializeApp);
 
 </body>
 </html>
-<script async data-explicit-opt-in="true" src="https://vercel.live/_next-live/feedback/feedback.js"></script>

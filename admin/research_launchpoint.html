@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>APPROVIDEO RESEARCH PORTAL</title>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #000000;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Funky Max Headroom Inspired Background */
+  body:before {
+    content: "";
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(45deg, #00ffcc, #ff00e6, #00ffd0, #ff00f3);
+    background-size: 400% 400%;
+    animation: neonGradient 15s ease infinite;
+    z-index: -2;
+  }
+
+  @keyframes neonGradient {
+    0% { background-position: 0% 50% }
+    50% { background-position: 100% 50% }
+    100% { background-position: 0% 50% }
+  }
+
+  /* Add a subtle static overlay to evoke CRT screens */
+  body:after {
+    content: "";
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: url('https://upload.wikimedia.org/wikipedia/commons/d/d3/CRT_texture.png') repeat;
+    opacity: 0.05;
+    z-index: -1;
+  }
+
+  header {
+    text-align: center;
+    padding: 30px 0;
+    font-size: 1.5rem;
+    letter-spacing: 5px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Glitch text effect */
+  header:after {
+    content: "A P P R O V I D E O   R E S E A R C H   P O R T A L";
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    color: #ff00e6;
+    text-shadow: -2px 0 cyan;
+    overflow: hidden;
+    clip: rect(0, 900px, 0, 0);
+    animation: glitch 3s infinite linear alternate-reverse;
+  }
+
+  @keyframes glitch {
+    0% { clip: rect(0, 900px, 0, 0); }
+    20% { clip: rect(0, 900px, 50px, 0); }
+    40% { clip: rect(0, 900px, 20px, 0); }
+    60% { clip: rect(0, 900px, 70px, 0); }
+    80% { clip: rect(0, 900px, 10px, 0); }
+    100% { clip: rect(0, 900px, 5px, 0); }
+  }
+
+  header span {
+    color: #00ffd0;
+    text-shadow: 2px 2px #000;
+  }
+
+  header {
+    color: #fff;
+    text-shadow: 1px 1px #000;
+  }
+
+  /* Container for everything */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .group {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+
+  .rounded-md {
+    border-radius: 8px;
+  }
+
+  .hover\:bg-opacity-20:hover {
+    background-color: rgba(255,255,255,0.2);
+  }
+
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .icon-button {
+    cursor: pointer;
+  }
+
+  .icon-button:hover {
+    filter: drop-shadow(0 0 6px #0ff);
+    transform: scale(1.1);
+  }
+
+  .icon-button .fa {
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+  }
+
+  /* Drop-up menus */
+  .drop-up-menu {
+    display: none;
+    position: absolute;
+    background: rgba(0,0,0,0.9);
+    border: 2px solid #0ff;
+    border-radius: 4px;
+    padding: 10px;
+    top: 60px;
+    z-index: 10;
+    min-width: 200px;
+  }
+
+  .drop-up-item {
+    display: block;
+    padding: 5px 10px;
+    color: #0ff;
+  }
+
+  .drop-up-item:hover {
+    background: #111;
+    color: #fff;
+  }
+
+  /* Video Search Portal */
+  #video-search-portal {
+    display: none;
+    position: absolute;
+    background: #000;
+    border: 2px solid #ff00e6;
+    padding: 10px;
+    z-index: 9999;
+    width: 250px;
+    box-shadow: 0 0 10px #ff00e6;
+    font-family: 'Courier New', Courier, monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  #video-search-portal a {
+    display: block;
+    margin-bottom: 5px;
+    color: #00ffd0;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  #video-search-portal a:hover {
+    color: #fff;
+  }
+
+  #video-search-portal strong {
+    color: #ff00e6;
+  }
+
+  .close-portal {
+    display: inline-block;
+    background: #ff00e6;
+    color: #000;
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    font-size: 0.8rem;
+  }
+
+  .close-portal:hover {
+    background: #00ffd0;
+    color: #000;
+  }
+
+</style>
+</head>
+<body>
+<header><span>A P P R O V I D E O   R E S E A R C H   P O R T A L</span></header>
+<div class="container">
+
+  <!-- Housing -->
+  <div class="group">
+    <a href="#" class="flex items-center px-3 py-2 rounded-md" data-category="Temporary Shelter">
+        <button class="icon-button relative group" data-category="Temporary Shelter">
+          <div class="text-white p-3 rounded-lg transform transition-all duration-200 
+                      float-2 
+                      flex items-center justify-center"
+               style="background: linear-gradient(90deg, #00ffd0, #ff00f3);">
+            <i class="fas fa-2x fa-home"></i>
+          </div>
+        </button>
+    </a>
+    <div class="drop-up-menu">
+        <a href="#" class="drop-up-item category-link" data-category="Temporary Shelter">Temporary Shelter</a>
+        <a href="#" class="drop-up-item category-link" data-category="Permanent Housing">Permanent Housing</a>
+        <a href="#" class="drop-up-item category-link" data-category="Insulation">Insulation</a>
+        <a href="#" class="drop-up-item category-link" data-category="Ventilation">Ventilation</a>
+        <a href="#" class="drop-up-item category-link" data-category="Natural Building">Natural Building</a>
+    </div>
+  </div>
+
+  <!-- Water -->
+  <div class="group">
+    <a href="#" class="flex items-center px-3 py-2 rounded-md" data-category="Water">
+        <button class="icon-button relative group" data-category="drinking-water">
+          <div class="text-white p-3 rounded-lg transform transition-all duration-200 
+                      flex items-center justify-center"
+               style="background: linear-gradient(90deg, #00ffff, #0099ff);">
+            <i class="fas fa-2x fa-tint"></i>
+          </div>
+        </button>
+    </a>
+    <div class="drop-up-menu">
+        <a href="#" class="drop-up-item category-link" data-category="Water Filtration">Filtration</a>
+        <a href="#" class="drop-up-item category-link" data-category="Urban Water">*Urban</a>
+        <a href="#" class="drop-up-item category-link" data-category="Water Purification">Purification</a>
+        <a href="#" class="drop-up-item category-link" data-category="Drinking Water Storage">Storage</a>
+        <a href="#" class="drop-up-item category-link" data-category="Water Distribution">Distribution</a>
+    </div>
+  </div>
+
+  <!-- Waste Management -->
+  <div class="group">
+    <a href="#" class="flex items-center px-3 py-2 rounded-md" data-category="Waste Management">
+        <button class="icon-button relative group" data-category="waste-management">
+          <div class="text-white p-3 rounded-lg transform transition-all duration-200 
+                      flex items-center justify-center"
+               style="background: linear-gradient(90deg, #00ff00, #00aa00);">
+            <i class="fas fa-2x fa-recycle"></i>
+          </div>
+        </button>
+    </a>
+    <div class="drop-up-menu">
+        <a href="#" class="drop-up-item category-link" data-category="Composting">Composting</a>
+        <a href="#" class="drop-up-item category-link" data-category="Recycling">Recycling</a>
+        <a href="#" class="drop-up-item category-link" data-category="Plastics">Plastics</a>
+        <a href="#" class="drop-up-item category-link" data-category="Composting">Composting</a>
+        <a href="#" class="drop-up-item category-link" data-category="remanufacturing">Remanufacturing</a>
+        <a href="#" class="drop-up-item category-link" data-category="Upcycling">Upcycling</a>
+        <a href="#" class="drop-up-item category-link" data-category="Hygiene">Health & Hygiene</a>
+        <a href="#" class="drop-up-item category-link" data-category="Producer Responsibility">Write a Letter: Producer Responsibility for Plastics</a>
+        <a href="#" class="drop-up-item category-link" data-category="PFOA/PFOS Elimination">Write a Letter: Eliminate PFOA/PFOS</a>
+    </div>
+  </div>
+
+  <!-- Energy -->
+  <div class="group">
+    <a href="#" class="flex items-center px-3 py-2 rounded-md" data-category="Energy">
+        <button class="icon-button relative group" data-category="energy-systems">
+          <div class="text-white p-3 rounded-lg transform transition-all duration-200 
+                      flex items-center justify-center"
+               style="background: linear-gradient(90deg, #ffff00, #ff9900);">
+            <i class="fas fa-2x fa-solar-panel"></i>
+          </div>
+        </button>
+    </a>
+    <div class="drop-up-menu">
+        <a href="#" class="drop-up-item category-link" data-category="Solar">Solar</a>
+        <a href="#" class="drop-up-item category-link" data-category="Wind">Wind</a>
+        <a href="#" class="drop-up-item category-link" data-category="Hydropower">Hydropower</a>
+        <a href="#" class="drop-up-item category-link" data-category="Biogas">Biogas</a>
+        <a href="#" class="drop-up-item category-link" data-category="H2">H2</a>
+        <a href="#" class="drop-up-item category-link" data-category="Heating">Heating</a>
+        <a href="#" class="drop-up-item category-link" data-category="Energy Storage">Storage</a>
+        <a href="#" class="drop-up-item category-link" data-category="Energy Transmission">Transmission</a>
+        <a href="#" class="drop-up-item category-link" data-category="Shipping">Shipping</a>
+        <a href="#" class="drop-up-item category-link" data-category="Plumbing">Plumbing</a>
+        <a href="#" class="drop-up-item category-link" data-category="Factories">Factories</a>
+        <a href="#" class="drop-up-item category-link" data-category="Motors">Motors & Compressors</a>
+        <a href="#" class="drop-up-item category-link" data-category="Wiring">Wiring & Transformers</a>
+        <a href="#" class="drop-up-item category-link" data-category="UPR">Upsream producer responsibility</a>
+        <a href="#" class="drop-up-item category-link" data-category="Logistics">Planning & Logistics</a>
+    </div>
+  </div>
+
+  <!-- Health -->
+  <div class="group">
+    <a href="#" class="flex items-center px-3 py-2 rounded-md" data-category="Health">
+        <button class="icon-button relative group" data-category="health">
+          <div class="text-white p-3 rounded-lg transform transition-all duration-200 
+                      flex items-center justify-center"
+               style="background: linear-gradient(90deg, #00ffff, #0000ff);">
+            <i class="fas fa-2x fa-heartbeat"></i>
+          </div>
+        </button>
+    </a>
+    <div class="drop-up-menu">
+        <a href="#" class="drop-up-item category-link" data-category="health data">Health Data</a>
+        <a href="#" class="drop-up-item category-link" data-category="nutrition">Nutrition</a>
+        <a href="#" class="drop-up-item category-link" data-category="pre-natal">Prenatal</a>
+        <a href="#" class="drop-up-item category-link" data-category="early childhood">Early Childhood</a>
+        <a href="#" class="drop-up-item category-link" data-category="climateHealth">Climate & Health</a>
+        <a href="#" class="drop-up-item category-link" data-category="Healthcare">Healthcare</a>
+        <a href="#" class="drop-up-item category-link" data-category="ptsd">PTSD Care</a>
+        <a href="#" class="drop-up-item category-link" data-category="field-medicine">Field Medicine</a>
+        <a href="#" class="drop-up-item category-link" data-category="healthEducation">Education</a>
+    </div>
+  </div>
+
+  <!-- Ingenuity -->
+  <div class="group">
+    <a href="#" class="flex items-center px-4 py-3 rounded-md" data-category="Ingenuity">
+        <button class="icon-button relative group" data-category="ingenuity">
+          <div class="text-white p-3 rounded-lg transform transition-all duration-200 
+                      flex items-center justify-center"
+               style="background: linear-gradient(90deg, #00ff99, #00cc00);">
+            <i class="fas fa-2x fa-brain"></i>
+          </div>
+        </button>
+    </a>
+    <div class="drop-up-menu">
+        <a href="#" class="drop-up-item category-link" data-category="Creative-Solutions">Creativity</a>
+        <a href="#" class="drop-up-item category-link" data-category="artistic">Art</a>
+        <a href="#" class="drop-up-item category-link" data-category="music">Music</a>
+        <a href="#" class="drop-up-item category-link" data-category="nature">Nature spaces</a>
+        <a href="#" class="drop-up-item category-link" data-category="cultural">Cultural</a>
+        <a href="#" class="drop-up-item category-link" data-category="language">Language</a>
+        <a href="#" class="drop-up-item category-link" data-category="Innovation">Innovation</a>
+        <a href="#" class="drop-up-item category-link" data-category="food">Food</a>
+        <a href="#" class="drop-up-item category-link" data-category="moda">Moda</a>
+        <a href="#" class="drop-up-item category-link" data-category="meme">Meme</a>
+        <a href="#" class="drop-up-item category-link" data-category="peace">Peace</a>
+        <a href="#" class="drop-up-item category-link" data-category="tools">Tools</a>
+        <a href="#" class="drop-up-item category-link" data-category="commmunication">Communication</a>
+    </div>
+  </div>
+
+  <!-- Agronomy -->
+  <div class="group">
+    <a href="#" class="flex items-center px-4 py-3 rounded-md" data-category="Agronomy">
+        <button class="icon-button relative group" data-category="agriculure">
+          <div class="text-white p-3 rounded-lg transform transition-all duration-200
+                      flex items-center justify-center"
+               style="background: linear-gradient(90deg, #00ff40, #ffff40);">
+            <i class="fas fa-2x fa-seedling"></i>
+          </div>
+        </button>
+    </a>
+    <div class="drop-up-menu">
+        <a href="#" class="drop-up-item category-link" data-category="Integrated Pest Management">Integrated Pest Management</a>
+        <a href="#" class="drop-up-item category-link" data-category="Soil Improvement">Soil Improvement</a>
+        <a href="#" class="drop-up-item category-link" data-category="Cover Cropping">Cover Cropping</a>
+        <a href="#" class="drop-up-item category-link" data-category="Soil">Soil Regeneration</a>
+        <a href="#" class="drop-up-item category-link" data-category="Diversified Agriculture">Diversified Agriculture</a>
+        <a href="#" class="drop-up-item category-link" data-category="Specialty Crops">Specialty Crops</a>
+        <a href="#" class="drop-up-item category-link" data-category="Biodynamic">BioDynamic</a>
+        <a href="#" class="drop-up-item category-link" data-category="Organic Techniques">Organic Techniques</a>
+    </div>
+  </div>
+
+  <div id="video-search-portal"></div>
+</div>
+
+<script>
+  // Handle category toggles
+  document.querySelectorAll('[data-category]').forEach(elem => {
+    elem.addEventListener('click', (e) => {
+      const category = elem.getAttribute('data-category');
+      // If this is a category link, show portal
+      if (elem.classList.contains('category-link')) {
+        e.preventDefault();
+        const rect = elem.getBoundingClientRect();
+        showVideoSearchPortal(category, rect.left + window.scrollX, rect.top + window.scrollY + rect.height);
+        return;
+      }
+
+      // Otherwise, toggle the drop-up-menu for the group
+      const group = elem.closest('.group');
+      const menu = group.querySelector('.drop-up-menu');
+
+      // Close other open menus
+      document.querySelectorAll('.drop-up-menu').forEach(m => {
+        if (m !== menu) {
+          m.style.display = 'none';
+        }
+      });
+
+      // Toggle the current menu
+      if (menu) {
+        menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+      }
+    });
+  });
+
+  function showVideoSearchPortal(category, x, y) {
+    const portal = document.getElementById('video-search-portal');
+    portal.innerHTML = `
+      <a href="#" class="close-portal">CLOSE</a>
+      <strong>VIDEO SEARCHES FOR: "${category}"</strong><br><br>
+      <a href="https://archive.org/search.php?query=mediatype:movies+${encodeURIComponent(category)}" target="_blank">ARCHIVE.ORG VIDEOS</a>
+      <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(category)}+videos" target="_blank">YOUTUBE VIDEOS</a>
+      <a href="https://duckduckgo.com/?q=${encodeURIComponent(category)}+videos&ia=videos" target="_blank">DUCKDUCKGO VIDEOS</a>
+      <a href="https://www.appropedia.org/index.php?search=${encodeURIComponent(category)}&title=Special:Search&fulltext=1" target="_blank">APPROPEDIA SEARCH</a>
+      <a href="https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(category)}&ns0=1" target="_blank">WIKIPEDIA ARTICLES</a>
+    `;
+
+    portal.style.left = x + 'px';
+    portal.style.top = y + 'px';
+    portal.style.display = 'block';
+
+    // Close portal event
+    portal.querySelector('.close-portal').addEventListener('click', (e) => {
+      e.preventDefault();
+      portal.style.display = 'none';
+    });
+  }
+
+  // Clicking outside menus or portal closes them
+  document.addEventListener('click', function(e) {
+    const isMenuOrCategory = e.target.closest('.group') || e.target.classList.contains('category-link');
+    const portal = document.getElementById('video-search-portal');
+
+    if (!isMenuOrCategory && !portal.contains(e.target)) {
+      // Close all menus
+      document.querySelectorAll('.drop-up-menu').forEach(m => m.style.display = 'none');
+    }
+  });
+</script>
+
+</body>
+</html>
