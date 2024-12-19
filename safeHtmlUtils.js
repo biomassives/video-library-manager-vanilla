@@ -30,7 +30,7 @@ class SafeHtmlUtils {
         }
   
         // Use regex replacement with character map
-        return str.replace(/[&<>"'`=\/]/g, char => this.htmlEntities[char]);
+        return str.replace(/[&<>'`=\/]/g, char => this.htmlEntities[char]);
       } catch (error) {
         console.error('Error escaping HTML:', error);
         return ''; // Return empty string on error

@@ -50,8 +50,6 @@
             </svg>
           </a>
 
-
-
           <a href="taxonomy.html" 
              class="nav-link group flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50">
             <svg class="w-6 h-6 transform transition-all duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -61,8 +59,6 @@
 
             </svg>
           </a>
-
-
 
           <button id="darkModeToggle" 
                 class="p-2 rounded-lg transition-all duration-300 hover:bg-opacity-10">
@@ -320,7 +316,7 @@ if (localStorage.getItem('darkMode') === 'true') {
 
     const categorySubcategories = { 
   Shelter: ["Temporary Shelter", "Permanent Housing", "Insulation", "Ventilation", "Natural Building"], 
-  Water: ["Filtration", "*Urban", "Purification", "Storage", "Distribution"], 
+  Water: ["Filtration", "Well/Borehole", "Purification", "Storage", "Distribution", "RO", "UV"], 
   Waste: [
     "Composting", 
     "Recycling", 
@@ -425,13 +421,16 @@ const tagSuggestions = [
       const title = document.getElementById('newTitle').value.trim();
       const youtubeUrl = document.getElementById('newYoutubeUrl').value.trim();
       const description = document.getElementById('newDescription').value.trim();
-      const category = document.getElementById('newCategory').value;
-      const subcategory = document.getElementById('newSubcategory').value;
+      const category = document.getElementById('newCategory').value.trim();
+      const subcategory = document.getElementById('newSubcategory').value.trim();
   
       const tagsInput = document.getElementById('newTags');
       let tags = [];
         if (tagsInput) {
             tags = tagsInput.value.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
+            tags = tags.replace(/[",\[\]]/g, '')
+
+
         } else {
             console.error('Element with ID "newTags" not found.');
             // You might want to return here or show an error message to the user if the element is not found.
@@ -516,3 +515,4 @@ const tagSuggestions = [
   </script>
 </body>
 </html>
+

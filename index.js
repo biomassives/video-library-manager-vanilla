@@ -407,7 +407,9 @@ showGridForCategory(category) {
           
           <div class="flex items-center gap-2 mb-3">
             <i class="fas ${this.getCategoryIcon(safeVideo.category)} text-gray-500"></i>
-            <span class="text-sm text-gray-600">${safeVideo.category || 'General'}</span>
+            <span class="text-sm text-gray-600">${safeVideo.category || 'DIY'}</span>
+            <i class="fas ${this.getCategoryIcon(safeVideo.category)} text-gray-500"></i>
+            <span class="text-sm text-gray-600">${safeVideo.subcategory || 'DIY'}</span>
           </div>
           
           ${this.renderPanels(safeVideo.panels)}
