@@ -229,7 +229,7 @@
 
 
             <div class="mb-4">
-                <label for="newCategory" class="block text-gray-700 text-sm font-bold mb-2">Category: ( <a href="/admin/taxonommy.html">edit taxonomy</a>)</label>
+                <label for="newCategory" class="block text-gray-700 text-sm font-bold mb-2">Category: ( <a href="/admin/taxonommy.html" class="text-yellow-950">edit taxonomy</a>)</label>
                 <select id="newCategory" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                 <option value="none">Select a category</option>
                 ${Object.keys(categorySubcategories).map(category => `
@@ -263,7 +263,7 @@
    
 
           <div class="mb-4">
-            <span class="block text-gray-700 text-sm font-bold mb-2">Pending:</span>
+            <span class="block text-gray-700 text-sm font-bold mb-2">Pending/Live:</span>
             <label for="pendingToggle" class="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" id="pendingToggle" class="sr-only peer">
               <div class="w-11 h-6 bg-gray-200 rounded-full 
