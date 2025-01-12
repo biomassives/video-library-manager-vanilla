@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eco Ops Learning Portal</title>
+  <script src="https://cdn.jsdelivr.net/npm/localforage/dist/localforage.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <!-- Header -->
+  <header class="bg-green-600 text-white py-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Eco Ops Learning Portal</h1>
+      <nav>
+        <a href="#" class="text-white mx-2">Home</a>
+        <a href="#modules" class="text-white mx-2">Learn</a>
+        <a href="#contribute" class="text-white mx-2">Contribute</a>
+        <a href="#dashboard" class="text-white mx-2">Dashboard</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto mt-6">
+    <!-- Welcome Section -->
+    <section class="bg-white p-6 rounded shadow-md">
+      <h2 class="text-xl font-bold">Welcome to Eco Ops</h2>
+      <p>Your gateway to making a difference in biodiversity and climate action. Explore, contribute, and earn rewards for your actions!</p>
+    </section>
+
+    <!-- Learning Modules -->
+    <section id="modules" class="mt-8">
+      <h2 class="text-2xl font-bold">Learning Modules</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+        <div class="bg-white p-4 rounded shadow-md">
+          <h3 class="text-lg font-bold">Biodiversity Credits</h3>
+          <p>Learn how to earn and trade biodiversity credits.</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow-md">
+          <h3 class="text-lg font-bold">Climate Actions</h3>
+          <p>Discover how to offset emissions through verified projects.</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow-md">
+          <h3 class="text-lg font-bold">Sustainable Development</h3>
+          <p>Explore initiatives aligned with UN SDGs.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-4 mt-8">
+    <div class="container mx-auto text-center">
+      © 2025 Eco Ops. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // LocalForage example
+    localforage.setItem('userProgress', { module1: 'complete' })
+      .then(() => console.log('User progress saved.'));
+
+    // Toast example
+    setTimeout(() => {
+      Toastify({
+        text: "Don't forget to complete your next module!",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "#4CAF50"
+      }).showToast();
+    }, 5000);
+  </script>
+</body>
+</html>
