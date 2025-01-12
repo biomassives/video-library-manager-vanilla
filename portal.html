@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eco Ops Learning Portal</title>
+  <script src="https://cdn.jsdelivr.net/npm/localforage/dist/localforage.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+
+
+  <header class="bg-green-600 text-white py-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Approvideo DIY Learning Portal</h1>
+      <nav>
+        <a href="#" class="text-white mx-2">Home</a>
+        <a href="#modules" class="text-white mx-2">Learn</a>
+        <a href="#contribute" class="text-white mx-2">Contribute</a>
+        <a href="#dashboard" class="text-white mx-2">Dashboard</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto mt-6">
+    <!-- Welcome Section -->
+    <section class="bg-white p-6 rounded shadow-md">
+      <h2 class="text-xl font-bold">Welcome to Eco Ops</h2>
+      <p>Your gateway to making a difference in biodiversity and climate action. Explore, contribute, and earn rewards for your actions!</p>
+    </section>
+    <!-- Learning Modules -->
+    <section id="modules" class="mt-8">
+      <h2 class="text-2xl font-bold">Learning Modules</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+        <div class="bg-white p-4 rounded shadow-md">
+          <h3 class="text-lg font-bold">Biodiversity Credits</h3>
+          <p>Learn how to earn and trade biodiversity credits.</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow-md">
+          <h3 class="text-lg font-bold">Climate Actions</h3>
+          <p>Discover how to offset emissions through verified projects.</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow-md">
+          <h3 class="text-lg font-bold">Sustainable Development</h3>
+          <p>Explore initiatives aligned with UN SDGs.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+
+
+
+
+<Style>
+.hero {
+  background-image: url('path-to-background-image.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.video-grid {
+  min-height: 200px;
+}
+
+
+</style>
+
+
+
+
+
+
+
+
+<div class="hero bg-green-600 text-white p-8">
+  <h1 class="text-4xl font-bold">Welcome to Eco Ops Learning Portal</h1>
+  <p class="mt-4">Learn, contribute, and earn rewards for making a difference!</p>
+  <input type="text" id="searchBar" class="mt-4 w-full p-2 rounded" placeholder="Search videos...">
+</div>
+
+<div class="video-grid container mx-auto p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+  <!-- Videos will be dynamically injected here -->
+</div>
+
+<button id="loadMoreBtn" class="mt-4 mx-auto block bg-blue-500 text-white p-2 rounded">Load More</button>
+
+
+
+
+
+
+<script>
+
+
+const topicData = {
+  "Water Security": {
+    icon: "fa-tint", 
+    subtopics: [
+      { name: "Water Purification", category: "Water Purification", icon: "fa-filter" },
+      { name: "Desalination", category: "Desalination", icon: "fa-faucet-drip" },
+      { name: "Efficient Distribution", category: "Efficient Distribution", icon: "fa-truck-container" } 
+    ]
+  },
+  "Energy Solutions": {
+    icon: "fa-bolt", 
+    subtopics: [
+      { name: "DIY Solar", category: "DIY Solar", icon: "fa-solar-panel" },
+      { name: "Biogas Generation", category: "Biogas", icon: "fa-biohazard" }, 
+      { name: "Microgrids", category: "Microgrids", icon: "fa-plug-circle-bolt" } 
+    ]
+  },
+  "Food Production": {
+    icon: "fa-apple-whole", 
+    subtopics: [
+      { name: "Urban Gardening", category: "Urban Gardening", icon: "fa-seedling" },
+      { name: "Hydroponics", category: "Hydroponics", icon: "fa-water" },
+      { name: "Sustainable Agriculture", category: "Sustainable Agriculture", icon: "fa-tractor" } 
+    ]
+  },
+  "Shelter": {
+    icon: "fa-house-chimney",
+    subtopics: [
+      { name: "Low-cost Construction", category: "Low-cost Construction", icon: "fa-house-crack" },
+      { name: "Local Materials", category: "Local Materials", icon: "fa-tree" } 
+    ]
+  },
+  "Healthcare": {
+    icon: "fa-kit-medical", 
+    subtopics: [
+      { name: "Emergency Medical Training", category: "Emergency Medical Training", icon: "fa-first-aid" },
+      { name: "Telemedicine", category: "Telemedicine", icon: "fa-video" },
+      { name: "Self-Sufficient Healthcare", category: "Self-Sufficient Healthcare", icon: "fa-user-doctor" }
+    ]
+  }
+};
+
+const videoData = {
+  "Water Purification": [
+    {
+      title: "Rick Astley - Never Gonna Give You Up (Official Music Video)",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      tags: ["rickroll", "classic", "music", "meme"],
+      category: "Water Purification",
+      subcategory: "Water Security"
+    },
+    {
+      title: "Ultimate Water Purification System!",
+      url: "https://www.youtube.com/watch?v=oAKG-kbKeIo",
+      tags: ["water", "purification", "diy", "survival"],
+      category: "Water Purification",
+      subcategory: "Water Security"
+    },
+    {
+      title: "Crazy Frog - Axel F",
+      url: "https://www.youtube.com/watch?v=SomeDesalinationVideo", // Replace with actual ID
+      tags: ["crazy", "frog", "music", "meme", "animation"],
+      category: "Water Purification",
+      subcategory: "Water Security"
+    },
+    {
+      title: "DIY Water Filter for Emergencies",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["water", "filter", "diy", "emergency", "survival"],
+      category: "Water Purification",
+      subcategory: "Water Security"
+    }
+  ],
+  "Desalination": [
+    {
+      title: "Funny Cats and Dogs",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      tags: ["funny", "animals", "cats", "dogs", "meme"],
+      category: "Desalination",
+      subcategory: "Water Security"
+    },
+    {
+      title: "Desalination Explained",
+      url: "https://www.youtube.com/watch?v=your-video-id-here",
+      tags: ["water", "desalination", "science", "technology"],
+      category: "Desalination",
+      subcategory: "Water Security"
+    },
+    {
+      title: "He-Man Sings \"What's Up\"",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["he-man", "what's up", "music", "meme", "funny"],
+      category: "Desalination",
+      subcategory: "Water Security"
+    },
+    {
+      title: "Home Desalination Techniques",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["water", "desalination", "diy", "home"],
+      category: "Desalination",
+      subcategory: "Water Security"
+    }
+  ],
+  "Efficient Distribution": [
+    {
+      title: "Charlie Bit My Finger - Again !",
+      url: "https://www.youtube.com/watch?v=your-video-id-here",
+      tags: ["funny", "kids", "classic", "meme"],
+      category: "Efficient Distribution",
+      subcategory: "Water Security"
+    },
+    {
+      title: "Water Distribution in Developing Countries",
+      url: "https://www.youtube.com/watch?v=your-video-id-here",
+      tags: ["water", "distribution", "infrastructure", "development"],
+      category: "Efficient Distribution",
+      subcategory: "Water Security"
+    },
+    {
+      title: "Chocolate Rain Song",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["chocolate", "rain", "song", "music", "meme"],
+      category: "Efficient Distribution",
+      subcategory: "Water Security"
+    },
+    {
+      title: "Efficient Irrigation Methods",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["water", "distribution", "irrigation", "agriculture"],
+      category: "Efficient Distribution",
+      subcategory: "Water Security"
+    }
+  ],
+  "DIY Solar": [
+    {
+      title: "Nyan Cat [original]",
+      url: "https://www.youtube.com/watch?v=QH2-TGUlwu4",
+      tags: ["meme", "music", "animation", "cat"],
+      category: "DIY Solar",
+      subcategory: "Energy Solutions"
+    },
+    {
+      title: "How to Build a Simple Solar Panel",
+      url: "https://www.youtube.com/watch?v=your-video-id-here",
+      tags: ["solar", "diy", "energy", "tutorial"],
+      category: "DIY Solar",
+      subcategory: "Energy Solutions"
+    },
+    {
+      title: "Badger Badger Badger Mushroom Mushroom",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["badger", "mushroom", "animation", "meme", "music"],
+      category: "DIY Solar",
+      subcategory: "Energy Solutions"
+    },
+    {
+      title: "Solar Panel Installation Guide",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["solar", "diy", "installation", "guide"],
+      category: "DIY Solar",
+      subcategory: "Energy Solutions"
+    }
+  ],
+  "Biogas Generation": [
+    {
+      title: "Keyboard Cat",
+      url: "https://www.youtube.com/watch?v=your-video-id-here",
+      tags: ["meme", "funny", "cat", "keyboard"],
+      category: "Biogas Generation",
+      subcategory: "Energy Solutions"
+    },
+    {
+      title: "Building a Biogas Digester",
+      url: "https://www.youtube.com/watch?v=your-video-id-here",
+      tags: ["biogas", "diy", "energy", "renewable"],
+      category: "Biogas Generation",
+      subcategory: "Energy Solutions"
+    },
+    {
+      title: "Trololo Guy",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["trololo", "music", "meme", "funny"],
+      category: "Biogas Generation",
+      subcategory: "Energy Solutions"
+    },
+    {
+      title: "Biogas for Home Energy",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["biogas", "diy", "home", "energy"],
+      category: "Biogas Generation",
+      subcategory: "Energy Solutions"
+    }
+  ],
+  "Microgrids": [
+    {
+      title: "Dramatic Chipmunk",
+      url: "https://www.youtube.com/watch?v=your-video-id-here",
+      tags: ["meme", "funny", "chipmunk", "dramatic"],
+      category: "Microgrids",
+      subcategory: "Energy Solutions"
+    },
+    {
+      title: "Introduction to Microgrids",
+      url: "https://www.youtube.com/watch?v=your-video-id-here",
+      tags: ["microgrid", "energy", "electricity", "grid"],
+      category: "Microgrids",
+      subcategory: "Energy Solutions"
+    },
+    {
+      title: "Leeroy Jenkins",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["leeroy", "jenkins", "meme", "gaming", "funny"],
+      category: "Microgrids",
+      subcategory: "Energy Solutions"
+    },
+    {
+      title: "Microgrid Technology Explained",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["microgrid", "technology", "energy", "electricity"],
+      category: "Microgrids",
+      subcategory: "Energy Solutions"
+    }
+  ],
+  "Urban Gardening": [
+    {
+      title: "Urban Gardening 101",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["urban", "gardening", "diy", "food", "grow"],
+      category: "Urban Gardening",
+      subcategory: "Food Production"
+    },
+    {
+      title: "Vertical Gardening Ideas",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["urban", "gardening", "vertical", "diy", "space"],
+      category: "Urban Gardening",
+      subcategory: "Food Production"
+    },
+    {
+      title: "Epic Sax Guy",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["epic", "sax", "guy", "music", "meme"],
+      category: "Urban Gardening",
+      subcategory: "Food Production"
+    },
+    {
+      title: "Building a Raised Garden Bed",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["urban", "gardening", "raised", "bed", "diy"],
+      category: "Urban Gardening",
+      subcategory: "Food Production"
+    }
+  ],
+  "Hydroponics": [
+    {
+      title: "Hydroponics for Beginners",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["hydroponics", "diy", "grow", "food", "water"],
+      category: "Hydroponics",
+      subcategory: "Food Production"
+    },
+    {
+      title: "DIY Hydroponic System",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["hydroponics", "diy", "system", "build"],
+      category: "Hydroponics",
+      subcategory: "Food Production"
+    },
+    {
+      title: "David After Dentist",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["david", "dentist", "funny", "kid", "meme"],
+      category: "Hydroponics",
+      subcategory: "Food Production"
+    },
+    {
+      title: "Hydroponic Tomatoes at Home",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["hydroponics", "tomatoes", "grow", "home"],
+      category: "Hydroponics",
+      subcategory: "Food Production"
+    }
+  ],
+  "Sustainable Agriculture": [
+    {
+      title: "Sustainable Farming Practices",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["sustainable", "agriculture", "farming", "practices"],
+      category: "Sustainable Agriculture",
+      subcategory: "Food Production"
+    },
+    {
+      title: "Permaculture Design",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["sustainable", "agriculture", "permaculture", "design"],
+      category: "Sustainable Agriculture",
+      subcategory: "Food Production"
+    },
+    {
+      title: "O Fortuna (Carmina Burana)",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID (use a dramatic/intense version)
+      tags: ["o", "fortuna", "carmina", "burana", "music", "meme"],
+      category: "Sustainable Agriculture",
+      subcategory: "Food Production"
+    },
+    {
+      title: "No-Till Farming",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["sustainable", "agriculture", "no-till", "farming"],
+      category: "Sustainable Agriculture",
+      subcategory: "Food Production"
+    }
+  ],
+  "Low-cost Durable Construction Methods": [
+    {
+      title: "Building with Earthbags",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["low-cost", "construction", "earthbags", "diy"],
+      category: "Low-cost Construction",
+      subcategory: "Shelter"
+    },
+    {
+      title: "Bamboo Construction Techniques",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["low-cost", "construction", "bamboo", "diy"],
+      category: "Low-cost Construction",
+      subcategory: "Shelter"
+    },
+    {
+      title: "Yelling Goat",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["goat", "yelling", "funny", "animal", "meme"],
+      category: "Low-cost Construction",
+      subcategory: "Shelter"
+    },
+    {
+      title: "Building a Tiny House",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["low-cost", "construction", "tiny", "house", "diy"],
+      category: "Low-cost Construction",
+      subcategory: "Shelter"
+    }
+  ],
+
+
+"Creative & Effective Local Materials for Shelter.": [
+    // ... (existing entries)
+    {
+      title: "Building a Straw Bale House",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["local", "materials", "straw", "bale", "house", "diy"],
+      category: "Local Materials",
+      subcategory: "Shelter"
+    },
+    {
+      title: "Using Adobe Bricks",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["local", "materials", "adobe", "bricks", "building"],
+      category: "Local Materials",
+      subcategory: "Shelter"
+    },
+    {
+      title: "Dramatic Gopher",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["gopher", "dramatic", "funny", "animal", "meme"],
+      category: "Local Materials",
+      subcategory: "Shelter"
+    },
+    {
+      title: "Making Lime Plaster",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["local", "materials", "lime", "plaster", "diy"],
+      category: "Local Materials",
+      subcategory: "Shelter"
+    }
+  ],
+  "Emergency Medical Training": [
+    // ... (existing entries)
+    {
+      title: "Wilderness First Aid",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["emergency", "medical", "training", "wilderness", "first aid"],
+      category: "Emergency Medical Training",
+      subcategory: "Healthcare"
+    },
+    {
+      title: "How to Perform the Heimlich Maneuver",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["emergency", "medical", "training", "heimlich", "choking"],
+      category: "Emergency Medical Training",
+      subcategory: "Healthcare"
+    },
+    {
+      title: "It's a Trap!",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["it's a trap", "star wars", "admiral ackbar", "meme", "funny"],
+      category: "Emergency Medical Training",
+      subcategory: "Healthcare"
+    },
+    {
+      title: "Basic Life Support (BLS)",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["emergency", "medical", "training", "bls", "life support"],
+      category: "Emergency Medical Training",
+      subcategory: "Healthcare"
+    }
+  ],
+  "Telemedicine": [
+    // ... (existing entries)
+    {
+      title: "Telemedicine for Rural Areas",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["telemedicine", "rural", "healthcare", "access"],
+      category: "Telemedicine",
+      subcategory: "Healthcare"
+    },
+    {
+      title: "Telemedicine and Chronic Diseases",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["telemedicine", "chronic", "diseases", "management"],
+      category: "Telemedicine",
+      subcategory: "Healthcare"
+    },
+    {
+      title: "We Are Number One",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["we are number one", "lazy town", "robbie rotten", "music", "meme"],
+      category: "Telemedicine",
+      subcategory: "Healthcare"
+    },
+    {
+      title: "The Future of Telemedicine",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["telemedicine", "future", "technology", "healthcare"],
+      category: "Telemedicine",
+      subcategory: "Healthcare"
+    }
+  ],
+  "Self-Sufficient Healthcare": [
+    // ... (existing entries)
+    {
+      title: "Foraging for Wild Edibles",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["self-sufficient", "healthcare", "foraging", "wild", "edibles"],
+      category: "Self-Sufficient Healthcare",
+      subcategory: "Healthcare"
+    },
+    {
+      title: "Making Herbal Salves",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["self-sufficient", "healthcare", "herbal", "salves", "diy"],
+      category: "Self-Sufficient Healthcare",
+      subcategory: "Healthcare"
+    },
+    {
+      title: "Distracted Boyfriend Meme",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID (find a video version of the meme)
+      tags: ["distracted", "boyfriend", "meme", "funny", "relationship"],
+      category: "Self-Sufficient Healthcare",
+      subcategory: "Healthcare"
+    },
+    {
+      title: "Home Remedies for Cold and Flu",
+      url: "https://www.youtube.com/watch?v=your-video-id-here", // Replace with actual ID
+      tags: ["self-sufficient", "healthcare", "cold", "flu", "remedies"],
+      category: "Self-Sufficient Healthcare",
+      subcategory: "Healthcare"
+    }
+  ]
+};
+
+
+
+
+
+// Function to display videos for a category
+function displayVideos(categoryName) {
+  const categoryTitle = document.getElementById('category-title');
+  const categoryDescription = document.getElementById('category-description');
+  const videoGrid = document.getElementById('video-grid');
+
+  // Set category title and description (you'll need to add descriptions to your data)
+  categoryTitle.textContent = categoryName;
+  categoryDescription.textContent = "Description for " + categoryName; // Replace with actual description
+
+  // Clear previous videos
+  videoGrid.innerHTML = '';
+
+  // Load initial videos (e.g., first 12)
+  loadVideos(categoryName, 0, 12); 
+
+  // Infinite scroll setup
+  let currentVideoIndex = 12; 
+  const infiniteScrollTrigger = document.getElementById('infinite-scroll-trigger');
+  infiniteScrollTrigger.addEventListener('click', () => {
+    loadVideos(categoryName, currentVideoIndex, 12);
+    currentVideoIndex += 12;
+  });
+}
+
+// Function to load videos (with infinite scroll)
+function loadVideos(categoryName, startIndex, count) {
+  const videos = videoData[categoryName];
+  const videoGrid = document.getElementById('video-grid');
+
+  // Get a slice of videos based on startIndex and count
+  const videosToLoad = videos.slice(startIndex, startIndex + count);
+
+  videosToLoad.forEach(video => {
+    const videoElement = `
+      <div class="video-card">
+        <h3>${video.title}</h3>
+        <a href="${video.url}" target="_blank">
+          <img src="path/to/thumbnail.jpg" alt="${video.title} thumbnail"> </a> 
+        <div class="tags">
+          ${video.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+        </div>
+      </div>
+    `;
+    videoGrid.innerHTML += videoElement;
+  });
+}
+
+// Event listeners for category clicks (using your existing code)
+const categoryIcons = document.querySelectorAll('.icon-button');
+categoryIcons.forEach(icon => {
+  icon.addEventListener('click', () => {
+    const categoryName = icon.dataset.category;
+    displayVideos(categoryName);
+  });
+});
+
+
+
+const videoData = { /* JSON as provided */ };
+let loadedVideos = 0;
+const videosPerLoad = 6;
+
+// Render Videos
+function renderVideos() {
+  const container = document.querySelector('.video-grid');
+  const videos = Object.keys(videoData).flatMap(key => videoData[key]);
+
+  // Load a batch of videos
+  const batch = videos.slice(loadedVideos, loadedVideos + videosPerLoad);
+  loadedVideos += videosPerLoad;
+
+  batch.forEach(video => {
+    const videoCard = document.createElement('div');
+    videoCard.className = 'bg-white p-4 rounded shadow-md';
+    videoCard.innerHTML = `
+      <h3 class="text-lg font-bold">${video.title}</h3>
+      <p class="text-sm text-gray-600">${video.category} - ${video.subcategory}</p>
+      <a href="${video.url}" target="_blank" class="text-blue-500">Watch Video</a>
+    `;
+    container.appendChild(videoCard);
+  });
+
+  // Hide Load More button if all videos are loaded
+  if (loadedVideos >= videos.length) {
+    document.getElementById('loadMoreBtn').style.display = 'none';
+  }
+}
+
+// Infinite Scroll
+function setupInfiniteScroll() {
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
+  loadMoreBtn.addEventListener('click', renderVideos);
+
+  window.addEventListener('scroll', () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+      renderVideos();
+    }
+  });
+}
+
+// NFT Certificates
+function setupCertificates() {
+  const completedVideos = {}; // Track completed videos
+  const nftButton = document.createElement('button');
+  nftButton.className = 'bg-green-500 text-white p-2 rounded';
+  nftButton.textContent = 'Claim NFT Certificate';
+
+  nftButton.addEventListener('click', () => {
+    const certificate = {
+      title: 'Eco Ops Learning Certificate',
+      description: 'Awarded for completing videos.',
+      date: new Date().toISOString()
+    };
+
+    localforage.setItem('certificate', certificate)
+      .then(() => alert('NFT Certificate Claimed!'))
+      .catch(err => console.error(err));
+  });
+
+  document.body.appendChild(nftButton);
+}
+
+// Search Videos
+document.getElementById('searchBar').addEventListener('input', event => {
+  const query = event.target.value.toLowerCase();
+  const allVideos = document.querySelectorAll('.video-grid div');
+
+  allVideos.forEach(video => {
+    const title = video.querySelector('h3').textContent.toLowerCase();
+    video.style.display = title.includes(query) ? 'block' : 'none';
+  });
+});
+
+// Initialize App
+document.addEventListener('DOMContentLoaded', () => {
+  renderVideos();
+  setupInfiniteScroll();
+  setupCertificates();
+});
+
+
+
+  
+  
+</script>
