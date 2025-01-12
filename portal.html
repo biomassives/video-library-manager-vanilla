@@ -569,80 +569,20 @@ const videoData = {
 };
 
 
-
-
-
-// Function to display videos for a category
-function displayVideos(categoryName) {
-  const categoryTitle = document.getElementById('category-title');
-  const categoryDescription = document.getElementById('category-description');
-  const videoGrid = document.getElementById('video-grid');
-
-  // Set category title and description (you'll need to add descriptions to your data)
-  categoryTitle.textContent = categoryName;
-  categoryDescription.textContent = "Description for " + categoryName; // Replace with actual description
-
-  // Clear previous videos
-  videoGrid.innerHTML = '';
-
-  // Load initial videos (e.g., first 12)
-  loadVideos(categoryName, 0, 12); 
-
-  // Infinite scroll setup
-  let currentVideoIndex = 12; 
-  const infiniteScrollTrigger = document.getElementById('infinite-scroll-trigger');
-  infiniteScrollTrigger.addEventListener('click', () => {
-    loadVideos(categoryName, currentVideoIndex, 12);
-    currentVideoIndex += 12;
-  });
-}
-
-// Function to load videos (with infinite scroll)
-function loadVideos(categoryName, startIndex, count) {
-  const videos = videoData[categoryName];
-  const videoGrid = document.getElementById('video-grid');
-
-  // Get a slice of videos based on startIndex and count
-  const videosToLoad = videos.slice(startIndex, startIndex + count);
-
-  videosToLoad.forEach(video => {
-    const videoElement = `
-      <div class="video-card">
-        <h3>${video.title}</h3>
-        <a href="${video.url}" target="_blank">
-          <img src="path/to/thumbnail.jpg" alt="${video.title} thumbnail"> </a> 
-        <div class="tags">
-          ${video.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-        </div>
-      </div>
-    `;
-    videoGrid.innerHTML += videoElement;
-  });
-}
-
-// Event listeners for category clicks (using your existing code)
-const categoryIcons = document.querySelectorAll('.icon-button');
-categoryIcons.forEach(icon => {
-  icon.addEventListener('click', () => {
-    const categoryName = icon.dataset.category;
-    displayVideos(categoryName);
-  });
-});
-
-
-
-const videoData = { /* JSON as provided */ };
-let loadedVideos = 0;
-const videosPerLoad = 6;
+// Constants
+const videosPerLoad = 6; // Number of videos to load per batch
+let loadedVideos = 0; // Tracks how many videos have been loaded
 
 // Render Videos
-function renderVideos() {
+function renderVideos(category = null, startIndex = 0, count = videosPerLoad) {
   const container = document.querySelector('.video-grid');
-  const videos = Object.keys(videoData).flatMap(key => videoData[key]);
+  const videos = category 
+    ? videoData[category] || [] 
+    : Object.keys(videoData).flatMap(key => videoData[key]);
 
-  // Load a batch of videos
-  const batch = videos.slice(loadedVideos, loadedVideos + videosPerLoad);
-  loadedVideos += videosPerLoad;
+  // Slice the batch of videos to render
+  const batch = videos.slice(startIndex, startIndex + count);
+  loadedVideos += batch.length;
 
   batch.forEach(video => {
     const videoCard = document.createElement('div');
@@ -656,35 +596,52 @@ function renderVideos() {
   });
 
   // Hide Load More button if all videos are loaded
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
   if (loadedVideos >= videos.length) {
-    document.getElementById('loadMoreBtn').style.display = 'none';
+    loadMoreBtn.style.display = 'none';
   }
 }
 
-// Infinite Scroll
-function setupInfiniteScroll() {
+// Infinite Scroll Setup
+function setupInfiniteScroll(category = null) {
   const loadMoreBtn = document.getElementById('loadMoreBtn');
-  loadMoreBtn.addEventListener('click', renderVideos);
+  loadMoreBtn.style.display = 'block'; // Ensure button is visible
 
-  window.addEventListener('scroll', () => {
+  loadMoreBtn.onclick = () => renderVideos(category, loadedVideos, videosPerLoad);
+
+  // Optional: Scroll-based auto-load
+  window.onscroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-      renderVideos();
+      renderVideos(category, loadedVideos, videosPerLoad);
     }
+  };
+}
+
+// Search Videos
+function setupSearch() {
+  const searchBar = document.getElementById('searchBar');
+  searchBar.addEventListener('input', event => {
+    const query = event.target.value.toLowerCase();
+    const allVideos = document.querySelectorAll('.video-grid div');
+
+    allVideos.forEach(video => {
+      const title = video.querySelector('h3').textContent.toLowerCase();
+      video.style.display = title.includes(query) ? 'block' : 'none';
+    });
   });
 }
 
-// NFT Certificates
+// NFT Certificate Setup
 function setupCertificates() {
-  const completedVideos = {}; // Track completed videos
   const nftButton = document.createElement('button');
-  nftButton.className = 'bg-green-500 text-white p-2 rounded';
+  nftButton.className = 'bg-green-500 text-white p-2 rounded mt-4';
   nftButton.textContent = 'Claim NFT Certificate';
 
   nftButton.addEventListener('click', () => {
     const certificate = {
       title: 'Eco Ops Learning Certificate',
       description: 'Awarded for completing videos.',
-      date: new Date().toISOString()
+      date: new Date().toISOString(),
     };
 
     localforage.setItem('certificate', certificate)
@@ -695,23 +652,24 @@ function setupCertificates() {
   document.body.appendChild(nftButton);
 }
 
-// Search Videos
-document.getElementById('searchBar').addEventListener('input', event => {
-  const query = event.target.value.toLowerCase();
-  const allVideos = document.querySelectorAll('.video-grid div');
-
-  allVideos.forEach(video => {
-    const title = video.querySelector('h3').textContent.toLowerCase();
-    video.style.display = title.includes(query) ? 'block' : 'none';
-  });
-});
-
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
-  renderVideos();
-  setupInfiniteScroll();
-  setupCertificates();
+  renderVideos(); // Load initial videos
+  setupInfiniteScroll(); // Setup scrolling
+  setupSearch(); // Setup search functionality
+  setupCertificates(); // Setup NFT certificates
 });
+
+
+
+
+
+
+
+
+
+
+
 
 
 
