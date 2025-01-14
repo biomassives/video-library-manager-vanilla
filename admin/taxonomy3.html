@@ -125,9 +125,6 @@ body {
     background-color: #1a1a2e;
 }
 
-
-
-
 /* Dark Mode */
 body.dark-mode {
     background-color: #1a1a2e;
@@ -348,8 +345,6 @@ body.dark-mode {
 
 
     </style>
-
-
 </head>
 <body>
 
@@ -357,7 +352,6 @@ body.dark-mode {
 <div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm banner-message">
     <!-- Message will be inserted here by JavaScript -->
 </div>
-
 
     <!-- Main Header -->
     <header class="shadow-lg">
@@ -621,7 +615,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const { data: categories, error } = await this.supabase
                         .from('categories')
-                        .select('*, subcategories(*)');
+                        .select('*, subcategories(*))
+                        .where( subview=="jan14" )
+                                ;
 
                     if (error) throw error;
                     this.categories = categories || [];
@@ -807,8 +803,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
-
-
 
             showAddCategoryModal() {
                 const modal = document.createElement('div');
