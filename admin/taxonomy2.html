@@ -661,7 +661,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Update local state with the new category and initialize subcategories
                     const newCategory = {
                         ...data[0],
-                        subcategories: [] // Add an empty subcategories array to maintain the local structure
+                        subcategories: [], // Add an empty subcategories array to maintain the local structure
+                        subview: "jan14"
                     };
 
                     this.categories.push(newCategory);
