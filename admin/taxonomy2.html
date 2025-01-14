@@ -681,7 +681,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const { data, error } = await this.supabase
                         .from('subcategories')
-                        .insert([{ ...subcategoryData, category_id: categoryId, slug }])
+                        .insert([{ ...subcategoryData, category_id: categoryId, slug, subview: "jan14"  }])
                         .select();
 
                     if (error) throw error;
