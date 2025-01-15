@@ -13,6 +13,9 @@
 </head>
 
 <body class="theme-transition">
+<div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm banner-message">💧 Clean water, safe shelter, better lives</div>
+
+  
   <div class="border-b border-gray-700">
     <div class="container mx-auto px-4">
       <div class="flex justify-center space-x-8 py-4">A P P R O V I D E O</div>
@@ -327,6 +330,36 @@
 
   
       <script>
+
+        // Add this at the start of your JavaScript section
+const bannerMessages = [
+    "🎥 Sharing knowledge that changes lives - One video at a time",
+    "🌱 Building resilience through appropriate technology",
+    "💧 Clean water, safe shelter, better lives",
+    "🌟 Empowering communities with sustainable solutions",
+    "🤝 Technology that serves humanity",
+    "🏗️ Building bridges to a sustainable future",
+    "💪 Local solutions, global impact",
+    "🌍 Every community deserves access to vital knowledge"
+];
+
+// Add this to your DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.querySelector('.bg-gradient-to-r.from-green-600');
+    let currentMessageIndex = 0;
+
+    function updateBannerMessage() {
+        banner.textContent = bannerMessages[currentMessageIndex];
+        currentMessageIndex = (currentMessageIndex + 1) % bannerMessages.length;
+    }
+
+    // Initial message
+    updateBannerMessage();
+
+    // Rotate message every 5 seconds
+    setInterval(updateBannerMessage, 5000);
+});
+
 
       getRandomColor() {
         // Using HSL color space for more vibrant colors
