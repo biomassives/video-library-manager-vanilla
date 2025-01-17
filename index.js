@@ -559,6 +559,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Toggle category selection
       if (currentCategory === category) {
         mondrianBox.classList.add('hidden');
+        subheader.classList.add('hidden');
         currentCategory = null;
       } else {
         // Show subcategories for selected category
@@ -648,7 +649,9 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const category = e.target.getAttribute('data-category');
       updateCategory(category);
+        console.log(category);
       mondrianBox.classList.add('hidden');
+      subcategory.classList.add('block');
       currentCategory = null;
     }
   });
