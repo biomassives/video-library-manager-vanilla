@@ -566,12 +566,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const dropUpMenu = category.nextElementSibling;
         const subcategories = dropUpMenu.querySelectorAll('.drop-up-item');
 
-        const newText = link.getAttribute("data-text");
-        const subheader = document.getElementById("subheader");
-        if (subheader && newText) {
-          subheader.textContent = newText;
-        }
-
           
 
 
