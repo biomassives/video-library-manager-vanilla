@@ -565,11 +565,23 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show subcategories for selected category
         const dropUpMenu = category.nextElementSibling;
         const subcategories = dropUpMenu.querySelectorAll('.drop-up-item');
-        
+
+        const newText = link.getAttribute("data-text");
+        const subheader = document.getElementById("subheader");
+        if (subheader && newText) {
+          subheader.textContent = newText;
+        }
+
+          
+
+
+          
         subcategoryLinks.innerHTML = '';
         subcategories.forEach(subcategory => {
           subcategoryLinks.appendChild(subcategory.cloneNode(true));
         });
+
+          
         
         mondrianBox.classList.remove('hidden');
         currentCategory = category;
