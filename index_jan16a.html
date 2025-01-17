@@ -371,24 +371,33 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
-
-
-
 <div class="container mx-auto px-4 mb-8">
   <div class="rounded-lg border-4 border-indigo-500 bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-700 p-6 text-white">
 
   <p>
-
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="200" height="100" class="align-left">
-            <!-- Stick figure 1 (leftmost, pointing) -->
+      
+      <div class="comic-strip">
+        <!-- Panel 1: The Thumbnail Treasure Hunt -->
+        <div class="panel">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="200" height="100">
+            <!-- Stick figure pointing to a thumbnail -->
             <circle cx="40" cy="30" r="5" fill="black" />
             <line x1="40" y1="35" x2="40" y2="55" stroke="black" stroke-width="2" />
             <line x1="40" y1="40" x2="30" y2="45" stroke="black" stroke-width="2" />
             <line x1="40" y1="40" x2="50" y2="30" stroke="black" stroke-width="2" />
             <line x1="40" y1="55" x2="35" y2="70" stroke="black" stroke-width="2" />
             <line x1="40" y1="55" x2="45" y2="70" stroke="black" stroke-width="2" />
-          
-            <!-- Stick figure 2 (middle, holding map) -->
+            <!-- Thumbnail as a rectangle -->
+            <rect x="60" y="30" width="40" height="20" fill="#d4d4d4" stroke="black" />
+            <text x="70" y="45" font-size="5" fill="black">Thumbnail</text>
+          </svg>
+          <p class="caption">"Great! This thumbnail shows us where the treasure is. Totally fair to use, right?"</p>
+        </div>
+      
+        <!-- Panel 2: Map Reading Woes -->
+        <div class="panel">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="200" height="100">
+            <!-- Stick figure holding a map -->
             <circle cx="80" cy="30" r="5" fill="black" />
             <line x1="80" y1="35" x2="80" y2="55" stroke="black" stroke-width="2" />
             <line x1="80" y1="40" x2="70" y2="50" stroke="black" stroke-width="2" />
@@ -396,8 +405,17 @@ document.addEventListener('DOMContentLoaded', () => {
             <rect x="70" y="50" width="20" height="10" fill="none" stroke="black" stroke-width="2" />
             <line x1="80" y1="55" x2="75" y2="70" stroke="black" stroke-width="2" />
             <line x1="80" y1="55" x2="85" y2="70" stroke="black" stroke-width="2" />
-          
-            <!-- Stick figure 3 (rightmost, reading map) -->
+            <!-- "Attribution Guidelines" sheet -->
+            <rect x="120" y="40" width="15" height="15" fill="white" stroke="black" />
+            <text x="122" y="48" font-size="4" fill="black">Attribution</text>
+          </svg>
+          <p class="caption">"Wait, the map says we need ‘proper attribution’—what’s that?"</p>
+        </div>
+      
+        <!-- Panel 3: A Transformative Turn -->
+        <div class="panel">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="200" height="100">
+            <!-- Stick figure reading guide -->
             <circle cx="120" cy="30" r="5" fill="black" />
             <line x1="120" y1="35" x2="120" y2="55" stroke="black" stroke-width="2" />
             <line x1="120" y1="40" x2="115" y2="50" stroke="black" stroke-width="2" />
@@ -405,57 +423,13 @@ document.addEventListener('DOMContentLoaded', () => {
             <rect x="115" y="50" width="10" height="10" fill="none" stroke="black" stroke-width="2" />
             <line x1="120" y1="55" x2="115" y2="70" stroke="black" stroke-width="2" />
             <line x1="120" y1="55" x2="125" y2="70" stroke="black" stroke-width="2" />
-    </svg>
-
-
-    <div class="comic-strip">
-  <!-- Panel 1: Figure pointing -->
-  <div class="panel">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="200" height="100">
-      <!-- Stick figure pointing -->
-      <circle cx="40" cy="30" r="5" fill="black" />
-      <line x1="40" y1="35" x2="40" y2="55" stroke="black" stroke-width="2" />
-      <line x1="40" y1="40" x2="30" y2="45" stroke="black" stroke-width="2" />
-      <line x1="40" y1="40" x2="50" y2="30" stroke="black" stroke-width="2" />
-      <line x1="40" y1="55" x2="35" y2="70" stroke="black" stroke-width="2" />
-      <line x1="40" y1="55" x2="45" y2="70" stroke="black" stroke-width="2" />
-    </svg>
-    <p class="caption">"Let’s go that way! I swear the internet is down this road."</p>
-  </div>
-
-  <!-- Panel 2: Figure holding map -->
-  <div class="panel">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="200" height="100">
-      <!-- Stick figure holding map -->
-      <circle cx="80" cy="30" r="5" fill="black" />
-      <line x1="80" y1="35" x2="80" y2="55" stroke="black" stroke-width="2" />
-      <line x1="80" y1="40" x2="70" y2="50" stroke="black" stroke-width="2" />
-      <line x1="80" y1="40" x2="90" y2="50" stroke="black" stroke-width="2" />
-      <rect x="70" y="50" width="20" height="10" fill="none" stroke="black" stroke-width="2" />
-      <line x1="80" y1="55" x2="75" y2="70" stroke="black" stroke-width="2" />
-      <line x1="80" y1="55" x2="85" y2="70" stroke="black" stroke-width="2" />
-    </svg>
-    <p class="caption">"Hmm… this says the WiFi is actually over there!"</p>
-  </div>
-
-  <!-- Panel 3: Figure reading map -->
-  <div class="panel">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" width="200" height="100">
-      <!-- Stick figure reading map -->
-      <circle cx="120" cy="30" r="5" fill="black" />
-      <line x1="120" y1="35" x2="120" y2="55" stroke="black" stroke-width="2" />
-      <line x1="120" y1="40" x2="115" y2="50" stroke="black" stroke-width="2" />
-      <line x1="120" y1="40" x2="125" y2="50" stroke="black" stroke-width="2" />
-      <rect x="115" y="50" width="10" height="10" fill="none" stroke="black" stroke-width="2" />
-      <line x1="120" y1="55" x2="115" y2="70" stroke="black" stroke-width="2" />
-      <line x1="120" y1="55" x2="125" y2="70" stroke="black" stroke-width="2" />
-    </svg>
-    <p class="caption">"But this map is from last year… where’s the nearest broadband cafe?"</p>
-  </div>
-</div>
-
-
-  
+            <!-- Transformative Use banner -->
+            <text x="70" y="30" font-size="6" fill="black">Transformative Use</text>
+          </svg>
+          <p class="caption">"Got it! Respect, attribute, and transform. That’s how we map out success—by writing it down so we don’t forget again."</p>
+        </div>
+      </div>
+    
       Approvideo provides a platform for educators and learners to discover and engage with educational YouTube videos.
       We believe our use of thumbnails and curated collections falls within fair use principles, but we cannot guarantee 
       fair use in all cases. Users are responsible for their use of copyrighted materials and should comply with 
@@ -463,7 +437,9 @@ document.addEventListener('DOMContentLoaded', () => {
     </p>
   </div>
 </div>
+    
 
+    
     <BR><BR><BR>
 
 
