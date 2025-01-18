@@ -415,22 +415,13 @@ const tagSuggestions = [
       let tags = [];
         if (tagsInput) {
             tags = tagsInput.value.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
-            tags = tags.replace(/[",\[\]]/g, '')
+            //tags = tags.replace(/[",\[\]]/g, '')
 
 
         } else {
             console.error('Element with ID "newTags" not found.');
             // You might want to return here or show an error message to the user if the element is not found.
         }
-
-
-
-
-
-
-
-
-
 
 
       // Extract YouTube ID
