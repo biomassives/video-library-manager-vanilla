@@ -254,7 +254,7 @@ class VideoManager {
   async loadVideos() {
   try {
     this.state.update({ loading: true });
-    console.log("Loading videos with category filter:", this.state.state.filterCategory);
+    .log("Loading videos with category filter:", this.state.state.filterCategory);
 
 
 
@@ -292,6 +292,8 @@ if (this.state.state.filterCategory) {
     if (this.state.state.searchQuery) {
       const searchQuery = this.state.state.searchQuery.toLowerCase();
       filteredVideos = videos.filter(video =>
+        (video.category || '').toLowerCase().includes(searchQuery) ||
+        (video.subcategory || '').toLowerCase().includes(searchQuery) ||
         (video.title || '').toLowerCase().includes(searchQuery) ||
         (video.description || '').toLowerCase().includes(searchQuery)
       );
