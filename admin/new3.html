@@ -103,15 +103,26 @@
           <option value="foodproduction">Food Production</option>
           <option value="shelter">Shelter</option>
           <option value="healthcare">Healthcare</option>
+          <option value="waterpurification">Water Purification</option>
+          <option value="desalination">Desalination</option>
+          <option value="waterdistribution">Efficient Water Ditribution</option>
+          <option value="diysolar">DIY Solar</option>
+          <option value="biogas">Biogas</option>
+          <option value="microgrids">Microgrids</option>
+          <option value="urbanfood">Urban Food Prouction</option>
+          <option value="hydroponics">Hydroponics</option>
+          <option value="sustainable-agriculture-techniques">Sustainable Agriculture Techniques</option>  
+          <option value="low-cost-construction">Low Cost Contruction</option>
+          <option value="local-shelter-materials">Useful Local Materials for Shelter</option> 
+          <option value="emt-skills">EMT Skills</option>
+          <option value="telemedicine">Telemedicine</option>
+          <option value="first-aid">First Aid</option>
+          <option value="self-suficient-healthcare">Self Sufficient Health Care</option>   
+
+          
         </select>
       </div>
 
-      <div class="mb-4">
-        <label for="subcategory" class="block text-gray-700 text-sm font-bold mb-2">Subcategory:</label>
-        <select id="newSubcategory" class="liquid-input w-full" required>
-          <option value="">Select a subcategory</option>
-        </select>
-      </div>
 
       <div class="mb-4">
         <label for="tags" class="block text-gray-700 text-sm font-bold mb-2">Tags:</label>
@@ -296,35 +307,6 @@ if (localStorage.getItem('darkMode') === 'true') {
 
 
 
-    const categorySubcategories = { 
-  watersecurity: ["purification","desalination","efficient-distribution"],
-  energysolutions: ["diy-solar-energy","biogas","microgrids"],   
-  foodproduction: ["urban-gardening","hydroponics","sustainable-agriculture-techniques"],   
-  shelter: ["low-cost-construction","local-shelter-materials"],   
-  healthcare: ["emt-skills","telemedicine","first-aid","self-suficient-healthcare"],    
-      
-  Shelter: ["Temporary Shelter", "Permanent Housing", "Insulation", "Ventilation", "Natural Building"], 
-  Water: ["Filtration", "Well/Borehole", "Purification", "Storage", "Distribution", "RO", "UV"], 
-  Waste: [
-    "Composting", 
-    "Recycling", 
-    "Plastics", 
-    "Composting", 
-    "Remanufacturing", 
-    "Upcycling", 
-    "Health & Hygiene", 
-    "Write a Letter: Producer Responsibility for Plastics", 
-    "Write a Letter: Eliminate PFOA/PFOS in Food Packaging"
-  ], 
-  Energy: [
-    "Solar", "Wind", "Hydropower", "Biogas", 'H2', "Heating", "Storage", "Transmission", 
-    "Shipping", "Plumbing", "Factories", "Motors & Compressors", 
-    "Wiring & Transformers", "Upsream producer responsibility", "Planning & Logistics"
-  ], 
-  Innovation: ["Creativity", "Art", "Music", "Nature spaces", "Cultural", "Language", "Innovation", "Food", "Moda", "Meme", "Peace", "Tools", "Communication"],
-  Agronomy: ["Integrated Pest Management", "Soil Improvement", "Cover Cropping", "Soil Regeneration", "Diversified Agriculture", "Specialty Crops", "BioDynamic", "Organic Techniques"]
-};
-
 // Tag Suggestions (no changes needed here)
 const tagSuggestions = [
   "DIY", "Sustainability", "Environment", "Green Building", "Gardening", "Recycling", "Composting", "Solar", "Wind",
@@ -334,16 +316,6 @@ const tagSuggestions = [
 
 
 
-      // Function to populate subcategories
-      function populateSubcategories(category) {
-        const subcategorySelect = document.getElementById('newSubcategory');
-        subcategorySelect.innerHTML = '<option value="">Select a subcategory</option>';
-        if (categorySubcategories[category]) {
-          categorySubcategories[category].forEach(subcategory => {
-            subcategorySelect.innerHTML += `<option value="${subcategory}">${subcategory}</option>`;
-          });
-        }
-      }
 
       // Add event listener for category change
       const categorySelect = document.getElementById('newCategory');
