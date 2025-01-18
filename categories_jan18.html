@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApproVideo - DIY Solutions Portal</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="stylenew.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
+  <script type="module" src="index.js"></script>
+</head>
+
+<body class="theme-transition">
+  <div class="border-b border-gray-700">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-center space-x-8 py-4">A P P R O V I D E O</div>
+      <div class="flex justify-center space-x-8 py-4"> 
+        <div class="group">   
+
+                
+        <a href="#" class="flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Shelter">                        
+                            <button class="icon-button relative group" data-category="diy">
+                  <div class="bg-gradient-to-r from-blue-500 to-indigo-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-1 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-building"></i>
+                  </div>
+
+                </button>
+              
+        </a>                    
+        <div class="drop-up-menu absolute hidden group-hover:block bg-white shadow-md rounded-md mt-2 py-2 z-10">                        
+            <a href="#" class="drop-up-item category-link" data-category="Temporary Shelter">Temporary Shelter</a>                        
+            <a href="#" class="drop-up-item category-link" data-category="Permanent Housing">Permanent Housing</a>                        
+            <a href="#" class="drop-up-item category-link" data-category="Insulation">Insulation</a>                        
+            <a href="#" class="drop-up-item category-link" data-category="Ventilation">Ventilation</a>                        
+            <a href="#" class="drop-up-item category-link" data-category="Natural Building">Natural Building</a>                    
+        </div>                
+    </div>                       
+    <div class="group">                    
+        <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Water">                        
+                <button class="icon-button relative group" data-category="drinking-water">
+                  <div class="bg-gradient-to-r from-cyan-500 to-blue-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-2 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-tint"></i>
+                  </div>
+
+                </button>
+              
+        </a>                 
+        <div class="drop-up-menu">                        
+            <a href="#"  class="drop-up-item category-link" data-category="Water Filtration">Filtration</a>                        
+            <a href="#"  class="drop-up-item category-link" data-category="Urban Water">*Urban</a>                        
+            <a href="#" class="drop-up-item category-link" data-category="Water Purification">Purification</a>                        
+            <a href="#" class="drop-up-item category-link" data-category="Drinking Water Storage">Storage</a>                        
+            <a href="#" class="drop-up-item category-link" data-category="Water Distribution">Distribution</a>                    
+        </div>                
+    </div>                
+    <div class="group">                    
+        <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Waste Management">                        
+                            <button class="icon-button relative group" data-category="waste-management">
+                  <div class="bg-gradient-to-r from-green-500 to-emerald-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-3 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-recycle"></i>
+                  </div>
+
+                </button>
+              
+        </a>                      
+        <div class="drop-up-menu">                        
+            <a href="#" class="drop-up-item" data-category="Composting">Composting</a>                        
+            <a href="#" class="drop-up-item" data-category="Recycling">Recycling</a>                        
+            <a href="#" class="drop-up-item" data-category="Plastics">Plastics</a>                        
+            <a href="#" class="drop-up-item" data-category="Composting">Composting</a>                        
+            <a href="#" class="drop-up-item" data-category="remanufacturing">Remanufacturing</a>                        
+            <a href="#" class="drop-up-item" data-category="Upcycling">Upcycling</a>                        
+            <a href="#" class="drop-up-item" data-category="Hygiene">Health & Hygiene</a>                        
+            <a href="#" class="drop-up-item" data-category="Producer Responsibility">Write a Letter:  Producer Responsibility for Plastics</a>  
+            <a href="#" class="drop-up-item" data-category="PFOA/PFOS Elimination">Write a Letter: Eliminate PFOA/PFOS in Food Packaging</a>                 
+        </div>                
+    </div>                           
+                           
+    <div class="group">                    
+        <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Energy">                        
+                            <button class="icon-button relative group" data-category="energy-systems">
+                  <div class="bg-gradient-to-r from-yellow-500 to-amber-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-4 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-bolt"></i>
+                  </div>
+
+                </button>
+              
+        </a>                   
+        <div class="drop-up-menu">                     
+            <a href="#" class="drop-up-item" data-category="Solar">Solar</a>                        
+            <a href="#" class="drop-up-item" data-category="Wind">Wind</a>                        
+            <a href="#" class="drop-up-item" data-category="Hydropower">Hydropower</a>                        
+            <a href="#" class="drop-up-item" data-category="Biogas">Biogas</a>                                                
+            <a href="#" class="drop-up-item" data-category="H2">H2</a>                                                
+            <a href="#" class="drop-up-item" data-category="Heating">Heating</a>                        
+            <a href="#" class="drop-up-item" data-category="Energy Storage">Storage</a>                        
+            <a href="#" class="drop-up-item" data-category="Energy Transmission">Transmission</a>                        
+            <a href="#" class="drop-up-item" data-category="Shipping">Shipping</a>
+
+            <a href="#" class="drop-up-item" data-category="Plumbing">Plumbing</a>
+
+            <a href="#" class="drop-up-item" data-category="Factories">Factories</a>
+
+            <a href="#" class="drop-up-item" data-category="Motors">Motors & Compressors</a>                        
+            <a href="#" class="drop-up-item" data-category="Wiring">Wiring & Transformers</a>
+            <a href="#" class="drop-up-item" data-category="UPR">Upsream producer responsibility</a>
+
+
+            <a href="#" class="drop-up-item" data-category="Logistics">Planning & Logistics</a>                    
+        </div>                
+    </div>                
+    <div class="group">                    
+        <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Health">                        
+                            <button class="icon-button relative group" data-category="health">
+                  <div class="bg-gradient-to-r from-cyan-500 to-blue-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-4 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-heartbeat"></i>
+                  </div>
+
+                </button>
+              
+        </a>                      
+        <div class="drop-up-menu">                        
+            <a href="#" class="drop-up-item" data-category="health data">Health Data</a>                        
+            <a href="#" class="drop-up-item" data-category="nutrition">Nutrition</a>                        
+            <a href="#" class="drop-up-item" data-category="pre-natal">Prenatal</a>                        
+            <a href="#" class="drop-up-item" data-category="early childhood">Early Childhood</a>                        
+            <a href="#" class="drop-up-item" data-category="climateHealth">Climate & Health</a>                        
+            <a href="#" class="drop-up-item" data-category="Healthcare">Healthcare</a>                        
+            <a href="#" class="drop-up-item" data-category="ptsd">PTSD Care</a>                        
+            <a href="#" class="drop-up-item" data-category="field-medicine">Field Medicine</a>                        
+            <a href="#" class="drop-up-item" data-category="healthEducation">Education</a>                    
+        </div>                
+    </div>            
+    <div class="group">                
+        <a href="#" class="flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Ingenuity">                    
+                <button class="icon-button relative group" data-category="ingenuity">
+                  <div class="bg-gradient-to-r from-emerald-500 to-green-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-6 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-brain"></i>
+                  </div>
+
+                </button>
+              
+        </a>                   
+        <div class="drop-up-menu">                    
+            <a href="#" class="drop-up-item" data-category="Creative-Solutions">Creativity</a>                    
+            <a href="#" class="drop-up-item" data-category="artistic">Art</a>                    
+            <a href="#" class="drop-up-item" data-category="music">Music</a>                    
+            <a href="#" class="drop-up-item" data-category="nature">Nature spaces</a>                    
+            <a href="#" class="drop-up-item" data-category="cultural">Cultural</a>                    
+            <a href="#" class="drop-up-item" data-category="language">Language</a>                    
+            <a href="#" class="drop-up-item">Innovation</a>                    
+            <a href="#" class="drop-up-item" data-category="food">Food</a>                    
+            <a href="#" class="drop-up-item" data-category="moda">Moda</a>                    
+            <a href="#" class="drop-up-item" data-category="meme">Meme</a>                    
+            <a href="#" class="drop-up-item" data-category="peace">Peace</a>                 
+            <a href="#" class="drop-up-item" data-category="tools">Tools</a>                
+            <a href="#" class="drop-up-item" data-category="commmunication">Communication</a>                
+        </div>            
+    </div>
+
+    <div class="group">                
+        <a href="#" class="flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Agronomy">                    
+                            <button class="icon-button relative group" data-category="agriculure">
+                  <div class="bg-gradient-to-r from-emerald-500 to-green-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-6 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-seedling"></i>
+                  </div>
+
+                </button>
+              
+        </a>                 
+        <div class="drop-up-menu">                    
+            <a href="#" class="drop-up-item">Integrated Pest Management</a> 
+                   
+            <a href="#" class="drop-up-item" data-category="Soil Improvement">Soil Improvement</a>                    
+            <a href="#" class="drop-up-item" data-category="Cover Cropping">Cover Cropping</a>                    
+            <a href="#" class="drop-up-item" data-category="Soil">Soil Regeneration</a>                    
+            <a href="#" class="drop-up-item" data-category="Diversified Agriculture">Diversified Agriculture</a>                    
+            <a href="#" class="drop-up-item" data-category="Specialty Crops">Specialty Crops</a>                    
+            <a href="#" class="drop-up-item" data-category="Biodynamic">BioDynamic</a>                    
+            <a href="#" class="drop-up-item" data-category="Organic Techniques">Organic Techniques</a>                
+        </div>            
+    </div>
+
+
+
+    </div>
+  </div>
+  
+  <!-- Hero Section with Mondrian Overlay -->
+  <div class="relative">
+
+  
+    <!-- Hero Content -->
+
+  
+    <!-- Mondrian Overlay -->
+    <div id="mondrian-overlay" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50">
+      <div class="absolute inset-0 p-8">
+        <div id="mondrian-grid" class="w-full h-full grid gap-4 opacity-0 transform scale-95 transition-all duration-300">
+          <!-- Subcategories will be dynamically inserted here -->
+        </div>
+      </div>
+      <button id="mondrian-close" class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+    
+  <div class="floating-icons">
+    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Drinking Water"><i class="fas fa-tint fa-3x floating-icon" style="--i:1;"></i></a>
+    <i class="fas fa-recycle fa-3x floating-icon" style="--i:2;"></i>
+    <i class="fas fa-solar-panel fa-3x floating-icon" style="--i:3;"></i>
+    <i class="fas fa-heartbeat fa-3x floating-icon" style="--i:4;"></i>
+</div>
+    
+<div class="header relative overflow-hidden">
+
+<div class="container mx-auto flex justify-center space-x-8">
+
+
+
+
+
+       
+            </div>
+
+                
+            <div class="floating-icons">
+                <div class="floating-icons">
+                    <i class="fas fa-tint fa-2x floating-icon" style="--i:1;"></i>
+                    <i class="fas fa-recycle fa-2x floating-icon" style="--i:2;"></i>
+                    <i class="fas fa-solar-panel fa-2x floating-icon" style="--i:3;"></i>
+                    <i class="fas fa-heartbeat fa-2x floating-icon" style="--i:4;"></i>
+                    <i class="fas fa-leaf fa-2x floating-icon" style="--i:5;"></i>
+                    <i class="fas fa-seedling fa-2x floating-icon" style="--i:6;"></i>
+                    <i class="fas fa-water fa-2x floating-icon" style="--i:7;"></i>
+                    <i class="fas fa-wind fa-2x floating-icon" style="--i:8;"></i>
+                </div>
+            </div>
+        
+        <div class="subheader"> Approvideo is a DIY learning network that supports hands on learning and community level collaboration. </div>
+
+
+
+
+          <div id="mondrian-box" class="relative left-0 right-0  dark:white-200 p-4 hidden">
+            <div id="subcategory-links" class="flex flex-wrap dark:bg-white-700 text-white-500 bg-black-200 justify-center"></div>
+          </div>
+
+        <div id="hero" class=" mb-1">
+        </div>
+
+          <div id="purification" class="hidden mb-1">
+
+            Water Security and Purification Techniques from Circular Economy and Waste Stream:
+            Rainwater Harvesting: Collecting and storing rainwater reduces dependency on traditional sources, promoting water security.
+            Greywater Recycling: Reusing water from sinks, showers, and laundry for irrigation and flushing reduces demand on freshwater sources.
+            Constructed Wetlands: Using plants and natural processes to treat wastewater mimics natural filtration, purifying water effectively.
+            Biofiltration: Leveraging microorganisms to break down contaminants in water promotes a sustainable approach to purification.
+            Resource Recovery: Extracting nutrients and energy from wastewater can reduce pollution and provide additional resources, closing the loop in a circular economy.
+            These techniques leverage waste streams and natural cycles, ensuring a more sustainable water purification system.
+                    
+          </div>
+
+
+          <div id="desalination" class="hidden mb-1">
+          Desalination Techniques for Water Security:
+
+              Reverse Osmosis (RO): This method uses a semipermeable membrane to remove salt and impurities, producing clean water efficiently. It's energy-intensive but effective.
+          
+              Thermal Desalination (Distillation): Involves heating saltwater to create steam, leaving the salt behind, and then condensing the steam into fresh water. Effective but energy-intensive, though can use waste heat.
+          
+              Electrodialysis: Uses electric potential to move salt ions through membranes, separating them from the water. Suitable for brackish water and energy-efficient.
+          
+              Solar Desalination: Uses solar energy to evaporate and condense water, making it an environmentally friendly and sustainable option.
+          
+              Forward Osmosis (FO): Utilizes a natural osmotic pressure gradient to separate water from salt, generally requiring less energy than RO.              
+
+            
+          case study examples:
+          
+              Reverse Osmosis (RO): Example: Israel's Sorek Desalination Plant - One of the world's largest and most efficient RO plants, supplying clean water to millions while showcasing advanced energy recovery techniques.
+          
+              Thermal Desalination (Distillation): Example: Saudi Arabia's MSF Plants - Multi-stage flash distillation plants in Saudi Arabia provide substantial freshwater from seawater, using thermal energy, often sourced from waste heat in industrial processes.
+          
+              Electrodialysis: Example: Spain's Electrodialysis Reversal (EDR) Plants - Effective in treating brackish water, these plants provide a reliable supply of clean water for agricultural and industrial use.
+          
+              Solar Desalination: Example: Australia's Solar Desalination Projects - Small-scale solar desalination units in remote areas provide sustainable freshwater solutions, utilizing abundant solar energy.
+          
+              Forward Osmosis (FO): Example: Emergency Water Purification in Disaster Relief - FO systems, with their low energy requirements and efficiency, are used in emergency situations to provide potable water quickly and efficiently.
+
+ Forward Osmosis (FO) operates on a natural osmotic pressure gradient:
+
+    Thermodynamics: FO relies on the principle that water naturally moves from a region of lower solute concentration to higher solute concentration through a semi-permeable membrane. This osmotic pressure drives the process, requiring less external energy compared to reverse osmosis.
+
+    Physics: The semi-permeable membrane allows only water molecules to pass while blocking solutes. The driving force is the difference in osmotic pressures between the feed solution (usually seawater or brackish water) and the draw solution (a highly concentrated solution).
+
+    Mechanics: Mechanically, FO systems are simpler and often experience less fouling and scaling on membranes compared to RO. They can be more energy-efficient and have lower maintenance costs.
+
+    Overall, FO is a promising technology for sustainable water purification, especially where energy efficiency and low operational costs are prioritized.
+            
+
+
+
+            Simplicity: FO systems have a straightforward design, often requiring fewer components than other desalination techniques, making them easier and cheaper to build for DIY enthusiasts.
+
+Low Energy Requirements: FO's reliance on natural osmotic pressure reduces energy needs, allowing for smaller, less expensive setups that are practical for DIY projects.
+
+Accessible Materials: Many FO membranes and draw solutions can be sourced from readily available materials, making it feasible for DIY enthusiasts to construct their own systems.
+
+Scalability: FO systems can be easily scaled down for small-scale applications, such as for individual households or communities, aligning well with DIY approaches.
+
+
+
+experimental production methods for Forward Osmosis (FO) membranes include:
+
+    Layer-by-Layer Assembly: This involves depositing alternating layers of polyelectrolytes, creating highly selective and tunable membranes. It allows precise control over membrane thickness and properties, enhancing water flux and salt rejection.
+
+    Electrospinning: This method produces nanofiber membranes with high surface area and porosity, resulting in improved water permeability and mechanical strength. These membranes are effective in maintaining high flux rates while being easy to manufacture.
+
+    Phase Inversion: A widely used technique where a polymer solution is cast into a film and then immersed in a non-solvent, causing the polymer to precipitate and form a porous structure. This method is versatile and can produce membranes with different properties by altering the polymer and conditions.
+
+    Interfacial Polymerization: This creates thin-film composite membranes by forming a dense polyamide layer on a porous support. These membranes are highly effective in FO due to their excellent selectivity and permeability.
+
+          
+          </div>
+
+            <div id="txt-biogas" class="hidden mb-1">
+
+  Biogas Production:
+
+    Materials: Organic waste like kitchen scraps, animal manure, and plant material. A sealed anaerobic digester is used to break down these materials, producing methane-rich biogas.
+    Safety: Ensure the system is airtight to prevent leaks. Proper ventilation is crucial to avoid gas buildup.
+
+Biogas Separation:
+
+    Water Scrubbing: This method removes carbon dioxide and other impurities by passing biogas through water. Simple setups can be made using tanks and pumps.
+    Membrane Separation: Utilizing selective membranes to separate methane from other gases. DIY kits are available for small-scale applications.
+
+Sanitary Approaches:
+
+    Hygiene: Ensure the digester is sealed to prevent contamination and maintain cleanliness around the setup.
+    Maintenance: Regularly check for leaks and wear, and ensure the digester is operating efficiently.
+
+ </div>
+
+  
+  <div id="solar-energy" class="hidden mb-1">
+
+DIY Solar Energy Systems:
+
+    Components: Solar panels, charge controllers, inverters, and batteries. Solar panels capture sunlight and convert it to electricity, charge controllers regulate power to the batteries, and inverters convert stored DC power to AC for household use.
+    Safety: Ensure proper wiring, grounding, and use of fuses to prevent electrical hazards. Always follow safety guidelines and consult professionals if needed.
+    Basic Principles: Solar energy systems harness renewable energy from the sun, reducing electricity bills and environmental impact.
+
+DIY Mechanical Energy Systems:
+
+    Wind Turbines: Use wind to spin blades connected to a generator, producing electricity. Components include blades, a generator, and a tower.
+    Bicycle Generators: Convert mechanical energy from pedaling into electricity, useful for small-scale power generation.
+    Safety: Ensure all moving parts are properly shielded to prevent injuries. Proper installation and maintenance are key.
+    Basic Principles: Mechanical energy systems convert kinetic energy (from wind or motion) into electrical energy, providing a renewable power source.
+  
+
+          </div>
+  
+  <div id="tt-microgrids" class="hidden mb-1">
+
+Microgrids are localized power systems that can operate independently or alongside the main grid, using various small-scale, sustainable energy sources. Here's how they can be set up successfully:
+
+    Components: Microgrids typically include small-scale renewable energy sources like solar panels, wind turbines, and sometimes small hydroelectric systems. These are combined with energy storage systems like batteries to store excess energy for later use.
+
+    Control Systems: Microgrids require intelligent control systems to manage energy flow, balance supply and demand, and ensure efficient operation. These systems monitor energy production, storage, and consumption.
+
+    Safety: Proper safety measures include grounding, surge protection, and regular maintenance. Ensuring all components are correctly installed and operated is essential for safety and longevity.
+
+    Basic Principles: Microgrids work by integrating various energy sources, optimizing their use, and providing a reliable, localized power supply that can function independently or in conjunction with the main grid.
+
+Microgrids are often successfully set up with small equipment, particularly in remote or off-grid areas, offering a sustainable and resilient power solution.
+
+
+Here's a detailed breakdown of microgrid components:
+
+    Solar Panels:
+        Function: Convert sunlight into electrical energy using photovoltaic cells.
+        Physics: The photovoltaic effect generates a voltage when sunlight hits the semiconductor material, creating direct current (DC).
+        Maintenance: Regular cleaning to remove dust and debris, and periodic checks for any damage.
+
+    Wind Turbines:
+        Function: Convert kinetic energy from wind into electrical energy.
+        Physics: Wind turns the turbine blades, which spin a generator to produce electricity.
+        Maintenance: Lubricating moving parts, checking for structural integrity, and ensuring the turbine is free from obstructions.
+
+    Batteries (Energy Storage):
+        Function: Store excess energy produced for later use, especially when production is low or during outages.
+        Physics: Chemical reactions within the battery store and release electrical energy as needed.
+        Maintenance: Ensuring proper charge/discharge cycles, monitoring battery health, and replacing old batteries.
+
+    Inverters:
+        Function: Convert DC from solar panels and batteries into alternating current (AC) for household use.
+        Physics: Use of electronic circuitry to change the type of current.
+        Maintenance: Regular checks for efficiency, cooling, and ensuring connections are secure.
+
+    Control Systems:
+        Function: Manage energy flow, balance load, and optimize the use of resources.
+        Physics: Use of algorithms and sensors to monitor and control the system.
+        Maintenance: Updating software, ensuring sensors are functioning correctly, and routine checks.
+
+Improvisation:
+
+    Materials: Sometimes, DIY setups use locally available materials to build components like turbine blades or frames for solar panels.
+    Repair: Quick fixes and adjustments are often needed to keep the system running, especially in DIY or remote setups.
+
+Understanding these components and their maintenance helps ensure a reliable and efficient microgrid system.
+    
+            </div>
+
+
+
+function convertTextToHTML(text) {
+    const lines = text.split('\n');
+    let html = '';
+    let indentStack = [];
+    const indentRegex = /^(\s*)(.*)$/;
+
+    lines.forEach(line => {
+        let match = line.match(indentRegex);
+        if (!match) return;
+
+        let indent = match[1].length;
+        let content = match[2].trim();
+
+        // Handle section headers (bold formatting)
+        if (content.includes(':')) {
+            let [title, rest] = content.split(/:(.+)/);
+            content = `<strong>${title.trim()}</strong>: ${rest.trim()}`;
+        }
+
+        // Manage indentation levels
+        while (indentStack.length > 0 && indentStack[indentStack.length - 1] >= indent) {
+            html += '</ul>';
+            indentStack.pop();
+        }
+
+        if (indent > 0) {
+            if (indentStack.length === 0 || indentStack[indentStack.length - 1] < indent) {
+                html += '<ul>';
+                indentStack.push(indent);
+            }
+            html += `<li>${content}</li>`;
+        } else {
+            html += `<p>${content}</p>`;
+        }
+    });
+
+    while (indentStack.length > 0) {
+        html += '</ul>';
+        indentStack.pop();
+    }
+
+    return html;
+}
+
+// Example usage:
+const formattedHTML = convertTextToHTML(`
+    Basic Principles: Microgrids work by integrating various energy sources, optimizing their use, and providing a reliable, localized power supply that can function independently or in conjunction with the main grid.
+
+Microgrids are often successfully set up with small equipment, particularly in remote or off-grid areas, offering a sustainable and resilient power solution.
+
+Here's a detailed breakdown of microgrid components:
+
+    Solar Panels:
+        Function: Convert sunlight into electrical energy using photovoltaic cells.
+        Physics: The photovoltaic effect generates a voltage when sunlight hits the semiconductor material, creating direct current (DC).
+`);
+
+console.log(formattedHTML);
+
+
+  
