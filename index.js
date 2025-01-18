@@ -657,7 +657,7 @@ document.addEventListener('DOMContentLoaded', () => {
       updateCategory(category);
         console.log(category);
       mondrianBox.classList.add('hidden');
-      subcategory.classList.add('block');
+      //subcategory.classList.add('block');
       currentCategory = null;
     }
   });
