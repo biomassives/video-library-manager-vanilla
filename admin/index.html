@@ -265,9 +265,19 @@ class VideoManager {
 
 
 
-    if (this.state.state.filterCategory) {
+if (this.state.state.filterCategory) {
+  const safeValue = this.state.state.filterCategory.toLowerCase();
+  query = query.or(`
+    category.ilike.%${safeValue}%,
+    subcategory.ilike.%${safeValue}%
+  `);
+}
+
+	  
+/*    if (this.state.state.filterCategory) {
       query = query.eq('category', this.state.state.filterCategory);
     }
+*/
 
     const { data: videos, error } = await query;
     if (error) throw error;
@@ -321,6 +331,8 @@ sortVideos(videos) {
         return (b.title || '').localeCompare(a.title || '');
       case 'category': // Category Sort
         return (a.category || '').localeCompare(b.category || '');
+      case 'subcategory': // SubCategory Sort
+        return (a.subcategory || '').localeCompare(b.subcategory || '');
       default:
         console.warn("Unknown sort option:", this.state.state.currentSort);
         return 0;
@@ -645,8 +657,8 @@ if (localStorage.getItem('darkMode') === 'true') {
     }
 
     
-// Start the app
-document.addEventListener('DOMContentLoaded', initializeApp);
+	// Start the app
+	document.addEventListener('DOMContentLoaded', initializeApp);
 
 
 
