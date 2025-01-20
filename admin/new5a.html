@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Accordion with Category Pills</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha512-..."
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabaseUrl = 'https://vlvbodwrtblttvwnxkjx.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg';
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+          
+
+    // Our known categories
+    const allCategories = [
+      'waterpurification',
+      'desalination',
+      'waterdistribution',
+      'diysolar',
+      'biogas',
+      'microgrids',
+      'urbanfood',
+      'hydroponics',
+      'sustainableag',
+      'lowcostconstruction',
+      'localsheltermaterials',
+      'emtskills',
+      'telemedicine',
+      'firstaid',
+      'selfsuficienthealthcare',
+    ];
+
+    async function fetchCategoryCounts() {
+      try {
+        const { data, error } = await supabase
+          .from('Video')
+          .select('category'); // or just select('*')
+
+        if (error) {
+          console.error('Error fetching videos:', error);
+          return;
+        }
+
+        // Count categories
+        const counts = {};
+        data.forEach((video) => {
+          const cat = video.category || 'Uncategorized';
+          counts[cat] = (counts[cat] || 0) + 1;
+        });
+
+        // Build pills
+        const container = document.getElementById('categoryCountsContent');
+        container.innerHTML = '';
+
+        allCategories.forEach((cat) => {
+          const count = counts[cat] || 0;
+
+          const pill = `
+            <div class="inline-flex items-center space-x-2
+                        px-3 py-1 rounded-full
+                        bg-blue-100 text-blue-800
+                        text-sm font-medium
+                        hover:bg-blue-200 transition
+                        ">
+              <a 
+                href="/videos.html?category=${cat}"
+                class="hover:underline"
+                title="View only ${cat} videos on site"
+              >
+                ${cat}
+              </a>
+              <span
+                class="bg-white text-blue-800 font-semibold
+                       px-2 py-0.5 rounded-full
+                       shadow-sm text-xs"
+                title="Number of videos in ${cat}"
+              >
+                ${count}
+              </span>
+              <a 
+                href="https://www.youtube.com/results?search_query=${cat}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:text-red-600"
+                title="Search on YouTube for '${cat}'"
+              >
+                <i class="fab fa-youtube"></i>
+              </a>
+            </div>
+          `;
+          container.innerHTML += pill;
+        });
+      } catch (err) {
+        console.error('Unexpected error:', err);
+      }
+    }
+
+    // Realtime channel to auto-refresh
+    const videoChannel = supabase.channel('video-changes-channel');
+    videoChannel.on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'Video' },
+      (payload) => {
+        console.log('Realtime update:', payload);
+        fetchCategoryCounts();
+      }
+    );
+    videoChannel.subscribe();
+
+    // Accordion toggle
+    window.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('toggleCategoryCounts');
+      const categoryCountsDiv = document.getElementById('categoryCounts');
+      const toggleIcon = document.getElementById('toggleIcon');
+
+      let isAccordionOpen = false;
+
+      toggleBtn.addEventListener('click', () => {
+        isAccordionOpen = !isAccordionOpen;
+        categoryCountsDiv.style.display = isAccordionOpen ? 'block' : 'none';
+        toggleIcon.style.transform = isAccordionOpen
+          ? 'rotate(180deg)'
+          : 'rotate(0deg)';
+      });
+
+      // Fetch counts at startup
+      fetchCategoryCounts();
+    });
+  </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 dark:text-white">
+
+  <!-- ACCORDION FOR CATEGORY COUNTS -->
+  <div id="categoryCountsContainer" class="max-w-4xl mx-auto mb-6 mt-6">
+    <button
+      id="toggleCategoryCounts"
+      class="w-full flex items-center justify-between 
+             bg-gray-900 text-white 
+             dark:bg-gray-800 dark:text-gray-200
+             px-4 py-2 rounded-md shadow-md
+             focus:outline-none focus:ring-2 focus:ring-blue-500
+             transition"
+    >
+      <h2 class="text-lg font-bold mb-0">Category Counts</h2>
+      <span
+        id="toggleIcon"
+        class="ml-2 transform transition-transform duration-300"
+      >&darr;</span>
+    </button>
+
+    <div
+      id="categoryCounts"
+      class="mt-2 p-4 
+             bg-gray-100 text-gray-800
+             dark:bg-gray-700 dark:text-gray-100
+             rounded-md shadow-md
+             transition-all duration-300 ease-in-out
+             flex flex-wrap gap-3"
+      style="display: none;"
+    >
+      <!-- Pills go here -->
+      <div id="categoryCountsContent" class="w-full"></div>
+    </div>
+  </div>
+
+
+    
+        <!-- Update form class -->
+        <form id="newVideoForm" 
+        class="w-full max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md transition-all duration-300">
+
+      <div class="mb-4">
+        <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Title:</label>
+        <input type="text" id="newTitle" class="liquid-input w-full" required>
+      </div>
+      
+      <div class="mb-4">
+        <label for="newYoutubeUrl" class="block text-gray-700 text-sm font-bold mb-2">YouTube URL:</label>
+        <input type="text" id="newYoutubeUrl" class="liquid-input w-full" required>
+        <div id="youtubeIdPreview" class="text-sm text-gray-500 mt-1"></div>
+      </div>
+      
+      <div class="mb-4">
+        <label for="category" class="block text-gray-700 text-sm font-bold mb-2">Category:</label>
+        <select id="newCategory" class="liquid-input w-full" required>
+          <option value="">Select a category</option>
+          <option value="waterpurification">Water Purification</option>
+          <option value="desalination">Desalination</option>
+          <option value="waterdistribution">Efficient Water Ditribution</option>
+          <option value="diysolar">DIY Solar</option>
+          <option value="biogas">Biogas</option>
+          <option value="microgrids">Microgrids</option>
+          <option value="urbanfood">Urban Food Prouction</option>
+          <option value="hydroponics">Hydroponics</option>
+          <option value="sustainableag">Sustainable Agriculture Techniques</option>  
+          <option value="lowcostconstruction">Low Cost Contruction</option>
+          <option value="localsheltermaterials">Useful Local Materials for Shelter</option> 
+          <option value="emtskills">EMT Skills</option>
+          <option value="telemedicine">Telemedicine</option>
+          <option value="firstaid">First Aid</option>
+          <option value="selfsuficienthealthcare">Self Sufficient Health Care</option>   
+
+          
+        </select>
+      </div>
+
+
+      <div class="mb-4">
+        <label for="tags" class="block text-gray-700 text-sm font-bold mb-2">Tags:</label>
+        <input type="text" id="newTags" class="liquid-input w-full" placeholder="critical-skills">
+        <div id="tagSuggestions" class="absolute z-10 bg-white rounded-md shadow-lg mt-1 p-2 max-h-40 overflow-y-auto hidden"></div>
+      </div>
+      
+      <div class="mb-6">
+        <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
+        <textarea id="newDescription" class="liquid-textarea w-full h-32" required></textarea>
+      </div>
+      
+      <div class="text-center">
+        <button type="submit" class="liquid-button" id="submitButton">Add Video Data Object</button>
+      </div>
+    </form>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 translate-y-full">
+      <div class="flex items-center space-x-2">
+        <span id="toastMessage"></span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
