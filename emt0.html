@@ -6,7 +6,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
   <title>Approvideo - EMT Decision Tree</title>
-  <link href="style.css" rel="stylesheet">
+  <link href="admin/style.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -1018,6 +1018,72 @@
     // Clear the video so it stops playing
     document.getElementById('videoContent').innerHTML = '';
   }
+
+  // Update text colors
+  const labels = document.querySelectorAll('label');
+  labels.forEach(label => {
+    label.classList.toggle('text-gray-200', isDarkMode);
+    label.classList.toggle('text-gray-700', !isDarkMode);
+  });
+
+  // Save preference
+  localStorage.setItem('darkMode', isDarkMode);
+}
+
+darkModeToggle.addEventListener('click', () => {
+  body.classList.toggle('dark-mode');
+  updateDarkMode();
+});
+
+// Check for saved preference on load
+if (localStorage.getItem('darkMode') === 'true') {
+  body.classList.add('dark-mode');
+  updateDarkMode();
+}
+
+    // Profile dropdown functionality
+    let isProfileOpen = false;
+    const profileButton = document.getElementById('profileButton');
+    const profileDropdown = document.getElementById('profileDropdown');
+
+    profileButton.addEventListener('click', () => {
+      isProfileOpen = !isProfileOpen;
+      profileDropdown.classList.toggle('dropdown-active');
+      profileDropdown.classList.toggle('dropdown-inactive');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!profileButton.contains(e.target) && !profileDropdown.contains(e.target)) {
+        isProfileOpen = false;
+        profileDropdown.classList.remove('dropdown-active');
+        profileDropdown.classList.add('dropdown-inactive');
+      }
+    });
+
+    // Add hover animations
+    document.querySelectorAll('.group').forEach(element => {
+      element.addEventListener('mouseenter', () => {
+        const icon = element.querySelector('svg');
+        if (icon) {
+          icon.classList.add('scale-transform');
+          const paths = icon.querySelectorAll('path');
+          paths.forEach(path => path.classList.add('text-blue-500'));
+        }
+      });
+
+      element.addEventListener('mouseleave', () => {
+        const icon = element.querySelector('svg');
+        if (icon) {
+          icon.classList.remove('scale-transform');
+          const paths = icon.querySelectorAll('path');
+          paths.forEach(path => path.classList.remove('text-blue-500'));
+        }
+      });
+    });
+
+
+  
 </script>
 </body>
 </html>
