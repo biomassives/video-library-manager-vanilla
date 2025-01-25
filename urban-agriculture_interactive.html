@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biodynamic Urban Agriculture Decision Tree</title>
+
+  <!-- Panzoom (for diagram zooming/panning) -->
+  <script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.0/dist/panzoom.min.js"></script>
+
+  <!-- Tailwind CSS (for quick styling) -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+
+  <style>
+    /* Smooth transitions for theme toggling */
+    body {
+      transition: background-color 0.3s, color 0.3s;
+    }
+    /* Container for the SVG diagram */
+    .diagram-container {
+      position: relative;
+      width: 100%;
+      height: 80vh;
+      overflow: hidden;
+      background: linear-gradient(to bottom, rgba(207, 235, 216, 0.8), rgba(121, 243, 141, 0.8));
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: background-color 0.3s, background-image 0.3s;
+    }
+
+    /* Info panel on the right side */
+    .info-panel {
+      position: fixed;
+      right: 0;
+      top: 0;
+      width: 300px;
+      height: 100vh;
+      background: white;
+      padding: 20px;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+      z-index: 1000;
+      display: none;
+      overflow-y: auto;
+      transition: background-color 0.3s;
+    }
+
+    /* Node rectangle styles */
+    .node rect {
+      fill: #2a4e08;      
+      stroke: #1B5E20;
+      stroke-width: 2;
+      transition: filter 0.2s;
+    }
+    /* Node text */
+    .node text {
+      fill: #FFF;
+      font-size: 15px;
+      font-family: Arial, sans-serif;
+    }
+    /* Hover effect for nodes */
+    .node:hover rect {
+      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+      cursor: pointer;
+    }
+
+    /* Day/Night circle/label styling (for "Yes"/"No" or path labels) */
+    .Y-no-label {
+      fill: #1B5E20;
+      font-size: 12px;
+      font-family: Arial;
+      text-anchor: middle;
+    }
+    .Y-no-circle {
+      fill: white;
+      stroke: #2E7D32;
+      stroke-width: 2;
+    }
+
+    /* Dark mode overrides */
+    body.dark {
+      background-color: #1e1e1e; /* A dark background for the body */
+      color: #ddd;
+    }
+    body.dark .diagram-container {
+      background: #2a2a2a;
+    }
+    body.dark .info-panel {
+      background-color: #333;
+      color: #ddd;
+    }
+    /* In dark mode, shift node color, stroke, etc. */
+    body.dark .node rect {
+      fill: #0f4912;
+      stroke: #fefffe; 
+    }
+    body.dark .node:hover rect {
+      filter: drop-shadow(0 0 8px rgb(255, 162, 0));
+      cursor: pointer;
+    }
+
+    /* Zoom buttons in dark mode */
+    body.dark #zoomInBtn, 
+    body.dark #zoomOutBtn {
+      background-color: #4a4a4a;
+      color: #fff;
+      border: 1px solid #666;
+    }
+    /* Header in dark mode */
+    body.dark .header {
+      background-color: #2c2c2c;
+      color: #fff;
+    }
+
+    /* Outline text at bottom */
+    .process-outline {
+      padding: 1rem;
+    }
+    .process-outline h2 {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <div class="flex flex-col h-screen">
+    <!-- Header / Toggle -->
+    <div class="p-4 bg-white shadow flex items-center justify-between header">
+      <h1 class="text-xl font-bold">Biodynamic Urban Agriculture Decision Tree</h1>
+      <button 
+        id="toggleThemeBtn" 
+        class="px-4 py-2 bg-green-600 text-white rounded shadow"
+      >
+        Toggle Theme
+      </button>
+    </div>
+
+    <div class="flex flex-grow overflow-hidden">
+      <!-- Diagram area -->
+      <div class="diagram-container flex-grow relative">
+        <!-- Zoom controls -->
+        <div class="absolute top-4 left-4 flex flex-col space-y-2 z-10">
+          <button id="zoomInBtn" class="px-3 py-1 bg-white dark:text-violet-700 dark:bg-indigo-700 rounded shadow">
+            Zoom In
+          </button>
+          <button id="zoomOutBtn" class="px-3 py-1 bg-white dark:text-violet-100 dark:bg-indigo-700 rounded shadow">
+            Zoom Out
+          </button>
+        </div>
+
+        <!-- SVG-based decision tree -->
+        <div id="diagram">
+          <svg
+            id="decisionTree"
+            width="2300"
+            height="700"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- Arrow marker definition -->
+            <defs>
+              <marker
+                id="arrow"
+                markerWidth="10"
+                markerHeight="10"
+                refX="6"
+                refY="3"
+                orient="auto"
+              >
+                <path d="M0,0 L0,6 L6,3 z" fill="#2E7D32"></path>
+              </marker>
+            </defs>
+
+            <!-- A [Start] -->
+            <g class="node" data-step="A">
+              <rect x="50" y="50" width="100" height="50" rx="10" />
+              <text x="100" y="80" text-anchor="middle">
+                Start
+              </text>
+            </g>
+
+            <!-- B [Site Assessment] -->
+            <g class="node" data-step="B">
+              <rect x="250" y="50" width="150" height="50" rx="10" />
+              <text x="325" y="80" text-anchor="middle">
+                Assess Site
+              </text>
+            </g>
+            <!-- A -> B -->
+            <line
+              x1="150" y1="75"
+              x2="250" y2="75"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+
+            <!-- C {Have space for soil-building?} -->
+            <g class="node" data-step="C">
+              <rect x="450" y="50" width="230" height="50" rx="10" />
+              <text x="565" y="80" text-anchor="middle">
+                Have space for soil-building?
+              </text>
+            </g>
+            <!-- B -> C -->
+            <line
+              x1="400" y1="75"
+              x2="450" y2="75"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+
+            <!-- Circle "Yes" for C -->
+            <circle cx="680" cy="65" r="15" fill="#388E3C"/>
+            <text x="680" y="70" fill="#FFF" font-size="12" text-anchor="middle">
+              Yes
+            </text>
+
+            <!-- D [Build Compost On-Site] -->
+            <g class="node" data-step="D">
+              <rect x="750" y="30" width="180" height="40" rx="10" />
+              <text x="840" y="55" text-anchor="middle">
+                Build Compost On-Site
+              </text>
+            </g>
+            <!-- C -> D (Yes) -->
+            <line
+              x1="695" y1="80"
+              x2="750" y2="50"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+
+            <!-- Circle "No" for C -->
+            <circle cx="680" cy="105" r="15" fill="#388E3C"/>
+            <text x="680" y="110" fill="#FFF" font-size="12" text-anchor="middle">
+              No
+            </text>
+
+            <!-- E [Source Compost Externally] -->
+            <g class="node" data-step="E">
+              <rect x="750" y="90" width="220" height="40" rx="10" />
+              <text x="860" y="115" text-anchor="middle">
+                Source Compost Externally
+              </text>
+            </g>
+            <!-- C -> E (No) -->
+            <line
+              x1="695" y1="105"
+              x2="750" y2="110"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+
+            <!-- F [Soil Ready? Move to Planting] -->
+            <g class="node" data-step="F">
+              <rect x="1050" y="60" width="150" height="40" rx="10" />
+              <text x="1125" y="85" text-anchor="middle">
+                Soil Ready
+              </text>
+            </g>
+            <!-- D -> F and E -> F (both lead to soil readiness)-->
+            <line
+              x1="930" y1="50"
+              x2="1050" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+            <line
+              x1="970" y1="110"
+              x2="1050" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+
+            <!-- G {Microgreens or Full Crop?} -->
+            <g class="node" data-step="G">
+              <rect x="1250" y="60" width="230" height="40" rx="10" />
+              <text x="1365" y="85" text-anchor="middle">
+                Microgreens or Full Crop?
+              </text>
+            </g>
+            <!-- F -> G -->
+            <line
+              x1="1200" y1="80"
+              x2="1250" y2="80"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+
+            <!-- Circle "Micro" for G -->
+            <circle cx="1480" cy="70" r="15" fill="#388E3C"/>
+            <text x="1480" y="75" fill="#FFF" font-size="12" text-anchor="middle">
+              M
+            </text>
+
+            <!-- H [Focus on Microgreens] -->
+            <g class="node" data-step="H">
+              <rect x="1530" y="45" width="200" height="40" rx="10" />
+              <text x="1630" y="70" text-anchor="middle">
+                Plant &amp; Tend Microgreens
+              </text>
+            </g>
+            <!-- G -> H (Micro) -->
+            <line
+              x1="1495" y1="85"
+              x2="1530" y2="65"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+
+            <!-- Circle "Full" for G -->
+            <circle cx="1480" cy="110" r="15" fill="#388E3C"/>
+            <text x="1480" y="115" fill="#FFF" font-size="12" text-anchor="middle">
+              Full
+            </text>
+
+            <!-- I [Sow & Grow Full Crops] -->
+            <g class="node" data-step="I">
+              <rect x="1530" y="105" width="200" height="40" rx="10" />
+              <text x="1630" y="130" text-anchor="middle">
+                Sow &amp; Grow Full Crops
+              </text>
+            </g>
+            <!-- G -> I (Full) -->
+            <line
+              x1="1495" y1="110"
+              x2="1530" y2="125"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+
+            <!-- J {Community Gathering / Solo?} -->
+            <g class="node" data-step="J">
+              <rect x="1800" y="70" width="210" height="40" rx="10" />
+              <text x="1905" y="95" text-anchor="middle">
+                Community or Solo?
+              </text>
+            </g>
+            <!-- H -> J, I -> J -->
+            <line
+              x1="1730" y1="65"
+              x2="1800" y2="90"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+            <line
+              x1="1730" y1="125"
+              x2="1800" y2="90"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+
+            <!-- Circle "Group" -->
+            <circle cx="2010" cy="80" r="15" fill="#388E3C"/>
+            <text x="2010" y="85" fill="#FFF" font-size="12" text-anchor="middle">
+              Group
+            </text>
+
+            <!-- K [Arrange Group Workdays] -->
+            <g class="node" data-step="K">
+              <rect x="2060" y="55" width="210" height="40" rx="10" />
+              <text x="2165" y="80" text-anchor="middle">
+                Arrange Group Workdays
+              </text>
+            </g>
+            <!-- J -> K (Group) -->
+            <line
+              x1="2025" y1="95"
+              x2="2060" y2="75"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+
+            <!-- Circle "Solo" -->
+            <circle cx="2010" cy="120" r="15" fill="#388E3C"/>
+            <text x="2010" y="125" fill="#FFF" font-size="12" text-anchor="middle">
+              Solo
+            </text>
+
+            <!-- L [Individual Maintenance & Self-Care] -->
+            <g class="node" data-step="L">
+              <rect x="2060" y="105" width="230" height="40" rx="10" />
+              <text x="2175" y="130" text-anchor="middle">
+                Individual Maintenance &amp; Care
+              </text>
+            </g>
+            <!-- J -> L (Solo) -->
+            <line
+              x1="2025" y1="120"
+              x2="2060" y2="125"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+
+            <!-- M [Harvest & Celebrate] -->
+            <g class="node" data-step="M">
+              <rect x="2060" y="180" width="200" height="40" rx="10" />
+              <text x="2160" y="205" text-anchor="middle">
+                Harvest &amp; Celebrate
+              </text>
+            </g>
+            <!-- K -> M and L -> M, representing a merge into harvest -->
+            <line
+              x1="2170" y1="95"
+              x2="2170" y2="180"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+
+            <!-- N [Share / Local Markets / Community Kitchen] -->
+            <g class="node" data-step="N">
+              <rect x="2060" y="250" width="220" height="40" rx="10" />
+              <text x="2170" y="275" text-anchor="middle">
+                Share / Local Markets
+              </text>
+            </g>
+            <!-- M -> N -->
+            <line
+              x1="2160" y1="220"
+              x2="2160" y2="250"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+
+            <!-- O [End] -->
+            <g class="node" data-step="O">
+              <rect x="2060" y="320" width="80" height="40" rx="10" />
+              <text x="2100" y="345" text-anchor="middle">
+                End
+              </text>
+            </g>
+            <!-- N -> O -->
+            <line
+              x1="2170" y1="270"
+              x2="2170" y2="320"
+              stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arrow)"
+            />
+
+          </svg>
+        </div>
+      </div>
+
+      <!-- Info panel on the right -->
+      <div class="info-panel" id="infoPanel">
+        <button
+          class="absolute top-2 right-2 text-gray-500 text-xl"
+          onclick="closePanel()"
+        >
+          &times;
+        </button>
+        <h3 class="text-xl font-bold mb-4" id="stepTitle"></h3>
+        <div id="stepContent" class="prose"></div>
+        <div id="videoContent" class="mt-4"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Text Outline of the Flow -->
+  <div class="process-outline">
+    <h2>Process Outline: Urban Microgreens & Biodynamic Agriculture</h2>
+    <ol>
+      <li><b>A: Start</b>
+        <ul>
+          <li>Begin planning your biodynamic urban agriculture or microgreens project.</li>
+        </ul>
+      </li>
+      <li><b>B: Assess Site</b>
+        <ul>
+          <li>Check space, sunlight, water accessibility, and community interest.</li>
+        </ul>
+      </li>
+      <li><b>C: Have space to build soil/compost on-site?</b>
+        <ul>
+          <li><b>Yes</b> → <i>Build Compost On-Site</i></li>
+          <li><b>No</b> → <i>Source Compost Externally</i></li>
+        </ul>
+      </li>
+      <li><b>D: Build Compost On-Site</b>
+        <ul>
+          <li>Create a compost pile or use tumblers. Include green (food scraps) and brown (leaves, cardboard) materials, ensure proper aeration, and follow biodynamic compost preps if desired.</li>
+        </ul>
+      </li>
+      <li><b>E: Source Compost Externally</b>
+        <ul>
+          <li>Look for local organic suppliers, municipal compost programs, or gardener co-ops.</li>
+        </ul>
+      </li>
+      <li><b>F: Soil Ready</b>
+        <ul>
+          <li>Once compost is available and mixed, your growing medium is prepared. Conduct basic soil checks if possible (pH, texture, etc.).</li>
+        </ul>
+      </li>
+      <li><b>G: Choose Microgreens or Full Crop</b>
+        <ul>
+          <li><b>Microgreens</b> → <i>Plant & Tend Microgreens</i></li>
+          <li><b>Full Crop</b> → <i>Sow & Grow Full Crops</i></li>
+        </ul>
+      </li>
+      <li><b>H: Plant & Tend Microgreens</b>
+        <ul>
+          <li>Use trays/containers, sow seeds densely, maintain regular moisture. Harvest quickly (within 1–3 weeks, depending on seed type).</li>
+        </ul>
+      </li>
+      <li><b>I: Sow & Grow Full Crops</b>
+        <ul>
+          <li>Plant in raised beds or containers. Include biodynamic methods like lunar planting cycles or herbal preparations for soil health.</li>
+        </ul>
+      </li>
+      <li><b>J: Community or Solo?</b>
+        <ul>
+          <li><b>Group</b> → <i>Arrange Group Workdays</i></li>
+          <li><b>Solo</b> → <i>Individual Maintenance & Self-Care</i></li>
+        </ul>
+      </li>
+      <li><b>K: Arrange Group Workdays</b>
+        <ul>
+          <li>Coordinate volunteers or neighbors for planting, watering, pest control, and knowledge sharing.</li>
+        </ul>
+      </li>
+      <li><b>L: Individual Maintenance & Care</b>
+        <ul>
+          <li>Manage tasks on your own schedule, keep consistent daily checks on moisture and pests, incorporate mindful self-care in the garden.</li>
+        </ul>
+      </li>
+      <li><b>M: Harvest & Celebrate</b>
+        <ul>
+          <li>When produce or microgreens are ready, harvest collectively or individually. Consider a small gathering/potluck or farm stand event.</li>
+        </ul>
+      </li>
+      <li><b>N: Share / Local Markets</b>
+        <ul>
+          <li>Offer surplus to community kitchens, local markets, or neighbors. Reinforce bonds and help ensure food security.</li>
+        </ul>
+      </li>
+      <li><b>O: End</b>
+        <ul>
+          <li>Conclude this cycle. Keep the soil healthy, plan next steps, and repeat new plantings.</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+
+  <script>
+    // Step info data for each node (displayed in the right info panel when a node is clicked)
+    const stepInfo = {
+      A: {
+        title: 'Start',
+        content: 'Begin planning your biodynamic urban agriculture or microgreens project.',
+        videoId: ''
+      },
+      B: {
+        title: 'Assess Site',
+        content: 'Check factors like space, sunlight, water access, and overall environment suitability.',
+        videoId: ''
+      },
+      C: {
+        title: 'Space for soil-building?',
+        content: 'If you can build compost piles, bins, or tumblers on-site, do it. Otherwise, source compost externally.',
+        videoId: ''
+      },
+      D: {
+        title: 'Build Compost On-Site',
+        content: 'Combine organic waste (greens & browns), turn regularly, maintain moisture. Consider biodynamic compost preps for enhanced microbial activity.',
+        videoId: ''
+      },
+      E: {
+        title: 'Source Compost Externally',
+        content: 'Look for local farmers, municipal compost programs, or community cooperatives for high-quality organic compost.',
+        videoId: ''
+      },
+      F: {
+        title: 'Soil Ready',
+        content: 'You now have enriched, living soil. Time to sow seeds or set up containers for planting.',
+        videoId: ''
+      },
+      G: {
+        title: 'Microgreens or Full Crop?',
+        content: 'Decide whether to do quick-turn microgreens for frequent harvests, or cultivate bigger vegetables/greens over a longer period.',
+        videoId: ''
+      },
+      H: {
+        title: 'Plant & Tend Microgreens',
+        content: 'Use shallow trays, sow seeds densely, ensure constant moisture, and enjoy a fast harvest in 1-3 weeks.',
+        videoId: ''
+      },
+      I: {
+        title: 'Sow & Grow Full Crops',
+        content: 'Plant seeds or seedlings, use biodynamic methods (e.g., lunar cycles), watch for pests, keep consistent watering and weeding.',
+        videoId: ''
+      },
+      J: {
+        title: 'Community or Solo?',
+        content: 'Invite neighbors to help & share produce, or manage alone for personal/household use.',
+        videoId: ''
+      },
+      K: {
+        title: 'Arrange Group Workdays',
+        content: 'Coordinate volunteer schedules, teach each other skills, and strengthen community connections.',
+        videoId: ''
+      },
+      L: {
+        title: 'Individual Maintenance & Self-Care',
+        content: 'Garden tasks on your own time, incorporate mindful self-care and stress relief while tending plants.',
+        videoId: ''
+      },
+      M: {
+        title: 'Harvest & Celebrate',
+        content: 'Reap the rewards of your efforts, host a small event, or simply enjoy fresh produce with friends/family.',
+        videoId: ''
+      },
+      N: {
+        title: 'Share / Local Markets',
+        content: 'Distribute extra produce to neighbors or local vendors, fostering local food networks and cooperation.',
+        videoId: ''
+      },
+      O: {
+        title: 'End',
+        content: 'Cycle completes here. Reflect on lessons, continue the next planting, and keep the soil healthy!',
+        videoId: ''
+      }
+    };
+
+    window.onload = function() {
+      const diagramElement = document.getElementById('diagram');
+      const body = document.body;
+
+      // Initialize Panzoom
+      const pz = panzoom(diagramElement, {
+        maxZoom: 5,
+        minZoom: 0.4,
+        initialX: 0,
+        initialY: 0,
+        initialZoom: 1
+      });
+
+      // Zoom in/out
+      document.getElementById('zoomInBtn').addEventListener('click', () => {
+        pz.smoothZoom(diagramElement.clientWidth / 2, diagramElement.clientHeight / 2, 1.2);
+      });
+      document.getElementById('zoomOutBtn').addEventListener('click', () => {
+        pz.smoothZoom(diagramElement.clientWidth / 2, diagramElement.clientHeight / 2, 0.8);
+      });
+
+      // Click on nodes -> show info panel
+      diagramElement.addEventListener('click', (e) => {
+        const node = e.target.closest('.node');
+        if (node) {
+          const stepId = node.dataset.step;
+          showPanel(stepId);
+        }
+      });
+
+      // Theme toggle
+      document.getElementById('toggleThemeBtn').addEventListener('click', () => {
+        body.classList.toggle('dark');
+      });
+    };
+
+    function showPanel(stepId) {
+      const panel = document.getElementById('infoPanel');
+      const titleEl = document.getElementById('stepTitle');
+      const contentEl = document.getElementById('stepContent');
+      const videoEl = document.getElementById('videoContent');
+
+      if (stepInfo[stepId]) {
+        const { title, content, videoId } = stepInfo[stepId];
+        titleEl.textContent = title;
+        contentEl.textContent = content;
+        if (videoId) {
+          videoEl.innerHTML = `
+            <iframe 
+              width="100%" 
+              height="200" 
+              src="${videoId}" 
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          `;
+        } else {
+          videoEl.innerHTML = '';
+        }
+      } else {
+        // Fallback if node not in stepInfo
+        titleEl.textContent = 'No Title';
+        contentEl.textContent = 'No additional info available.';
+        videoEl.innerHTML = '';
+      }
+      panel.style.display = 'block';
+    }
+
+    function closePanel() {
+      document.getElementById('infoPanel').style.display = 'none';
+      // Clear the video so it stops playing
+      document.getElementById('videoContent').innerHTML = '';
+    }
+  </script>
+</body>
+</html>
