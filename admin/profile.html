@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+
+  <title>Approvideo § User Profile</title>
+  <link href="style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  </head>
+  <body class="bg-gray-50">
+  <div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm">
+    ❝ ɒ  Appropriate Technology Learning for the DIY Sector ℧ ❞ 
+  </div>
+
+  <div class="container mx-auto p-4">
+
+<nav class="bg-white shadow-lg rounded-lg mb-8 transition-colors duration-300" id="mainNav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center space-x-4">
+          <a href="../index.html" class="flex items-center space-x-3 group">
+            <svg class="h-10 w-10 text-green-500 transform transition-all duration-300 group-hover:scale-110" 
+                 viewBox="0 0 24 24" 
+                 fill="none" 
+                 stroke="currentColor" 
+                 stroke-width="1.5"
+                 id="logoIcon">
+              <circle class="tool-circle" cx="12" cy="12" r="10" stroke-dasharray="4 4"/>
+              <path class="tool-wrench" d="M3 21h4l9-9"/>
+              <circle class="tool-gear" cx="12" cy="12" r="3"/>
+            </svg>
+            <span class="text-xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+              ApproVideo
+            </span>
+          </a>
+        </div>
+
+
+          <div class="relative">
+            <button id="darkModeToggle" 
+                  class="p-2 rounded-lg transition-all duration-300 hover:bg-opacity-10 justify-right">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path class="dark-toggle" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            </button>
+            <button id="profileButton" 
+            class="p-2 rounded-lg transition-colors duration-300">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5z" />
+                <path d="M19 21v-2a7 7 0 0 0-7-7h0a7 7 0 0 0-7 7v2" />
+              </svg>
+            </button>
+            <div id="profileDropdown"
+            class="profile-dropdown dropdown-inactive absolute right-0 mt-2 w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+              <div class="py-1">
+                <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Live Site</a>
+                <a href="/admin" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Content Manager</a>
+                <a href="/admin/taxonomy.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Taxonomy</a>
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+    <!-- Page Header -->
+    <div class="mb-8 text-center">
+        <h1 class="text-4xl font-bold page-title mb-2">Add a Video</h1>
+    </div>
+  <!-- ACCORDION FOR CATEGORY COUNTS -->
+  <div id="categoryCountsContainer" class="max-w-4xl mx-auto mb-6 mt-6 bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100">
+    <button
+      id="toggleCategoryCounts"
+      class="w-full flex items-center justify-between 
+             bg-gray-900 text-white 
+             dark:bg-gray-800 dark:text-gray-200
+             px-4 py-2 rounded-md shadow-md
+             focus:outline-none focus:ring-2 focus:ring-blue-500
+             transition"
+    >
+      <h2 class="text-lg font-bold mb-0">Category Counts</h2>
+      <span
+        id="toggleIcon"
+        class="ml-2 transform transition-transform duration-300"
+      >&darr;</span>
+    </button>
+
+    <div
+      id="categoryCounts"
+      class="mt-2 p-4 
+             bg-gray-100 text-gray-800
+             dark:bg-gray-700 dark:text-gray-100
+             rounded-md shadow-md
+             transition-all duration-300 ease-in-out
+             flex flex-wrap gap-3"
+      style="display: none;"
+    >
+      <!-- Pills go here -->
+      <div id="categoryCountsContent" class="w-full"></div>
+    </div>
+  </div>
+    
+
+
+
+
+     <div id="auth-section">
+        <h2>Login / Signup</h2>
+        <p id="message"></p>
+        <form id="auth-form">
+            <input type="email" id="email" placeholder="Your email" required>
+            <button type="submit">Send Magic Link</button>
+        </form>
+    </div>
+
+    <div id="secure-section" style="display: none;">
+        <h2>Welcome, <span id="user-email"></span>!</h2>
+
+        <h3>Update Your Profile</h3>
+        <form id="profile-form">
+            <div>
+                <label for="name">Name:</label>
+                <input type="text" id="name">
+            </div>
+            <div>
+                <label for="interests">Interests:</label>
+                <textarea id="interests"></textarea>
+            </div>
+            <button type="submit">Update Profile</button>
+        </form>
+        <button id="logout-button">Logout</button>
+    </div>
+
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 translate-y-full">
+      <div class="flex items-center space-x-2">
+        <span id="toastMessage"></span>
+      </div>
+    </div>
+  </div>
+
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabaseUrl = 'https://vlvbodwrtblttvwnxkjx.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsdmJvZHdydGJsdHR2d254a2p4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY3NDk2NzIsImV4cCI6MjAwMjMyNTY3Mn0.TRT1HeX85vP1zDxnU7qBz5GqNPgYZUj-BOdek4qmtEg';
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+// Make supabase globally available (optional)
+// window.supabase = supabase;
+
+    
+          // Accordion toggle logic
+          const toggleBtn = document.getElementById('toggleCategoryCounts');
+          const categoryCountsDiv = document.getElementById('categoryCounts');
+          const toggleIcon = document.getElementById('toggleIcon');
+          
+          let isAccordionOpen = false;
+          
+          toggleBtn.addEventListener('click', () => {
+            isAccordionOpen = !isAccordionOpen;
+            
+            // Show or hide the content
+            categoryCountsDiv.style.display = isAccordionOpen ? 'block' : 'none';
+            
+            // Rotate the arrow
+            toggleIcon.style.transform = isAccordionOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+          });
+
+
+    
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      
+      toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 translate-y-full ${
+        type === 'success' ? 'bg-green-500' : 'bg-red-500'
+      } text-white`;
+      
+      toastMessage.textContent = message;
+      
+      setTimeout(() => {
+        toast.style.transform = 'translateY(0)';
+      }, 100);
+      
+      setTimeout(() => {
+        toast.style.transform = 'translateY(100%)';
+      }, 3000);
+    }
+
+
+
+const authForm = document.getElementById('auth-form');
+const emailInput = document.getElementById('email');
+const messageElement = document.getElementById('message');
+const authSection = document.getElementById('auth-section');
+const secureSection = document.getElementById('secure-section');
+const userEmailSpan = document.getElementById('user-email');
+
+authForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const email = emailInput.value;
+  messageElement.textContent = '';
+
+  const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+          emailRedirectTo: 'http://your-vanilla-js-site-url/secure.html', // Update with your URL
+      }
+  });
+
+  if (error) {
+    messageElement.textContent = error.message;
+  } else {
+    messageElement.textContent = 'Check your email for the magic link!';
+  }
+});
+
+// Check for logged-in user on page load
+async function checkUserSession() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (user) {
+    authSection.style.display = 'none';
+    secureSection.style.display = 'block';
+    userEmailSpan.textContent = user.email;
+    fetchProfile(user.id); // Fetch the profile data if user is logged in
+  } else {
+    authSection.style.display = 'block';
+    secureSection.style.display = 'none';
+  }
+}
+checkUserSession();
+
+//  2
+
+    
+const profileForm = document.getElementById('profile-form');
+const nameInput = document.getElementById('name');
+const interestsInput = document.getElementById('interests');
+const logoutButton = document.getElementById('logout-button');
+
+async function fetchProfile(userId) {
+    let { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      console.error('Error fetching profile:', error);
+    }
+
+    if (data) {
+      nameInput.value = data.name || '';
+      interestsInput.value = data.interests || '';
+    } else {
+      // Handle new user, no existing profile
+        console.log("No profile found for this user.");
+        const { error } = await supabase.from('profiles').insert([{ id: userId}])
+        if(error) {
+            console.error('error creating new profile', error);
+        }
+    }
+}
+//update the profile 
+profileForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+    const { data: { user } } = await supabase.auth.getUser();
+
+  const name = nameInput.value;
+  const interests = interestsInput.value;
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({ name, interests })
+    .eq('id', user.id);
+
+  if (error) {
+    console.error('Error updating profile:', error);
+  } else {
+    alert('Profile updated successfully!');
+  }
+});
+
+//logout and redirect to login page
+logoutButton.addEventListener('click', async () => {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.error('Error during logout:', error);
+  } else {
+    window.location.href = '/'; // Redirect to your homepage
+  }
+});
+
+supabase.auth.onAuthStateChange((_event, session) => {
+    if (session?.user) {
+        // User is logged in
+        authSection.style.display = 'none';
+        secureSection.style.display = 'block';
+        userEmailSpan.textContent = session.user.email;
+        fetchProfile(session.user.id);
+    } else {
+        // User is not logged in
+        authSection.style.display = 'block';
+        secureSection.style.display = 'none';
+    }
+});
+
+    
+
+
+    
+
+    
+
+
+
+  // Update form background
+  const form = document.getElementById('newVideoForm');
+  form.classList.toggle('bg-gray-800', isDarkMode);
+  form.classList.toggle('bg-white', !isDarkMode);
+
+  // Update text colors
+  const labels = document.querySelectorAll('label');
+  labels.forEach(label => {
+    label.classList.toggle('text-gray-200', isDarkMode);
+    label.classList.toggle('text-gray-700', !isDarkMode);
+  });
+
+  // Save preference
+  localStorage.setItem('darkMode', isDarkMode);
+}
+
+darkModeToggle.addEventListener('click', () => {
+  body.classList.toggle('dark-mode');
+  updateDarkMode();
+});
+
+// Check for saved preference on load
+if (localStorage.getItem('darkMode') === 'true') {
+  body.classList.add('dark-mode');
+  updateDarkMode();
+}
+
+    // Profile dropdown functionality
+    let isProfileOpen = false;
+    const profileButton = document.getElementById('profileButton');
+    const profileDropdown = document.getElementById('profileDropdown');
+
+    profileButton.addEventListener('click', () => {
+      isProfileOpen = !isProfileOpen;
+      profileDropdown.classList.toggle('dropdown-active');
+      profileDropdown.classList.toggle('dropdown-inactive');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!profileButton.contains(e.target) && !profileDropdown.contains(e.target)) {
+        isProfileOpen = false;
+        profileDropdown.classList.remove('dropdown-active');
+        profileDropdown.classList.add('dropdown-inactive');
+      }
+    });
+
+    // Add hover animations
+    document.querySelectorAll('.group').forEach(element => {
+      element.addEventListener('mouseenter', () => {
+        const icon = element.querySelector('svg');
+        if (icon) {
+          icon.classList.add('scale-transform');
+          const paths = icon.querySelectorAll('path');
+          paths.forEach(path => path.classList.add('text-blue-500'));
+        }
+      });
+
+      element.addEventListener('mouseleave', () => {
+        const icon = element.querySelector('svg');
+        if (icon) {
+          icon.classList.remove('scale-transform');
+          const paths = icon.querySelectorAll('path');
+          paths.forEach(path => path.classList.remove('text-blue-500'));
+        }
+      });
+    });
+
+
+
+// Tag Suggestions (no changes needed here)
+const tagSuggestions = [
+  "DIY", "Sustainability", "Environment", "Green Building", "Gardening", "Recycling", "Composting", "Solar", "Wind",
+  "Permaculture", "Organic Farming", "Water Conservation", "Renewable Energy", "Appropriate Technology", "Eco-friendly",
+  "Off-grid", "Resilience", "Community Development"
+];
+
+
+      // Tag suggestion functionality
+      const tagInput = document.getElementById('newTags');
+      const tagSuggestionsDiv = document.getElementById('tagSuggestions');
+
+      tagInput.addEventListener('input', () => {
+        const inputText = tagInput.value.toLowerCase();
+        const filteredSuggestions = tagSuggestions.filter(tag => tag.toLowerCase().includes(inputText));
+        tagSuggestionsDiv.innerHTML = '';
+        if (filteredSuggestions.length > 0 && inputText !== '') {
+          filteredSuggestions.forEach(tag => {
+            tagSuggestionsDiv.innerHTML += `<div class="cursor-pointer hover:bg-gray-100 px-2 py-1" onclick="addTag('${tag}')">${tag}</div>`;
+          });
+          tagSuggestionsDiv.classList.remove('hidden');
+        } else {
+          tagSuggestionsDiv.classList.add('hidden');
+        }
+      });
+
+      // Function to add tag to input
+      window.addTag = function (tag) {
+        const currentTags = tagInput.value.split(',').map(t => t.trim()).filter(t => t !== '');
+        currentTags.push(tag);
+        tagInput.value = currentTags.join(', ');
+        tagSuggestionsDiv.classList.add('hidden');
+      };
+
+    function isValidYoutubeId(id) {
+      return /^[a-zA-Z0-9_-]{11}$/.test(id);
+    }
+
+    // Add YouTube URL preview
+    const youtubeUrlInput = document.getElementById('newYoutubeUrl');
+    const youtubeIdPreview = document.getElementById('youtubeIdPreview');
+
+    youtubeUrlInput.addEventListener('input', () => {
+      const url = youtubeUrlInput.value;
+      const extractedId = extractYoutubeId(url);
+      
+      if (extractedId && isValidYoutubeId(extractedId)) {
+        youtubeIdPreview.textContent = `Valid YouTube ID: ${extractedId}`;
+        youtubeIdPreview.className = 'text-sm text-green-600 mt-1';
+      } else {
+        youtubeIdPreview.textContent = url ? 'Invalid YouTube URL' : '';
+        youtubeIdPreview.className = 'text-sm text-red-600 mt-1';
+      }
+    });
+
+    // Handle form submission
+    const newVideoForm = document.getElementById('newVideoForm');
+    const submitButton = document.getElementById('submitButton');
+
+    newVideoForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      // Get form values
+      const title = document.getElementById('newTitle').value.trim();
+      const youtubeUrl = document.getElementById('newYoutubeUrl').value.trim();
+      const description = document.getElementById('newDescription').value.trim();
+      const category = document.getElementById('newCategory').value.trim();
+      const subcategory = "";
+  
+      const tagsInput = document.getElementById('newTags');
+      let tags = [];
+        if (tagsInput) {
+            tags = tagsInput.value.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
+            //tags = tags.replace(/[",\[\]]/g, '')
+
+
+        } else {
+            console.error('Element with ID "newTags" not found.');
+            // You might want to return here or show an error message to the user if the element is not found.
+        }
+
+
+      // Extract YouTube ID
+      const youtubeId = extractYoutubeId(youtubeUrl);
+
+      // Validate all fields
+      if (!title || !youtubeUrl || !description || !category || tags.length === 0) {
+        showToast('Please fill in all fields and select at least one tag.', 'error');
+        return;
+      }
+
+      if (!youtubeId || !isValidYoutubeId(youtubeId)) {
+        showToast('Please enter a valid YouTube URL.', 'error');
+        return;
+      }
+
+      try {
+        // Disable submit button and show loading state
+        submitButton.disabled = true;
+        submitButton.textContent = 'Creating...';
+
+
+        // Get today's date in ISO format
+        const now = new Date().toISOString();
+
+        // Prepare video data with UUID and date
+        const videoData = {
+        id: crypto.randomUUID(),
+        title,
+        description,
+        youtubeId,
+        category,
+        subcategory, // Moved subcategory here
+        tags,
+        datePublished: now,  
+        createdAt: now,    
+        updatedAt: now     
+        };
+
+        console.log('Inserting video data:', videoData); // For debugging
+
+
+        // Insert into Supabase
+        const { data, error } = await supabase
+          .from('Video')
+          .insert(videoData)
+          .select()
+          .single();
+
+
+        if (error) throw error;
+
+        // Show success message
+        showToast('Video created successfully!', 'success');
+        
+        // Reset form
+        newVideoForm.reset();
+        youtubeIdPreview.textContent = '';
+        
+      } catch (error) {
+        console.error('Error creating video:', error);
+        showToast('Failed to create video. Please try again.', 'error');
+      } finally {
+        // Reset button state
+        submitButton.disabled = false;
+        submitButton.textContent = 'Create Video';
+      }
+    });
+  </script>
+</body>
+</html>
