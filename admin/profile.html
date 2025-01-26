@@ -452,6 +452,93 @@ const tagSuggestions = [
       }
     });
 
+    
+// Supabase auth and role-based redirection
+async function checkUserSession() {
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (user) {
+        // Check user's role
+        const role = user.user_metadata.role;
+
+        if (role === 'approver') {
+            // Redirect approvers to the approver dashboard
+            window.location.href = '/approver';
+        } else if (role === 'hub') {
+            // Redirect hubs to the hub dashboard
+            window.location.href = '/hub';
+        } else if (role === 'trainee') {
+            // Redirect trainees to the trainee dashboard
+            window.location.href = '/trainee';
+        } else {
+            // User has no role, show them the profile page
+            authSection.style.display = 'none';
+            secureSection.style.display = 'block';
+            userEmailSpan.textContent = user.email;
+            fetchProfile(user.id); // Fetch the profile data if user is logged in
+        }
+    } else {
+        authSection.style.display = 'block';
+        secureSection.style.display = 'none';
+    }
+}
+
+checkUserSession();
+
+// ... (Fetch Profile function)
+
+async function fetchProfile(userId) {
+    let { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+    if (error) {
+        console.error('Error fetching profile:', error);
+    }
+
+    if (data) {
+        nameInput.value = data.name || '';
+        interestsInput.value = data.interests || '';
+        // If the role exists in the profile, display it (you'll need to add a role input field in your HTML)
+        if (data.role) { 
+            roleInput.value = data.role; 
+        }
+    } else {
+        // Handle new user, no existing profile
+        console.log("No profile found for this user.");
+        // Insert a new profile with an initial role of null
+        const { error } = await supabase.from('profiles').insert([{ id: userId, role: null }]); 
+        if (error) {
+            console.error('error creating new profile', error);
+        }
+    }
+}
+
+// ... (Profile Form Submission)
+
+profileForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    const name = nameInput.value;
+    const interests = interestsInput.value;
+    // Get the role from the input field (make sure to add this input in your HTML)
+    const role = roleInput.value; 
+
+    const { error } = await supabase
+        .from('profiles')
+        .update({ name, interests, role }) // Update the role in the profile
+        .eq('id', user.id);
+
+    if (error) {
+        console.error('Error updating profile:', error);
+    } else {
+        alert('Profile updated successfully!');
+    }
+});
+
     // Handle form submission
     const newVideoForm = document.getElementById('newVideoForm');
     const submitButton = document.getElementById('submitButton');
