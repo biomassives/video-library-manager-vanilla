@@ -555,6 +555,25 @@ if (localStorage.getItem('darkMode') === 'true') {
 
     
 
+	     // Tools dropdown functionality
+    let isToolsOpen = false;
+    const toolsButton = document.getElementById('toolsButton');
+    const toolsDropdown = document.getElementById('toolsDropdown');
+
+    toolsButton.addEventListener('click', () => {
+      isToolsOpen = !isToolsOpen;
+      toolsDropdown.classList.toggle('dropdown-active');
+      toolsDropdown.classList.toggle('dropdown-inactive');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!toolsButton.contains(e.target) && !toolsDropdown.contains(e.target)) {
+        isToolsOpen = false;
+        toolsDropdown.classList.remove('dropdown-active');
+        toolsDropdown.classList.add('dropdown-inactive');
+      }
+    });
 
 
 
