@@ -108,7 +108,7 @@
             >
             <a href="#"
                class="nav-link group flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50">
-              <i class="fa-solid fa-house"></i>
+              <i class="fa-regular fa-user"></i>
             </a>
 
             </button>
@@ -116,10 +116,11 @@
             class="profile-dropdown dropdown-inactive absolute right-0 mt-2 w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
               <div class="py-1">
                 <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+		<a href="/admin" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Content Index</a>
                 <a href="/admin/new.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">+ Critical Skills Videos</a>
                 <a href="/admin/new_learningomics.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">+ Learning Videos</a>
-                <a href="/admin" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Content Manager</a>
                 <a href="/admin/taxonomy.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Taxonomy</a>
+                <a href="/admin/pending.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pending</a>
                 <a href="logout.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
               </div>
             </div>
@@ -180,12 +181,12 @@ const APP_CONFIG = {
   },
   categories: {
     diy: { icon: 'fa-building', color: 'from-red-600 to-zinc-400', anim: 'float-1' },
-    'drinking-water': { icon: 'fa-tint', color: 'from-cyan-500 to-blue-600', anim: 'float-2' },
-    'waste-management': { icon: 'fa-trash', color: 'from-green-500 to-emerald-600', anim: 'float-3' },
-    'energy-systems': { icon: 'fa-bolt', color: 'from-yellow-500 to-amber-600', anim: 'float-4' },
-    'training-modules': { icon: 'fa-tools', color: 'from-amber-600 to-green-600', anim: 'float-5' },
-    'health': { icon: 'fa-heartbeat', color: 'from-purple-500 to-indigo-600', anim: 'float-5' },
-    agriculure: { icon: 'fa-seedling', color: 'from-emerald-500 to-green-600', anim: 'float-6' }
+    'energy-systems': { icon: 'fa-bolt', color: 'from-yellow-500 to-amber-600', anim: 'float-2' },
+    'training-modules': { icon: 'fa-tools', color: 'from-amber-600 to-green-600', anim: 'float-3' },
+    'waste-management': { icon: 'fa-trash', color: 'from-green-500 to-indigo-600', anim: 'float-4' },
+    'drinking-water': { icon: 'fa-tint', color: 'from-cyan-500 to-blue-600', anim: 'float-5' },
+    'health': { icon: 'fa-heartbeat', color: 'from-purple-500 to-emerald-600', anim: 'float-6' },
+    agriculure: { icon: 'fa-seedling', color: 'from-emerald-500 to-green-600', anim: 'float-7' }
   }
 };
 
