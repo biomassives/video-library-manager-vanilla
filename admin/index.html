@@ -108,7 +108,7 @@
             >
             <a href="#"
                class="nav-link group flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50">
-              <i class="fa-regular fa-user"></i>
+              <i class="fa-regular fa-tools"></i>
             </a>
 
             </button>
@@ -214,7 +214,6 @@ const APP_CONFIG = {
   categories: {
     diy: { icon: 'fa-building', color: 'from-red-600 to-zinc-400', anim: 'float-1' },
     'energy-systems': { icon: 'fa-bolt', color: 'from-yellow-500 to-amber-600', anim: 'float-2' },
-    'training-modules': { icon: 'fa-tools', color: 'from-amber-600 to-green-600', anim: 'float-3' },
     'waste-management': { icon: 'fa-trash', color: 'from-green-500 to-indigo-600', anim: 'float-4' },
     'drinking-water': { icon: 'fa-tint', color: 'from-cyan-500 to-blue-600', anim: 'float-5' },
     'health': { icon: 'fa-heartbeat', color: 'from-purple-500 to-emerald-600', anim: 'float-6' },
@@ -537,6 +536,28 @@ async function initializeApp() {
     console.error('Failed to initialize app:', error);
   }
 }
+
+
+
+    // Tools dropdown functionality
+    let isToolsOpen = false;
+    const toolsButton = document.getElementById('toolsButton');
+    const toolsDropdown = document.getElementById('toolsDropdown');
+
+    toolsButton.addEventListener('click', () => {
+      isToolsOpen = !isToolsOpen;
+      toolsDropdown.classList.toggle('dropdown-active');
+      toolsDropdown.classList.toggle('dropdown-inactive');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!toolsButton.contains(e.target) && !toolsDropdown.contains(e.target)) {
+        isToolsOpen = false;
+        toolsDropdown.classList.remove('dropdown-active');
+        toolsDropdown.classList.add('dropdown-inactive');
+      }
+    });
 
     // Profile dropdown functionality
     let isProfileOpen = false;
