@@ -165,23 +165,23 @@
         <label for="category" class="block text-gray-700 text-sm font-bold mb-2">Category:</label>
         <select id="newCategory" class="liquid-input w-full" required>
           <option value="">Select a category</option>
-          <option value="basic-education-k-12">Water Purification</option>
-          <option value="basic-education-literacy">Water Purification</option>
-          <option value="basic-education-numeracy">Water Purification</option>
-          <option value="basic-education-language-skills">Desalination</option>
-          <option value="tech-training-appropriate-tech">tech-training-appropriate-tech</option>
-          <option value="tech-traning-computer-literacy">tech-traning-computer-literacy</option>
-          <option value="tech-traning-coding">tech-traning-coding</option>
-          <option value="vocational-plumbing">vocational-plumbing</option>
-          <option value="vocational-electrical">vocational-electrical</option>
-          <option value="vocational-machining">vocational-machining</option>
-          <option value="vocational-carpentry">vocational-carpentry</option>
-          <option value="vocational-forestry">vocational-forestry</option>
-          <option value="vocational-landscaping">vocational-landscaping</option>
-          <option value="vocational-repairing">vocational-repairing</option>
-          <option value="entrepreneurship-business-planning">entrepreneurship-business-planning</option>
-          <option value="entrepreneurship-financial-literacy">entrepreneurship-financial-literacy</option>
-          <option value="entrepreneurship-marketing">entrepreneurship-marketingr</option>  
+          <option value="basic-education-k-12">Basic Education K-12</option>
+          <option value="basic-education-literacy"> Literacy</option>
+          <option value="basic-education-numeracy"> Numeracy</option>
+          <option value="basic-education-language-skills"> Language</option>
+          <option value="tech-training-appropriate-tech">Appropriate tech training</option>
+          <option value="tech-traning-computer-literacy">Computer literacy training</option>
+          <option value="tech-traning-coding">Coding training</option>
+          <option value="vocational-plumbing">vocational plumbing</option>
+          <option value="vocational-electrical">vocational electrical</option>
+          <option value="vocational-machining">vocational machining</option>
+          <option value="vocational-carpentry">vocational carpentry</option>
+          <option value="vocational-forestry">vocational forestry</option>
+          <option value="vocational-landscaping">vocational landscaping</option>
+          <option value="vocational-repairing">vocational repairing</option>
+          <option value="entrepreneurship-business-planning">entrepreneurship: business planning</option>
+          <option value="entrepreneurship-financial-literacy">entrepreneurship: financial literacy</option>
+          <option value="entrepreneurship-marketing">entrepreneurship: marketing</option>  
 
           
         </select>
@@ -279,22 +279,25 @@
 
     // Our known categories
     const allCategories = [
-      'waterpurification',
-      'desalination',
-      'waterdistribution',
-      'diysolar',
-      'biogas',
-      'microgrids',
-      'urbanfood',
-      'hydroponics',
-      'sustainableag',
-      'lowcostconstruction',
-      'localsheltermaterials',
-      'emtskills',
-      'telemedicine',
-      'firstaid',
-      'selfsuficienthealthcare',
+      'basic-education-k-12',
+      'basic-education-literacy',
+      'basic-education-numeracy',
+      'basic-education-language-skills',
+      'tech-training-appropriate-tech',
+      'tech-traning-computer-literacy',
+      'tech-traning-coding',
+      'vocational-plumbing',
+      'vocational-electrical',
+      'vocational-machining',
+      'vocational-carpentry',
+      'vocational-forestry',
+      'vocational-landscaping',
+      'vocational-repairing',
+      'entrepreneurship-business-planning',
+      'entrepreneurship-financial-literacy',
+      'entrepreneurship-marketing',
     ];
+	  
 
     async function fetchCategoryCounts() {
       try {
