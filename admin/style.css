@@ -213,6 +213,30 @@ h1.page-title {
   @apply text-gray-100 hover:bg-gray-700;
 }
 
+
+
+/* Tools Dropdown Styles - Light Mode */
+#toolsDropdown {
+  @apply bg-white border border-gray-200 shadow-lg;
+}
+
+#toolsDropdown a {
+  @apply text-gray-700 hover:bg-gray-100;
+}
+
+/* Tools Dropdown Styles - Dark Mode */
+.dark-mode #toolsDropdown {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark-mode #toolsDropdown a {
+  @apply text-gray-100 hover:bg-gray-700;
+}
+
+
+
+
+  
 /* Update dropdown transition */
 .dropdown-active {
   opacity: 1;
