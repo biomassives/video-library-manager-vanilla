@@ -48,6 +48,39 @@
                 <path class="dark-toggle" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
               </svg>
             </button>
+
+
+
+          <!-- Tools Button -->
+          <div class="relative">
+            <button id="toolsButton" 
+            class="icon-button p-2 rounded-lg transition-colors duration-300 space-x-2 text-gray-600 dark:text-white hover:text-green-500 transition-all px-3 rounded-lg hover:bg-gray-50"
+
+           
+            >
+            <a href="#"
+               class="nav-link group flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-all px-3 py-2 rounded-lg hover:bg-gray-50">
+              <i class="fa-solid fa-toolbox"></i>
+            </a>
+
+            </button>
+            <div id="toolsDropdown"
+            class="profile-dropdown dropdown-inactive absolute right-0 mt-2 w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+              <div class="py-1">
+                
+                <a href="/urban-agriculture_interactive.html" class="block px-4 py-2 dark:text-gray-100 text-sm text-gray-700 hover:bg-gray-100"> Urban Agriculture</a>
+                <a href="/emt-decision-tree-videos.html" class="block px-4 py-2 dark:text-gray-100 text-sm text-gray-700 hover:bg-gray-100"> EMT Decision Tree</a>
+                <a href="/water-security-tree-videos.html" class="block px-4 py-2 dark:text-gray-100 text-sm text-gray-700 hover:bg-gray-100"> Water Security Tree</a>
+      		<a class="block"></a>
+                <a href="/admin/new.html" class="block px-4 py-2 dark:text-gray-100 text-sm text-gray-700 hover:bg-gray-100">&oplus; Add Critical Skills Videos</a>
+                <a href="/admin/new_learningomics.html" class="block px-4 py-2 text-sm dark:text-gray-100 text-gray-700 hover:bg-gray-100">&oplus; Add Training Modules</a>
+
+              </div>
+            </div>
+          </div>
+
+
+            
             <button id="profileButton" 
             class="p-2 rounded-lg transition-colors duration-300">
               <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -58,13 +91,11 @@
             <div id="profileDropdown"
             class="profile-dropdown dropdown-inactive absolute right-0 mt-2 w-48 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
               <div class="py-1">
-                <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
-                <a href="/admin/new.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">+ Critical Skills Videos</a>
-                <a href="/admin/new_learningomics.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">+ Learning Videos</a>
-                <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Live Site</a>
-                <a href="/admin" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Content Manager</a>
-                <a href="/admin/taxonomy.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Taxonomy</a>
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                <a href="profile.html" class="block px-4 py-2 text-sm dark:text-gray-100 text-gray-700 hover:bg-gray-100">Your Profile</a>
+		            <a href="/admin" class="block px-4 py-2 text-sm dark:text-gray-100 text-gray-700 hover:bg-gray-100">Content Index</a>
+                <a href="/admin/taxonomy.html" class="block px-4 py-2 text-sm dark:text-gray-100 text-gray-700 hover:bg-gray-100">Taxonomy</a>
+                <a href="/admin/pending.html" class="block px-4 py-2 text-sm dark:text-gray-100 text-gray-700 hover:bg-gray-100">Pending</a>
+                <a href="logout.html" class="block px-4 py-2 text-sm dark:text-gray-100 text-gray-700 hover:bg-gray-100">Sign out</a>
               </div>
             </div>
           </div>
@@ -134,21 +165,23 @@
         <label for="category" class="block text-gray-700 text-sm font-bold mb-2">Category:</label>
         <select id="newCategory" class="liquid-input w-full" required>
           <option value="">Select a category</option>
-          <option value="waterpurification">Water Purification</option>
-          <option value="desalination">Desalination</option>
-          <option value="waterdistribution">Efficient Water Distribution</option>
-          <option value="diysolar">DIY Solar</option>
-          <option value="biogas">Biogas</option>
-          <option value="microgrids">Microgrids</option>
-          <option value="urbanfood">Urban Food Prouction</option>
-          <option value="hydroponics">Hydroponics</option>
-          <option value="sustainableag">Sustainable Agriculture Techniques</option>  
-          <option value="lowcostconstruction">Low Cost Contruction</option>
-          <option value="localsheltermaterials">Useful Local Materials for Shelter</option> 
-          <option value="emtskills">EMT Skills</option>
-          <option value="telemedicine">Telemedicine</option>
-          <option value="firstaid">First Aid</option>
-          <option value="selfsuficienthealthcare">Self Sufficient Health Care</option>   
+          <option value="basic-education-k-12">Water Purification</option>
+          <option value="basic-education-literacy">Water Purification</option>
+          <option value="basic-education-numeracy">Water Purification</option>
+          <option value="basic-education-language-skills">Desalination</option>
+          <option value="tech-training-appropriate-tech">tech-training-appropriate-tech</option>
+          <option value="tech-traning-computer-literacy">tech-traning-computer-literacy</option>
+          <option value="tech-traning-coding">tech-traning-coding</option>
+          <option value="vocational-plumbing">vocational-plumbing</option>
+          <option value="vocational-electrical">vocational-electrical</option>
+          <option value="vocational-machining">vocational-machining</option>
+          <option value="vocational-carpentry">vocational-carpentry</option>
+          <option value="vocational-forestry">vocational-forestry</option>
+          <option value="vocational-landscaping">vocational-landscaping</option>
+          <option value="vocational-repairing">vocational-repairing</option>
+          <option value="entrepreneurship-business-planning">entrepreneurship-business-planning</option>
+          <option value="entrepreneurship-financial-literacy">entrepreneurship-financial-literacy</option>
+          <option value="entrepreneurship-marketing">entrepreneurship-marketingr</option>  
 
           
         </select>
