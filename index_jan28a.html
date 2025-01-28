@@ -352,36 +352,32 @@
             </div>
         </div>
 
-        <!-- Added Next/Previous Controls -->
-          <div class="absolute inset-y-0 left-0 flex items-center">
-              <button class="carousel-control prev bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-4 rounded-r-lg transition-all duration-300 focus:outline-none" aria-label="Previous slide">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                  </svg>
-              </button>
-          </div>
-          <div class="absolute inset-y-0 right-0 flex items-center">
-              <button class="carousel-control next bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-4 rounded-l-lg transition-all duration-300 focus:outline-none" aria-label="Next slide">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                  </svg>
-              </button>
-          </div>
-
-      
-        <!-- Navigation Dots -->
-        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 focus:outline-none" onclick="goToSlide(0)"></button>
-            <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 focus:outline-none" onclick="goToSlide(1)"></button>
-            <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 focus:outline-none" onclick="goToSlide(2)"></button>
-            <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 focus:outline-none" onclick="goToSlide(3)"></button>
-            <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 focus:outline-none" onclick="goToSlide(4)"></button>
-        </div>
+    <!-- Navigation Dots -->
+    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 focus:outline-none" onclick="goToSlide(0)"></button>
+        <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 focus:outline-none" onclick="goToSlide(1)"></button>
+        <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 focus:outline-none" onclick="goToSlide(2)"></button>
+        <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 focus:outline-none" onclick="goToSlide(3)"></button>
+        <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 focus:outline-none" onclick="goToSlide(4)"></button>
     </div>
 
-
-
-
+    <!-- Custom Modal -->
+    <div id="slideModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-8 max-w-lg w-full mx-4 transform transition-all">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="modalTitle" class="text-xl font-bold"></h3>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="modalContent" class="prose"></div>
+            <div class="mt-6 flex justify-end">
+                <button onclick="closeModal()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Close</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         let currentSlide = 0;
@@ -389,7 +385,39 @@
         const dots = document.querySelectorAll('.bottom-4 button');
         const totalSlides = slides.length;
         let autoplayInterval;
-        let isPaused = false;
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const container = document.querySelector('.carousel-container');
+
+        // Initialize slide content for modals
+        const slideContent = [
+            {
+                title: "Clean Water Solutions",
+                content: `
+                    <h4>Learn Water Management</h4>
+                    <p>Discover sustainable approaches to water purification and management:</p>
+                    <ul>
+                        <li>DIY filtration systems</li>
+                        <li>Rainwater harvesting</li>
+                        <li>Water conservation techniques</li>
+                    </ul>
+                    <p>Start your journey to water sustainability today!</p>
+                `
+            },
+            {
+                title: "Sanitation Excellence",
+                content: `
+                    <h4>Master Sanitation Systems</h4>
+                    <p>Learn about sustainable waste management:</p>
+                    <ul>
+                        <li>Composting toilets</li>
+                        <li>Greywater systems</li>
+                        <li>Waste reduction strategies</li>
+                    </ul>
+                `
+            },
+            // Add content for other slides...
+        ];
 
         function updateSlides() {
             slides.forEach((slide, index) => {
@@ -401,26 +429,66 @@
             });
         }
 
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            updateSlides();
+        function handleSwipe() {
+            const swipeDistance = touchEndX - touchStartX;
+            const minSwipeDistance = 50;
+
+            if (Math.abs(swipeDistance) > minSwipeDistance) {
+                if (swipeDistance > 0) {
+                    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                } else {
+                    currentSlide = (currentSlide + 1) % totalSlides;
+                }
+                updateSlides();
+                resetAutoplay();
+            }
         }
 
-        function previousSlide() {
-            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-            updateSlides();
+        // Touch event listeners
+        container.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        container.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        // Modal functions
+        function openModal() {
+            const modal = document.getElementById('slideModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalTitle.textContent = slideContent[currentSlide].title;
+            modalContent.innerHTML = slideContent[currentSlide].content;
+            
+            modal.classList.remove('hidden');
+            pauseAutoplay();
         }
 
-        function goToSlide(slideIndex) {
-            currentSlide = slideIndex;
-            updateSlides();
-            resetAutoplay();
+        function closeModal() {
+            const modal = document.getElementById('slideModal');
+            modal.classList.add('hidden');
+            resumeAutoplay();
         }
+
+        // Add click listeners to slide buttons
+        slides.forEach((slide, index) => {
+            const button = slide.querySelector('button');
+            if (button) {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+            }
+        });
 
         function startAutoplay() {
-            if (!isPaused) {
-                autoplayInterval = setInterval(nextSlide, 5000);
-            }
+            autoplayInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlides();
+            }, 5000);
         }
 
         function resetAutoplay() {
@@ -429,41 +497,37 @@
         }
 
         function pauseAutoplay() {
-            isPaused = true;
             clearInterval(autoplayInterval);
         }
 
         function resumeAutoplay() {
-            isPaused = false;
             startAutoplay();
+        }
+
+        function goToSlide(slideIndex) {
+            currentSlide = slideIndex;
+            updateSlides();
+            resetAutoplay();
         }
 
         // Initialize
         updateSlides();
         startAutoplay();
 
-        // Add event listeners for next/previous buttons
-        document.querySelector('.carousel-control.next').addEventListener('click', () => {
-            nextSlide();
-            resetAutoplay();
+        // Add keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlides();
+                resetAutoplay();
+            } else if (e.key === 'ArrowLeft') {
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                updateSlides();
+                resetAutoplay();
+            }
         });
-
-        document.querySelector('.carousel-control.prev').addEventListener('click', () => {
-            previousSlide();
-            resetAutoplay();
-        });
-
-        // Add hover pause functionality
-        const controls = document.querySelectorAll('.carousel-control');
-        controls.forEach(control => {
-            control.addEventListener('mouseenter', pauseAutoplay);
-            control.addEventListener('mouseleave', resumeAutoplay);
-        });
-    
-        // Initialize
-       // updateSlides();
-      //  startAutoplay();
     </script>
+</div>
   
     <!-- Hero Content -->
 
