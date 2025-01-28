@@ -24,6 +24,331 @@
   <!-- Hero Section with Mondrian Overlay -->
   <div class="relative">
 
+
+
+     <!-- Slide 1: Water Solutions -->
+            <div class="absolute inset-0 transition-opacity duration-700 flex flex-col md:flex-row items-center justify-center p-4 md:p-8 bg-gradient-to-br from-blue-600 to-cyan-500" style="opacity: 0;">
+                <!-- Mobile-friendly stacked layout -->
+                <div class="w-full md:w-1/2 flex flex-col items-center mb-8 md:mb-0">
+                    <!-- Mandala -->
+                    <svg class="w-48 md:w-96 h-48 md:h-96 text-white opacity-30" viewBox="0 0 400 400">
+                        <!-- 9-Sided Mandala with Water Theme -->
+                        <g transform="translate(200,200)">
+                            <!-- Base Circles -->
+                            <circle r="180" fill="none" stroke="currentColor" stroke-width="1"></circle>
+                            <circle r="150" fill="none" stroke="currentColor" stroke-width="1"></circle>
+                            {Array.from({length: 9}).map((_, i) =&gt; `
+                                <g transform="rotate(${i * 40})">
+                                    <path d="M0,-180 L30,-150 L-30,-150 Z" fill="none" stroke="currentColor" stroke-width="1"></path>
+                                    <path d="M0,-150 Q30,-120 0,-90" fill="none" stroke="currentColor" stroke-width="1"></path>
+                                </g>
+                            `).join('')}
+                        </g>
+                    </svg>
+                </div>
+
+                <div class="w-full md:w-1/2 flex flex-col items-center md:items-start space-y-6">
+                    <!-- Character -->
+                    <svg class="w-32 h-32 text-white" viewBox="0 0 200 200">
+                        <circle cx="100" cy="100" r="70" fill="none" stroke="currentColor" stroke-width="3"></circle>
+                        <path d="M70,110 Q100,140 130,110" fill="none" stroke="currentColor" stroke-width="3"></path>
+                        <path d="M70,85 Q75,80 80,85" stroke="currentColor" stroke-width="3" fill="none"></path>
+                        <path d="M120,85 Q125,80 130,85" stroke="currentColor" stroke-width="3" fill="none"></path>
+                        <!-- Sparkle -->
+                        <g>
+                            <circle cx="140" cy="75" r="3" fill="currentColor">
+                                <animate attributeName="opacity" values="1;0;1" dur="1.5s" repeatCount="indefinite"></animate>
+                            </circle>
+                        </g>
+                    </svg>
+
+                    <!-- Info Panels -->
+                    <div class="flex flex-col space-y-4 text-white w-full max-w-md">
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+                            <h3 class="font-bold mb-2">Clean Water Solutions</h3>
+                            <p class="text-sm">Learn sustainable water management</p>
+                        </div>
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+                            <h3 class="font-bold mb-2">Get NFT Certified</h3>
+                            <p class="text-sm">Earn while mastering water systems</p>
+                        </div>
+                        <button class="bg-white text-blue-600 px-6 py-3 rounded-lg font-bold hover:bg-opacity-90 w-full">
+                            Start Learning
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: Sanitation -->
+            <div class="absolute inset-0 transition-opacity duration-700 opacity-0 flex flex-col md:flex-row items-center justify-center p-4 md:p-8 bg-gradient-to-br from-green-600 to-emerald-500" style="opacity: 1;">
+                <div class="w-full md:w-1/2 flex flex-col items-center mb-8 md:mb-0">
+                    <!-- Sanitation-themed Mandala -->
+                    <svg class="w-48 md:w-96 h-48 md:h-96 text-white opacity-30" viewBox="0 0 400 400">
+                        <g transform="translate(200,200)">
+                            <circle r="180" fill="none" stroke="currentColor" stroke-width="1"></circle>
+                            <circle r="150" fill="none" stroke="currentColor" stroke-width="1"></circle>
+                            {Array.from({length: 9}).map((_, i) =&gt; `
+                                <g transform="rotate(${i * 40})">
+                                    <path d="M0,-180 L30,-150 L-30,-150 Z" fill="none" stroke="currentColor" stroke-width="1"></path>
+                                    <path d="M0,-150 Q30,-120 0,-90" fill="none" stroke="currentColor" stroke-width="1"></path>
+                                </g>
+                            `).join('')}
+                        </g>
+                    </svg>
+                </div>
+
+                <div class="w-full md:w-1/2 flex flex-col items-center md:items-start space-y-6">
+                    <!-- Collaborative Character Scene -->
+                    <svg class="w-64 h-64 text-white" viewBox="0 0 400 300">
+                        <!-- First Character - Teacher -->
+                        <g class="character-1">
+                            <circle cx="150" cy="150" r="50" fill="none" stroke="currentColor" stroke-width="3"></circle>
+                            <!-- Animated Teaching Expression -->
+                            <path d="M130,150 Q150,170 170,150" fill="none" stroke="currentColor" stroke-width="3">
+                                <animate attributeName="d" values="M130,150 Q150,170 170,150;M130,160 Q150,180 170,160;M130,150 Q150,170 170,150" dur="3s" repeatCount="indefinite"></animate>
+                            </path>
+                            <!-- Enthusiastic Eyes -->
+                            <path d="M135,135 L145,135" stroke="currentColor" stroke-width="3">
+                                <animate attributeName="d" values="M135,135 L145,135;M135,135 Q140,130 145,135;M135,135 L145,135" dur="4s" repeatCount="indefinite"></animate>
+                            </path>
+                            <path d="M155,135 L165,135" stroke="currentColor" stroke-width="3"></path>
+                            <!-- Teaching Gesture -->
+                            <path d="M200,150 Q220,140 240,150" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4">
+                                <animate attributeName="d" values="M200,150 Q220,140 240,150;M200,150 Q220,160 240,150;M200,150 Q220,140 240,150" dur="2s" repeatCount="indefinite"></animate>
+                            </path>
+                        </g>
+
+                        <!-- Second Character - Learner -->
+                        <g class="character-2">
+                         
+
+
+  <defs>
+    <!-- Head Gradient -->
+    <linearGradient id="headGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6c3"></stop>
+      <stop offset="100%" stop-color="#3c6"></stop>
+    </linearGradient>
+
+    <!-- Body Pattern (optional) -->
+    <pattern id="bodyPattern" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="2" fill="currentColor"></circle>
+    </pattern>
+  </defs>
+
+  <!-- Second Character - Learner with improvements -->
+  <g class="character-2">
+    <!-- Head with gradient fill -->
+    <circle cx="250" cy="150" r="50" fill="url(#headGradient)" stroke="currentColor" stroke-width="3"></circle>
+
+    <!-- Mouth: oscillates to show curiosity/thinking -->
+    <path d="M230,150 Q250,170 270,150" fill="none" stroke="currentColor" stroke-width="3">
+      <animate attributeName="d" values="M230,150 Q250,170 270,150;
+                M230,160 Q250,180 270,160;
+                M230,150 Q250,170 270,150" dur="3s" repeatCount="indefinite" begin="0.5s"></animate>
+    </path>
+
+    <!-- Eyes: subtle blinking effect -->
+    <circle cx="235" cy="135" r="5" fill="currentColor">
+      <animate attributeName="r" values="5;5;5;1;5" <!--="" short="" “blink”="" to="" r="1" --="">
+        keyTimes="0;0.8;0.85;0.9;1"
+        dur="3s"
+        repeatCount="indefinite"
+      /&gt;
+    </animate></circle>
+    <circle cx="265" cy="135" r="5" fill="currentColor">
+      <animate attributeName="r" values="5;5;5;1;5" keyTimes="0;0.8;0.85;0.9;1" dur="3s" repeatCount="indefinite" begin="0.3s" <!--="" slight="" delay="" for="" staggered="" blinking="" --="">
+      /&gt;
+    </animate></circle>
+
+    <!-- Simple torso/shoulders to hint at a full figure -->
+    <rect x="220" y="200" width="60" height="80" fill="url(#bodyPattern)" stroke="currentColor" stroke-width="2" rx="10" ry="10" <!--="" rounded="" corners="" --="">
+    /&gt;
+
+    <!-- OPTIONAL: Add small floating icons or orbits to represent sustainability themes -->
+    <!-- Example: A small leaf icon near the head -->
+    <circle cx="215" cy="110" r="5" fill="#3c6" opacity="0.8">
+      <animateTransform attributeName="transform" type="translate" values="0,0; 0,-5; 0,0" dur="2s" repeatCount="indefinite"></animateTransform>
+    </circle>
+      
+      
+                        </rect></g>
+
+                        <!-- Shared Learning Symbols -->
+                        <g class="learning-symbols">
+                            <!-- Knowledge Flow -->
+                            <path d="M175,120 Q200,100 225,120" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4">
+                                <animate attributeName="d" values="M175,120 Q200,100 225,120;M175,120 Q200,140 225,120;M175,120 Q200,100 225,120" dur="4s" repeatCount="indefinite"></animate>
+                            </path>
+                            <!-- Idea Sparks -->
+                            <circle cx="200" cy="100" r="3" fill="currentColor">
+                                <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"></animate>
+                            </circle>
+                            <circle cx="220" cy="90" r="2" fill="currentColor">
+                                <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0.5s"></animate>
+                            </circle>
+                        </g>
+                    </g></svg>
+
+                    <!-- Dynamic Text Panels -->
+                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 text-white max-w-4xl" style="background-image:images/9_sm.jpg">
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg transform hover:scale-105 transition-transform duration-300">
+                            <h3 class="font-bold mb-2">Learn Together</h3>
+                            <p class="text-sm">Join a community of knowledge sharing</p>
+                        </div>
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg transform hover:scale-105 transition-transform duration-300 md:mt-8">
+                            <h3 class="font-bold mb-2">Teach Others</h3>
+                            <p class="text-sm">Share your expertise and grow</p>
+                        </div>
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg transform hover:scale-105 transition-transform duration-300 md:mt-16">
+                            <h3 class="font-bold mb-2">Build Community</h3>
+                            <p class="text-sm">Create lasting local impact</p>
+                        </div>
+                    </div>
+
+                    <!-- Sanitation Info Panels -->
+                    <div class="flex flex-col space-y-4 text-white w-full max-w-md">
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+                            <h3 class="font-bold mb-2">Sanitation Excellence</h3>
+                            <p class="text-sm">Master sustainable waste management systems</p>
+                        </div>
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+                            <h3 class="font-bold mb-2">Earn Certification</h3>
+                            <p class="text-sm">Become a certified sanitation specialist</p>
+                        </div>
+                        <button class="bg-white text-green-600 px-6 py-3 rounded-lg font-bold hover:bg-opacity-90 w-full">
+                            Join Sanitation Program
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Renewable Energy -->
+            <div class="absolute inset-0 transition-opacity duration-700 opacity-0 flex flex-col md:flex-row items-center justify-center p-4 md:p-8 bg-gradient-to-br from-yellow-500 to-orange-500" style="opacity: 0;">
+                <div class="w-full md:w-1/2 flex flex-col items-center mb-8 md:mb-0">
+                    <!-- Energy-themed Mandala -->
+                    <svg class="w-48 md:w-96 h-48 md:h-96 text-white opacity-30" viewBox="0 0 400 400">
+                        <!-- Similar mandala structure with energy motifs -->
+                    </svg>
+                </div>
+
+                <div class="w-full md:w-1/2 flex flex-col items-center md:items-start space-y-6">
+                    <!-- Theme Icons -->
+                        <div class="absolute top-4 right-4 flex space-x-2">
+                            <!-- Water Icon -->
+                            <svg class="w-8 h-8 text-white opacity-70" viewBox="0 0 40 40">
+                                <path d="M20,5 Q30,20 30,30 A10,10 0 1,1 10,30 Q10,20 20,5" fill="none" stroke="currentColor" stroke-width="2">
+                                    <animate attributeName="stroke-dasharray" values="0,100;100,100" dur="2s" fill="freeze"></animate>
+                                </path>
+                            </svg>
+                            <!-- Energy Icon -->
+                            <svg class="w-8 h-8 text-white opacity-70" viewBox="0 0 40 40">
+                                <path d="M20,5 L25,20 L35,20 L15,35 L20,20 L10,20 Z" fill="none" stroke="currentColor" stroke-width="2">
+                                    <animate attributeName="stroke-dasharray" values="0,100;100,100" dur="2s" fill="freeze"></animate>
+                                </path>
+                            </svg>
+                            <!-- Food Icon -->
+                            <svg class="w-8 h-8 text-white opacity-70" viewBox="0 0 40 40">
+                                <path d="M20,10 Q30,20 20,30 Q10,20 20,10" fill="none" stroke="currentColor" stroke-width="2">
+                                    <animate attributeName="stroke-dasharray" values="0,100;100,100" dur="2s" fill="freeze"></animate>
+                                </path>
+                            </svg>
+                        </div>
+
+                    <!-- Energy Info Panels -->
+                    <div class="flex flex-col space-y-4 text-white w-full max-w-md">
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+                            <h3 class="font-bold mb-2">Renewable Energy Mastery</h3>
+                            <p class="text-sm">Learn to implement solar and sustainable power</p>
+                        </div>
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+                            <h3 class="font-bold mb-2">Energy Innovation</h3>
+                            <p class="text-sm">Design and maintain renewable systems</p>
+                        </div>
+                        <button class="bg-white text-yellow-600 px-6 py-3 rounded-lg font-bold hover:bg-opacity-90 w-full">
+                            Start Energy Training
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Local Food Systems -->
+            <div class="absolute inset-0 transition-opacity duration-700 opacity-0 flex flex-col md:flex-row items-center justify-center p-4 md:p-8 bg-gradient-to-br from-green-500 to-lime-500" style="opacity: 0;">
+                <div class="w-full md:w-1/2 flex flex-col items-center mb-8 md:mb-0">
+                    <!-- Food-themed Mandala -->
+                    <svg class="w-48 md:w-96 h-48 md:h-96 text-white opacity-30" viewBox="0 0 400 400">
+                        <!-- Similar mandala structure with food/plant motifs -->
+                    </svg>
+                </div>
+
+                <div class="w-full md:w-1/2 flex flex-col items-center md:items-start space-y-6">
+                    <!-- Character -->
+                    <svg class="w-32 h-32 text-white" viewBox="0 0 200 200">
+                        <!-- Same happy character -->
+                    </svg>
+
+                    <!-- Food Systems Info Panels -->
+                    <div class="flex flex-col space-y-4 text-white w-full max-w-md">
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+                            <h3 class="font-bold mb-2">Sustainable Agriculture</h3>
+                            <p class="text-sm">Create thriving local food systems</p>
+                        </div>
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+                            <h3 class="font-bold mb-2">Food Security</h3>
+                            <p class="text-sm">Build community gardens and food networks</p>
+                        </div>
+                        <button class="bg-white text-green-600 px-6 py-3 rounded-lg font-bold hover:bg-opacity-90 w-full">
+                            Learn Food Systems
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Community Health -->
+            <div class="absolute inset-0 transition-opacity duration-700 opacity-0 flex flex-col md:flex-row items-center justify-center p-4 md:p-8 bg-gradient-to-br from-red-500 to-pink-500" style="opacity: 0;">
+                <div class="w-full md:w-1/2 flex flex-col items-center mb-8 md:mb-0">
+                    <!-- Health-themed Mandala -->
+                    <svg class="w-48 md:w-96 h-48 md:h-96 text-white opacity-30" viewBox="0 0 400 400">
+                        <!-- Similar mandala structure with health motifs -->
+                    </svg>
+                </div>
+
+                <div class="w-full md:w-1/2 flex flex-col items-center md:items-start space-y-6">
+                    <!-- Character -->
+                    <svg class="w-32 h-32 text-white" viewBox="0 0 200 200">
+                        <!-- Same happy character -->
+                    </svg>
+
+                    <!-- Health Info Panels -->
+                    <div class="flex flex-col space-y-4 text-white w-full max-w-md">
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+                            <h3 class="font-bold mb-2">Community Health</h3>
+                            <p class="text-sm">Establish local health support systems</p>
+                        </div>
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
+                            <h3 class="font-bold mb-2">Clinical Skills</h3>
+                            <p class="text-sm">Learn essential community healthcare</p>
+                        </div>
+                        <button class="bg-white text-red-500 px-6 py-3 rounded-lg font-bold hover:bg-opacity-90 w-full">
+                            Begin Health Training
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Navigation Dots -->
+    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        <button class="w-3 h-3 rounded-full bg-white focus:outline-none bg-opacity-50" onclick="goToSlide(0)"></button>
+        <button class="w-3 h-3 rounded-full bg-white focus:outline-none bg-opacity-100" onclick="goToSlide(1)"></button>
+        <button class="w-3 h-3 rounded-full bg-white focus:outline-none bg-opacity-50" onclick="goToSlide(2)"></button>
+        <button class="w-3 h-3 rounded-full bg-white focus:outline-none bg-opacity-50" onclick="goToSlide(3)"></button>
+        <button class="w-3 h-3 rounded-full bg-white focus:outline-none bg-opacity-50" onclick="goToSlide(4)"></button>
+    </div>
+
+
+
+    
 <!-- Dynamic Modal Template -->
 <div id="dynamicModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
     <div class="fixed inset-x-0 bottom-0 transform transition-transform duration-300 translate-y-full">
