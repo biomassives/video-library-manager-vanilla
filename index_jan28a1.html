@@ -353,9 +353,7 @@
         <button class="w-3 h-3 rounded-full bg-white focus:outline-none bg-opacity-50" onclick="goToSlide(4)"></button>
     </div>
 
-
-
-    <!-- Dynamic Modal Template -->
+<!-- Dynamic Modal Template -->
 <div id="dynamicModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
     <div class="fixed inset-x-0 bottom-0 transform transition-transform duration-300 translate-y-full">
         <!-- Modal Content Container -->
@@ -542,8 +540,53 @@ function closeModal() {
 }
 
 // Add click listeners to carousel buttons
-// Track animation state
+// Initialize carousel state
+let currentSlide = 0;
 let isAnimating = false;
+const slides = document.querySelectorAll('.carousel-container > div');
+const dots = document.querySelectorAll('.bottom-4 button');
+const totalSlides = slides.length;
+
+// Update slides function
+function updateSlides() {
+    if (isAnimating) return;
+    isAnimating = true;
+
+    slides.forEach((slide, index) => {
+        slide.style.opacity = index === currentSlide ? '1' : '0';
+    });
+
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('bg-opacity-100', index === currentSlide);
+        dot.classList.toggle('bg-opacity-50', index !== currentSlide);
+    });
+
+    setTimeout(() => {
+        isAnimating = false;
+    }, 700);
+}
+
+// Navigation functions
+function goToSlide(index) {
+    if (isAnimating || index === currentSlide) return;
+    currentSlide = index;
+    updateSlides();
+}
+
+function nextSlide() {
+    if (isAnimating) return;
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateSlides();
+}
+
+function previousSlide() {
+    if (isAnimating) return;
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    updateSlides();
+}
+
+// Initialize carousel
+updateSlides();
 
 document.addEventListener('DOMContentLoaded', () => {
     const buttons = document.querySelectorAll('.carousel-container button');
@@ -588,34 +631,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-
-    <!-- Navigation Dots -->
-    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 focus:outline-none" onclick="goToSlide(0)"></button>
-        <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 focus:outline-none" onclick="goToSlide(1)"></button>
-        <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 focus:outline-none" onclick="goToSlide(2)"></button>
-        <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 focus:outline-none" onclick="goToSlide(3)"></button>
-        <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 focus:outline-none" onclick="goToSlide(4)"></button>
-    </div>
-
-    <!-- Custom Modal -->
-    <div id="slideModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
-        <div class="bg-white rounded-lg p-8 max-w-lg w-full mx-4 transform transition-all">
-            <div class="flex justify-between items-center mb-4">
-                <h3 id="modalTitle" class="text-xl font-bold"></h3>
-                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-            <div id="modalContent" class="prose"></div>
-            <div class="mt-6 flex justify-end">
-                <button onclick="closeModal()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Close</button>
-            </div>
-        </div>
-    </div>
 
 </div>
   
