@@ -24,408 +24,232 @@
   <!-- Hero Section with Mondrian Overlay -->
   <div class="relative">
 
- 
-    <div class="relative h-screen bg-blue-900 overflow-hidden">
-
-      
-        <!-- Carousel Container -->
-      
-        <div class="carousel-container h-full w-full  touch-pan-y">
-            <!-- Slide 1: Water Solutions -->
-            <div class="absolute inset-0 transition-opacity duration-700 flex flex-col md:flex-row items-center justify-center p-4 md:p-8 bg-gradient-to-br from-blue-600 to-cyan-500">
-                <!-- Mobile-friendly stacked layout -->
-                <div class="w-full md:w-1/2 flex flex-col items-center mb-8 md:mb-0">
-                    <!-- Mandala -->
-                    <svg class="w-48 md:w-96 h-48 md:h-96 text-white opacity-30" viewBox="0 0 400 400">
-                        <!-- 9-Sided Mandala with Water Theme -->
-                        <g transform="translate(200,200)">
-                            <!-- Base Circles -->
-                            <circle r="180" fill="none" stroke="currentColor" stroke-width="1"/>
-                            <circle r="150" fill="none" stroke="currentColor" stroke-width="1"/>
-                            {Array.from({length: 9}).map((_, i) => `
-                                <g transform="rotate(${i * 40})">
-                                    <path d="M0,-180 L30,-150 L-30,-150 Z" 
-                                          fill="none" stroke="currentColor" stroke-width="1"/>
-                                    <path d="M0,-150 Q30,-120 0,-90" 
-                                          fill="none" stroke="currentColor" stroke-width="1"/>
-                                </g>
-                            `).join('')}
-                        </g>
-                    </svg>
-                </div>
-
-                <div class="w-full md:w-1/2 flex flex-col items-center md:items-start space-y-6">
-                    <!-- Character -->
-                    <svg class="w-32 h-32 text-white" viewBox="0 0 200 200">
-                        <circle cx="100" cy="100" r="70" fill="none" stroke="currentColor" stroke-width="3"/>
-                        <path d="M70,110 Q100,140 130,110" 
-                              fill="none" stroke="currentColor" stroke-width="3"/>
-                        <path d="M70,85 Q75,80 80,85" stroke="currentColor" stroke-width="3" fill="none"/>
-                        <path d="M120,85 Q125,80 130,85" stroke="currentColor" stroke-width="3" fill="none"/>
-                        <!-- Sparkle -->
-                        <g>
-                            <circle cx="140" cy="75" r="3" fill="currentColor">
-                                <animate attributeName="opacity" values="1;0;1" dur="1.5s" repeatCount="indefinite"/>
-                            </circle>
-                        </g>
-                    </svg>
-
-                    <!-- Info Panels -->
-                    <div class="flex flex-col space-y-4 text-white w-full max-w-md">
-                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
-                            <h3 class="font-bold mb-2">Clean Water Solutions</h3>
-                            <p class="text-sm">Learn sustainable water management</p>
-                        </div>
-                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
-                            <h3 class="font-bold mb-2">Get NFT Certified</h3>
-                            <p class="text-sm">Earn while mastering water systems</p>
-                        </div>
-                        <button class="bg-white text-blue-600 px-6 py-3 rounded-lg font-bold hover:bg-opacity-90 w-full">
-                            Start Learning
-                        </button>
-                    </div>
+<!-- Dynamic Modal Template -->
+<div id="dynamicModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+    <div class="fixed inset-x-0 bottom-0 transform transition-transform duration-300 translate-y-full">
+        <!-- Modal Content Container -->
+        <div class="bg-white rounded-t-xl shadow-xl max-h-[90vh] overflow-y-auto">
+            <!-- Modal Header -->
+            <div class="sticky top-0 bg-white border-b border-gray-200">
+                <div class="flex items-center justify-between p-4">
+                    <h3 id="modalTitle" class="text-xl font-bold text-gray-900"></h3>
+                    <button onclick="closeModal()" class="p-2 hover:bg-gray-100 rounded-full">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
 
-            <!-- Slide 2: Sanitation -->
-            <div class="absolute inset-0 transition-opacity duration-700 opacity-0 flex flex-col md:flex-row items-center justify-center p-4 md:p-8 bg-gradient-to-br from-green-600 to-emerald-500">
-                <div class="w-full md:w-1/2 flex flex-col items-center mb-8 md:mb-0">
-                    <!-- Sanitation-themed Mandala -->
-                    <svg class="w-48 md:w-96 h-48 md:h-96 text-white opacity-30" viewBox="0 0 400 400">
-                        <g transform="translate(200,200)">
-                            <circle r="180" fill="none" stroke="currentColor" stroke-width="1"/>
-                            <circle r="150" fill="none" stroke="currentColor" stroke-width="1"/>
-                            {Array.from({length: 9}).map((_, i) => `
-                                <g transform="rotate(${i * 40})">
-                                    <path d="M0,-180 L30,-150 L-30,-150 Z" 
-                                          fill="none" stroke="currentColor" stroke-width="1"/>
-                                    <path d="M0,-150 Q30,-120 0,-90" 
-                                          fill="none" stroke="currentColor" stroke-width="1"/>
-                                </g>
-                            `).join('')}
-                        </g>
-                    </svg>
-                </div>
-
-                <div class="w-full md:w-1/2 flex flex-col items-center md:items-start space-y-6">
-                    <!-- Collaborative Character Scene -->
-                    <svg class="w-64 h-64 text-white" viewBox="0 0 400 300">
-                        <!-- First Character - Teacher -->
-                        <g class="character-1">
-                            <circle cx="150" cy="150" r="50" fill="none" stroke="currentColor" stroke-width="3"/>
-                            <!-- Animated Teaching Expression -->
-                            <path d="M130,150 Q150,170 170,150" fill="none" stroke="currentColor" stroke-width="3">
-                                <animate attributeName="d" 
-                                    values="M130,150 Q150,170 170,150;M130,160 Q150,180 170,160;M130,150 Q150,170 170,150"
-                                    dur="3s"
-                                    repeatCount="indefinite"/>
-                            </path>
-                            <!-- Enthusiastic Eyes -->
-                            <path d="M135,135 L145,135" stroke="currentColor" stroke-width="3">
-                                <animate attributeName="d"
-                                    values="M135,135 L145,135;M135,135 Q140,130 145,135;M135,135 L145,135"
-                                    dur="4s"
-                                    repeatCount="indefinite"/>
-                            </path>
-                            <path d="M155,135 L165,135" stroke="currentColor" stroke-width="3"/>
-                            <!-- Teaching Gesture -->
-                            <path d="M200,150 Q220,140 240,150" 
-                                  fill="none" stroke="currentColor" stroke-width="2" 
-                                  stroke-dasharray="4 4">
-                                <animate attributeName="d"
-                                    values="M200,150 Q220,140 240,150;M200,150 Q220,160 240,150;M200,150 Q220,140 240,150"
-                                    dur="2s"
-                                    repeatCount="indefinite"/>
-                            </path>
-                        </g>
-
-                        <!-- Second Character - Learner -->
-                        <g class="character-2">
-                         
-
-
-  <defs>
-    <!-- Head Gradient -->
-    <linearGradient id="headGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#6c3" />
-      <stop offset="100%" stop-color="#3c6" />
-    </linearGradient>
-
-    <!-- Body Pattern (optional) -->
-    <pattern id="bodyPattern" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
-      <circle cx="2" cy="2" r="2" fill="currentColor"/>
-    </pattern>
-  </defs>
-
-  <!-- Second Character - Learner with improvements -->
-  <g class="character-2">
-    <!-- Head with gradient fill -->
-    <circle 
-      cx="250" 
-      cy="150" 
-      r="50" 
-      fill="url(#headGradient)" 
-      stroke="currentColor" 
-      stroke-width="3"
-    />
-
-    <!-- Mouth: oscillates to show curiosity/thinking -->
-    <path 
-      d="M230,150 Q250,170 270,150" 
-      fill="none" 
-      stroke="currentColor" 
-      stroke-width="3">
-      <animate 
-        attributeName="d"
-        values="M230,150 Q250,170 270,150;
-                M230,160 Q250,180 270,160;
-                M230,150 Q250,170 270,150"
-        dur="3s"
-        repeatCount="indefinite"
-        begin="0.5s"
-      />
-    </path>
-
-    <!-- Eyes: subtle blinking effect -->
-    <circle cx="235" cy="135" r="5" fill="currentColor">
-      <animate
-        attributeName="r"
-        values="5;5;5;1;5"  <!-- short “blink” to r=1 -->
-        keyTimes="0;0.8;0.85;0.9;1"
-        dur="3s"
-        repeatCount="indefinite"
-      />
-    </circle>
-    <circle cx="265" cy="135" r="5" fill="currentColor">
-      <animate
-        attributeName="r"
-        values="5;5;5;1;5"
-        keyTimes="0;0.8;0.85;0.9;1"
-        dur="3s"
-        repeatCount="indefinite"
-        begin="0.3s"  <!-- slight delay for staggered blinking -->
-      />
-    </circle>
-
-    <!-- Simple torso/shoulders to hint at a full figure -->
-    <rect 
-      x="220" 
-      y="200" 
-      width="60" 
-      height="80" 
-      fill="url(#bodyPattern)" 
-      stroke="currentColor" 
-      stroke-width="2"
-      rx="10" 
-      ry="10"  <!-- rounded corners -->
-    />
-
-    <!-- OPTIONAL: Add small floating icons or orbits to represent sustainability themes -->
-    <!-- Example: A small leaf icon near the head -->
-    <circle 
-      cx="215" 
-      cy="110" 
-      r="5" 
-      fill="#3c6" 
-      opacity="0.8">
-      <animateTransform
-        attributeName="transform"
-        type="translate"
-        values="0,0; 0,-5; 0,0"
-        dur="2s"
-        repeatCount="indefinite"
-      />
-    </circle>
-      
-      
-                        </g>
-
-                        <!-- Shared Learning Symbols -->
-                        <g class="learning-symbols">
-                            <!-- Knowledge Flow -->
-                            <path d="M175,120 Q200,100 225,120" 
-                                  fill="none" stroke="currentColor" stroke-width="2" 
-                                  stroke-dasharray="4 4">
-                                <animate attributeName="d"
-                                    values="M175,120 Q200,100 225,120;M175,120 Q200,140 225,120;M175,120 Q200,100 225,120"
-                                    dur="4s"
-                                    repeatCount="indefinite"/>
-                            </path>
-                            <!-- Idea Sparks -->
-                            <circle cx="200" cy="100" r="3" fill="currentColor">
-                                <animate attributeName="opacity"
-                                    values="0;1;0"
-                                    dur="2s"
-                                    repeatCount="indefinite"/>
-                            </circle>
-                            <circle cx="220" cy="90" r="2" fill="currentColor">
-                                <animate attributeName="opacity"
-                                    values="0;1;0"
-                                    dur="2s"
-                                    repeatCount="indefinite"
-                                    begin="0.5s"/>
-                            </circle>
-                        </g>
-                    </svg>
-
-                    <!-- Dynamic Text Panels -->
-                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 text-white max-w-4xl" style="background-image:images/9_sm.jpg">
-                        <div class="bg-white bg-opacity-10 p-4 rounded-lg transform hover:scale-105 transition-transform duration-300">
-                            <h3 class="font-bold mb-2">Learn Together</h3>
-                            <p class="text-sm">Join a community of knowledge sharing</p>
-                        </div>
-                        <div class="bg-white bg-opacity-10 p-4 rounded-lg transform hover:scale-105 transition-transform duration-300 md:mt-8">
-                            <h3 class="font-bold mb-2">Teach Others</h3>
-                            <p class="text-sm">Share your expertise and grow</p>
-                        </div>
-                        <div class="bg-white bg-opacity-10 p-4 rounded-lg transform hover:scale-105 transition-transform duration-300 md:mt-16">
-                            <h3 class="font-bold mb-2">Build Community</h3>
-                            <p class="text-sm">Create lasting local impact</p>
-                        </div>
-                    </div>
-
-                    <!-- Sanitation Info Panels -->
-                    <div class="flex flex-col space-y-4 text-white w-full max-w-md">
-                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
-                            <h3 class="font-bold mb-2">Sanitation Excellence</h3>
-                            <p class="text-sm">Master sustainable waste management systems</p>
-                        </div>
-                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
-                            <h3 class="font-bold mb-2">Earn Certification</h3>
-                            <p class="text-sm">Become a certified sanitation specialist</p>
-                        </div>
-                        <button class="bg-white text-green-600 px-6 py-3 rounded-lg font-bold hover:bg-opacity-90 w-full">
-                            Join Sanitation Program
-                        </button>
-                    </div>
-                </div>
+            <!-- Modal Content -->
+            <div id="modalContent" class="p-4">
+                <!-- Dynamic content will be inserted here -->
             </div>
 
-            <!-- Slide 3: Renewable Energy -->
-            <div class="absolute inset-0 transition-opacity duration-700 opacity-0 flex flex-col md:flex-row items-center justify-center p-4 md:p-8 bg-gradient-to-br from-yellow-500 to-orange-500">
-                <div class="w-full md:w-1/2 flex flex-col items-center mb-8 md:mb-0">
-                    <!-- Energy-themed Mandala -->
-                    <svg class="w-48 md:w-96 h-48 md:h-96 text-white opacity-30" viewBox="0 0 400 400">
-                        <!-- Similar mandala structure with energy motifs -->
-                    </svg>
-                </div>
-
-                <div class="w-full md:w-1/2 flex flex-col items-center md:items-start space-y-6">
-                    <!-- Theme Icons -->
-                        <div class="absolute top-4 right-4 flex space-x-2">
-                            <!-- Water Icon -->
-                            <svg class="w-8 h-8 text-white opacity-70" viewBox="0 0 40 40">
-                                <path d="M20,5 Q30,20 30,30 A10,10 0 1,1 10,30 Q10,20 20,5" 
-                                      fill="none" stroke="currentColor" stroke-width="2">
-                                    <animate attributeName="stroke-dasharray" 
-                                        values="0,100;100,100"
-                                        dur="2s"
-                                        fill="freeze"/>
-                                </path>
-                            </svg>
-                            <!-- Energy Icon -->
-                            <svg class="w-8 h-8 text-white opacity-70" viewBox="0 0 40 40">
-                                <path d="M20,5 L25,20 L35,20 L15,35 L20,20 L10,20 Z" 
-                                      fill="none" stroke="currentColor" stroke-width="2">
-                                    <animate attributeName="stroke-dasharray" 
-                                        values="0,100;100,100"
-                                        dur="2s"
-                                        fill="freeze"/>
-                                </path>
-                            </svg>
-                            <!-- Food Icon -->
-                            <svg class="w-8 h-8 text-white opacity-70" viewBox="0 0 40 40">
-                                <path d="M20,10 Q30,20 20,30 Q10,20 20,10" 
-                                      fill="none" stroke="currentColor" stroke-width="2">
-                                    <animate attributeName="stroke-dasharray" 
-                                        values="0,100;100,100"
-                                        dur="2s"
-                                        fill="freeze"/>
-                                </path>
-                            </svg>
-                        </div>
-
-                    <!-- Energy Info Panels -->
-                    <div class="flex flex-col space-y-4 text-white w-full max-w-md">
-                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
-                            <h3 class="font-bold mb-2">Renewable Energy Mastery</h3>
-                            <p class="text-sm">Learn to implement solar and sustainable power</p>
-                        </div>
-                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
-                            <h3 class="font-bold mb-2">Energy Innovation</h3>
-                            <p class="text-sm">Design and maintain renewable systems</p>
-                        </div>
-                        <button class="bg-white text-yellow-600 px-6 py-3 rounded-lg font-bold hover:bg-opacity-90 w-full">
-                            Start Energy Training
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 4: Local Food Systems -->
-            <div class="absolute inset-0 transition-opacity duration-700 opacity-0 flex flex-col md:flex-row items-center justify-center p-4 md:p-8 bg-gradient-to-br from-green-500 to-lime-500">
-                <div class="w-full md:w-1/2 flex flex-col items-center mb-8 md:mb-0">
-                    <!-- Food-themed Mandala -->
-                    <svg class="w-48 md:w-96 h-48 md:h-96 text-white opacity-30" viewBox="0 0 400 400">
-                        <!-- Similar mandala structure with food/plant motifs -->
-                    </svg>
-                </div>
-
-                <div class="w-full md:w-1/2 flex flex-col items-center md:items-start space-y-6">
-                    <!-- Character -->
-                    <svg class="w-32 h-32 text-white" viewBox="0 0 200 200">
-                        <!-- Same happy character -->
-                    </svg>
-
-                    <!-- Food Systems Info Panels -->
-                    <div class="flex flex-col space-y-4 text-white w-full max-w-md">
-                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
-                            <h3 class="font-bold mb-2">Sustainable Agriculture</h3>
-                            <p class="text-sm">Create thriving local food systems</p>
-                        </div>
-                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
-                            <h3 class="font-bold mb-2">Food Security</h3>
-                            <p class="text-sm">Build community gardens and food networks</p>
-                        </div>
-                        <button class="bg-white text-green-600 px-6 py-3 rounded-lg font-bold hover:bg-opacity-90 w-full">
-                            Learn Food Systems
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 5: Community Health -->
-            <div class="absolute inset-0 transition-opacity duration-700 opacity-0 flex flex-col md:flex-row items-center justify-center p-4 md:p-8 bg-gradient-to-br from-red-500 to-pink-500">
-                <div class="w-full md:w-1/2 flex flex-col items-center mb-8 md:mb-0">
-                    <!-- Health-themed Mandala -->
-                    <svg class="w-48 md:w-96 h-48 md:h-96 text-white opacity-30" viewBox="0 0 400 400">
-                        <!-- Similar mandala structure with health motifs -->
-                    </svg>
-                </div>
-
-                <div class="w-full md:w-1/2 flex flex-col items-center md:items-start space-y-6">
-                    <!-- Character -->
-                    <svg class="w-32 h-32 text-white" viewBox="0 0 200 200">
-                        <!-- Same happy character -->
-                    </svg>
-
-                    <!-- Health Info Panels -->
-                    <div class="flex flex-col space-y-4 text-white w-full max-w-md">
-                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
-                            <h3 class="font-bold mb-2">Community Health</h3>
-                            <p class="text-sm">Establish local health support systems</p>
-                        </div>
-                        <div class="bg-white bg-opacity-10 p-4 rounded-lg">
-                            <h3 class="font-bold mb-2">Clinical Skills</h3>
-                            <p class="text-sm">Learn essential community healthcare</p>
-                        </div>
-                        <button class="bg-white text-red-500 px-6 py-3 rounded-lg font-bold hover:bg-opacity-90 w-full">
-                            Begin Health Training
-                        </button>
-                    </div>
-                </div>
+            <!-- Modal Action Buttons -->
+            <div class="sticky bottom-0 bg-white border-t border-gray-200 p-4 space-y-3">
+                <button id="primaryAction" class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                    Continue
+                </button>
+                <button onclick="closeModal()" class="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg font-medium hover:bg-gray-200 transition-colors">
+                    Cancel
+                </button>
             </div>
         </div>
+    </div>
+</div>
+
+<script>
+// Modal content configurations
+const modalConfigs = {
+    'water-learning': {
+        title: 'Water Management Learning Path',
+        content: `
+            <div class="space-y-4">
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-blue-800 mb-2">Course Overview</h4>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
+                            <span>DIY Water Filtration Systems</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
+                            <span>Rainwater Harvesting Techniques</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
+                            <span>Water Conservation Methods</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-blue-800 mb-2">Learning Format</h4>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-3">
+                            <input type="radio" name="format" class="form-radio h-5 w-5 text-blue-600">
+                            <span>Self-paced Online</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="radio" name="format" class="form-radio h-5 w-5 text-blue-600">
+                            <span>Live Virtual Sessions</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="radio" name="format" class="form-radio h-5 w-5 text-blue-600">
+                            <span>Hybrid Learning</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        `,
+        primaryAction: 'Start Learning Path'
+    },
+    'certification': {
+        title: 'NFT Certification Program',
+        content: `
+            <div class="space-y-4">
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-green-800 mb-2">Certification Type</h4>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-3">
+                            <input type="radio" name="cert-type" class="form-radio h-5 w-5 text-green-600">
+                            <span>Basic Certification</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="radio" name="cert-type" class="form-radio h-5 w-5 text-green-600">
+                            <span>Advanced Certification</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="radio" name="cert-type" class="form-radio h-5 w-5 text-green-600">
+                            <span>Expert Level</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-green-800 mb-2">Additional Options</h4>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="form-checkbox h-5 w-5 text-green-600">
+                            <span>Include Digital Badge</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="form-checkbox h-5 w-5 text-green-600">
+                            <span>Join Expert Network</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        `,
+        primaryAction: 'Begin Certification'
+    },
+    'sanitation': {
+        title: 'Sanitation Program',
+        content: `
+            <div class="space-y-4">
+                <div class="bg-emerald-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-emerald-800 mb-2">Program Focus</h4>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="form-checkbox h-5 w-5 text-emerald-600">
+                            <span>Waste Management Systems</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="form-checkbox h-5 w-5 text-emerald-600">
+                            <span>Community Implementation</span>
+                        </label>
+                        <label class="flex items-center space-x-3">
+                            <input type="checkbox" class="form-checkbox h-5 w-5 text-emerald-600">
+                            <span>Sustainability Practices</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        `,
+        primaryAction: 'Join Program'
+    }
+};
+
+// Modal functionality
+function openModal(buttonType) {
+    const modal = document.getElementById('dynamicModal');
+    const modalContainer = modal.querySelector('.transform');
+    const config = modalConfigs[buttonType];
+    
+    if (!config) return;
+
+    document.getElementById('modalTitle').textContent = config.title;
+    document.getElementById('modalContent').innerHTML = config.content;
+    document.getElementById('primaryAction').textContent = config.primaryAction;
+
+    modal.classList.remove('hidden');
+    // Trigger reflow
+    void modal.offsetWidth;
+    modalContainer.classList.remove('translate-y-full');
+
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    const modal = document.getElementById('dynamicModal');
+    const modalContainer = modal.querySelector('.transform');
+    
+    modalContainer.classList.add('translate-y-full');
+    
+    // Wait for animation to complete before hiding
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }, 300);
+}
+
+// Add click listeners to carousel buttons
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.carousel-container button');
+    buttons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const buttonText = button.textContent.trim().toLowerCase();
+            
+            // Determine button type based on text content
+            let buttonType;
+            if (buttonText.includes('water')) buttonType = 'water-learning';
+            else if (buttonText.includes('certification')) buttonType = 'certification';
+            else if (buttonText.includes('sanitation')) buttonType = 'sanitation';
+            
+            if (buttonType) openModal(buttonType);
+        });
+    });
+});
+</script>
+
+<style>
+/* Smooth modal animations */
+.modal-enter {
+    animation: modal-in 300ms ease-out forwards;
+}
+
+.modal-leave {
+    animation: modal-out 300ms ease-in forwards;
+}
+
+@keyframes modal-in {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes modal-out {
+    from { transform: translateY(0); }
+    to { transform: translateY(100%); }
+}
+</style>
+
+
+
+
+
+
+
 
     <!-- Navigation Dots -->
     <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
@@ -454,154 +278,6 @@
         </div>
     </div>
 
-    <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.carousel-container > div');
-        const dots = document.querySelectorAll('.bottom-4 button');
-        const totalSlides = slides.length;
-        let autoplayInterval;
-        let touchStartX = 0;
-        let touchEndX = 0;
-        const container = document.querySelector('.carousel-container');
-
-        // Initialize slide content for modals
-        const slideContent = [
-            {
-                title: "Clean Water Solutions",
-                content: `
-                    <h4>Learn Water Management</h4>
-                    <p>Discover sustainable approaches to water purification and management:</p>
-                    <ul>
-                        <li>DIY filtration systems</li>
-                        <li>Rainwater harvesting</li>
-                        <li>Water conservation techniques</li>
-                    </ul>
-                    <p>Start your journey to water sustainability today!</p>
-                `
-            },
-            {
-                title: "Sanitation Excellence",
-                content: `
-                    <h4>Master Sanitation Systems</h4>
-                    <p>Learn about sustainable waste management:</p>
-                    <ul>
-                        <li>Composting toilets</li>
-                        <li>Greywater systems</li>
-                        <li>Waste reduction strategies</li>
-                    </ul>
-                `
-            },
-            // Add content for other slides...
-        ];
-
-        function updateSlides() {
-            slides.forEach((slide, index) => {
-                slide.style.opacity = index === currentSlide ? '1' : '0';
-            });
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('bg-opacity-100', index === currentSlide);
-                dot.classList.toggle('bg-opacity-50', index !== currentSlide);
-            });
-        }
-
-        function handleSwipe() {
-            const swipeDistance = touchEndX - touchStartX;
-            const minSwipeDistance = 50;
-
-            if (Math.abs(swipeDistance) > minSwipeDistance) {
-                if (swipeDistance > 0) {
-                    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-                } else {
-                    currentSlide = (currentSlide + 1) % totalSlides;
-                }
-                updateSlides();
-                resetAutoplay();
-            }
-        }
-
-        // Touch event listeners
-        container.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        container.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-
-        // Modal functions
-        function openModal() {
-            const modal = document.getElementById('slideModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalContent = document.getElementById('modalContent');
-            
-            modalTitle.textContent = slideContent[currentSlide].title;
-            modalContent.innerHTML = slideContent[currentSlide].content;
-            
-            modal.classList.remove('hidden');
-            pauseAutoplay();
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('slideModal');
-            modal.classList.add('hidden');
-            resumeAutoplay();
-        }
-
-        // Add click listeners to slide buttons
-        slides.forEach((slide, index) => {
-            const button = slide.querySelector('button');
-            if (button) {
-                button.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    openModal();
-                });
-            }
-        });
-
-        function startAutoplay() {
-            autoplayInterval = setInterval(() => {
-                currentSlide = (currentSlide + 1) % totalSlides;
-                updateSlides();
-            }, 5000);
-        }
-
-        function resetAutoplay() {
-            clearInterval(autoplayInterval);
-            startAutoplay();
-        }
-
-        function pauseAutoplay() {
-            clearInterval(autoplayInterval);
-        }
-
-        function resumeAutoplay() {
-            startAutoplay();
-        }
-
-        function goToSlide(slideIndex) {
-            currentSlide = slideIndex;
-            updateSlides();
-            resetAutoplay();
-        }
-
-        // Initialize
-        updateSlides();
-        startAutoplay();
-
-        // Add keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') {
-                currentSlide = (currentSlide + 1) % totalSlides;
-                updateSlides();
-                resetAutoplay();
-            } else if (e.key === 'ArrowLeft') {
-                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-                updateSlides();
-                resetAutoplay();
-            }
-        });
-    </script>
 </div>
   
     <!-- Hero Content -->
