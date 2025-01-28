@@ -158,6 +158,7 @@ h1.page-title {
 
 .profile-dropdown a {
   transition: all 0.2s ease-in-out;
+  color: #000;
 }
 
 .profile-dropdown a:hover {
