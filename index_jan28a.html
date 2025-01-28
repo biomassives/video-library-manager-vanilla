@@ -141,29 +141,103 @@
 
                         <!-- Second Character - Learner -->
                         <g class="character-2">
-                            <circle cx="250" cy="150" r="50" fill="none" stroke="currentColor" stroke-width="3"/>
-                            <!-- Curious Expression -->
-                            <path d="M230,150 Q250,170 270,150" fill="none" stroke="currentColor" stroke-width="3">
-                                <animate attributeName="d"
-                                    values="M230,150 Q250,170 270,150;M230,160 Q250,180 270,160;M230,150 Q250,170 270,150"
-                                    dur="3s"
-                                    repeatCount="indefinite"
-                                    begin="0.5s"/>
-                            </path>
-                            <!-- Attentive Eyes -->
-                            <circle cx="235" cy="135" r="5" fill="currentColor">
-                                <animate attributeName="r"
-                                    values="5;6;5"
-                                    dur="2s"
-                                    repeatCount="indefinite"/>
-                            </circle>
-                            <circle cx="265" cy="135" r="5" fill="currentColor">
-                                <animate attributeName="r"
-                                    values="5;6;5"
-                                    dur="2s"
-                                    repeatCount="indefinite"
-                                    begin="0.3s"/>
-                            </circle>
+                         
+
+
+  <defs>
+    <!-- Head Gradient -->
+    <linearGradient id="headGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6c3" />
+      <stop offset="100%" stop-color="#3c6" />
+    </linearGradient>
+
+    <!-- Body Pattern (optional) -->
+    <pattern id="bodyPattern" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="2" fill="currentColor"/>
+    </pattern>
+  </defs>
+
+  <!-- Second Character - Learner with improvements -->
+  <g class="character-2">
+    <!-- Head with gradient fill -->
+    <circle 
+      cx="250" 
+      cy="150" 
+      r="50" 
+      fill="url(#headGradient)" 
+      stroke="currentColor" 
+      stroke-width="3"
+    />
+
+    <!-- Mouth: oscillates to show curiosity/thinking -->
+    <path 
+      d="M230,150 Q250,170 270,150" 
+      fill="none" 
+      stroke="currentColor" 
+      stroke-width="3">
+      <animate 
+        attributeName="d"
+        values="M230,150 Q250,170 270,150;
+                M230,160 Q250,180 270,160;
+                M230,150 Q250,170 270,150"
+        dur="3s"
+        repeatCount="indefinite"
+        begin="0.5s"
+      />
+    </path>
+
+    <!-- Eyes: subtle blinking effect -->
+    <circle cx="235" cy="135" r="5" fill="currentColor">
+      <animate
+        attributeName="r"
+        values="5;5;5;1;5"  <!-- short “blink” to r=1 -->
+        keyTimes="0;0.8;0.85;0.9;1"
+        dur="3s"
+        repeatCount="indefinite"
+      />
+    </circle>
+    <circle cx="265" cy="135" r="5" fill="currentColor">
+      <animate
+        attributeName="r"
+        values="5;5;5;1;5"
+        keyTimes="0;0.8;0.85;0.9;1"
+        dur="3s"
+        repeatCount="indefinite"
+        begin="0.3s"  <!-- slight delay for staggered blinking -->
+      />
+    </circle>
+
+    <!-- Simple torso/shoulders to hint at a full figure -->
+    <rect 
+      x="220" 
+      y="200" 
+      width="60" 
+      height="80" 
+      fill="url(#bodyPattern)" 
+      stroke="currentColor" 
+      stroke-width="2"
+      rx="10" 
+      ry="10"  <!-- rounded corners -->
+    />
+
+    <!-- OPTIONAL: Add small floating icons or orbits to represent sustainability themes -->
+    <!-- Example: A small leaf icon near the head -->
+    <circle 
+      cx="215" 
+      cy="110" 
+      r="5" 
+      fill="#3c6" 
+      opacity="0.8">
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        values="0,0; 0,-5; 0,0"
+        dur="2s"
+        repeatCount="indefinite"
+      />
+    </circle>
+      
+      
                         </g>
 
                         <!-- Shared Learning Symbols -->
