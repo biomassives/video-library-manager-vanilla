@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApproVideo - DIY Solutions Portal</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="stylenew.css" rel="stylesheet">
+    <style>
+        /* Core styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            overflow: hidden;
+        }
+
+        /* Main carousel container */
+        .carousel-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            touch-action: pan-y;
+        }
+
+        /* Slide styling */
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.7s ease-in-out;
+            padding: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .slide {
+                flex-direction: row;
+                padding: 2rem;
+            }
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        /* Theme gradients */
+        .theme-water { background: linear-gradient(135deg, #2563eb, #0891b2); }
+        .theme-sanitation { background: linear-gradient(135deg, #059669, #059669); }
+        .theme-energy { background: linear-gradient(135deg, #f59e0b, #f97316); }
+        .theme-food { background: linear-gradient(135deg, #22c55e, #84cc16); }
+        .theme-health { background: linear-gradient(135deg, #ef4444, #ec4899); }
+
+        /* Content layout */
+        .content-left,
+        .content-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        /* SVG containers */
+        .mandala-container {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1;
+            opacity: 0.3;
+        }
+
+        .character-container {
+            width: 128px;
+            height: 128px;
+            margin-bottom: 2rem;
+        }
+
+        /* Info panels */
+        .info-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            color: white;
+            margin-bottom: 1rem;
+            width: 100%;
+            max-width: 400px;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .info-panel:hover {
+            transform: translateY(-4px);
+        }
+
+        .info-panel h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-panel p {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        /* Navigation */
+        .nav-dots {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+
+        .nav-dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        /* Action buttons */
+        .cta-button {
+            background: white;
+            color: var(--theme-color, #2563eb);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            max-width: 400px;
+            transition: opacity 0.3s ease;
+        }
+
+        .cta-button:hover {
+            opacity: 0.9;
+        }
+
+        /* Modal styling */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            z-index: 50;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            max-width: 32rem;
+            width: 100%;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* Utility classes */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
+  <script type="module" src="index.js"></script>
+</head>
+
+<body class="theme-transition">
+<div class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 text-center text-sm banner-message">💧 Clean water, safe shelter, better lives</div>
+
+  
+  <div class="border-b border-gray-700">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-center space-x-8 py-4">🌿A P P R O V I D E O 🌱🌳🌱 </div>
+      <div class="flex justify-center space-x-8 py-4"> 
+        <div class="group">   
+
+                
+        <a href="#" class="flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Shelter">                        
+                            <button class="icon-button relative group" data-category="diy">
+                  <div class="bg-gradient-to-r from-red-600 to-zinc-400 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-1 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-building"></i>
+                  </div>
+                   Shelter
+                </button>
+              
+        </a>                    
+        <div class="drop-up-menu absolute hidden group-hover:block bg-white shadow-md rounded-md mt-2 py-2 z-10">   
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="low-cost-construction"  
+           data-text="Discover practical techniques for building durable structures affordably.">
+           Low-cost, Durable Construction Methods
+        </a>
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="local-materials" 
+           data-text="Explore how to use nearby resources to construct sustainable, efficient buildings.">
+           Locally Available Materials
+        </a>
+        </div>                
+    </div>                       
+    <div class="group">                    
+        <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-text="Water system information" data-category="Water">                        
+                <button class="icon-button relative group" data-category="drinking-water">
+                  <div class="bg-gradient-to-r from-cyan-500 to-blue-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-2 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-tint"></i>
+                  </div>
+                 Water
+                </button>
+              
+        </a>                 
+        <div class="drop-up-menu">                        
+          
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="waterpurification" 
+           data-text="Learn how to purify water effectively and ensure a clean, safe supply.">
+           Purification
+        </a>
+        
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="desalination" 
+           data-text="Explore methods to remove salt from seawater, making it usable for drinking and irrigation.">
+           Desalination
+        </a>
+        
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-blue-100 to-black-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="waterdistribution" 
+           data-text="Discover efficient ways to distribute water across urban and rural communities.">
+           Efficient Distribution
+        </a>
+          
+        </div>                
+    </div>                
+                         
+                           
+    <div class="group">                    
+        <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Energy">                        
+                            <button class="icon-button relative group" data-category="energy-systems">
+                  <div class="bg-gradient-to-r from-yellow-500 to-amber-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-4 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-bolt"></i>
+                  </div>
+                Energy
+                </button>   
+        </a>                   
+        <div class="drop-up-menu">                     
+        <a href="#" class="drop-up-item bg-gradient-to-r from-yellow-500 to-amber-100  text-white p-3 rounded-lg shadow-lg transform 
+          transition-all border-3 border-blue m-2" data-category="diysolar">DIY Solar Energy</a>
+        <a href="#" class="drop-up-item bg-gradient-to-r from-yellow-500 to-amber-100  text-white p-3 rounded-lg shadow-lg transform 
+          transition-all border-3 border-blue m-2" data-category="biogas">Biogas Generation</a>
+        <a href="#" class="drop-up-item bg-gradient-to-r from-yellow-500 to-amber-100  text-white p-3 rounded-lg shadow-lg transform 
+          transition-all border-3 border-blue m-2" data-category="microgrids">Microgrids for Sustainable Power</a>                 
+       
+        </div>                
+    </div>                
+    <div class="group">                    
+        <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Health">                        
+                            <button class="icon-button relative group" data-category="health">
+                  <div class="bg-gradient-to-r from-red-700 to-violet-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-4 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-heartbeat"></i>
+                  </div>
+                Health
+                </button>
+              
+        </a>                      
+        <div class="drop-up-menu">  
+
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-cyan-500 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="emtskills" 
+           data-text="Gain the essential emergency medical skills to respond to urgent situations.">
+           EMT Skills
+        </a>
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-cyan-500 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="telemedicine" 
+           data-text="Discover how telemedicine bridges gaps in healthcare access and treatment.">
+           Telemedicine
+        </a>
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-cyan-400 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="firstaid" 
+           data-text="Learn essential first-aid techniques to address minor injuries and emergencies.">
+           First Aid
+        </a>
+        <a href="#" 
+           class="drop-up-item bg-gradient-to-r from-cyan-400 to-violet-100 text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" 
+           data-category="selfsufficienthealthcare" 
+           data-text="Explore strategies for self-reliant healthcare in remote or resource-limited settings.">
+           Self-sufficient Healthcare
+        </a>
+   </div>                
+    </div>            
+    <div class="group">                
+        <a href="#" class="flex items-center px-4 py-3 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Agronomy">                    
+                            <button class="icon-button relative group" data-category="agriculure">
+                  <div class="bg-gradient-to-r from-emerald-500 to-green-600 
+                              text-white p-3 rounded-lg shadow-lg transform transition-all duration-200 
+                              hover:scale-105 hover:shadow-xl
+                              float-6 
+                              flex items-center justify-center"> 
+                    <i class="fas fa-2x fa-seedling"></i>
+                  </div>
+                  Food
+                </button>
+               
+        </a>                 
+        <div class="drop-up-menu">                    
+              <a href="#" class="drop-up-item bg-gradient-to-r from-emerald-500 to-green-100  text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" data-category="urbanfood">Urban Gardening</a>
+              <a href="#" class="drop-up-item bg-gradient-to-r from-emerald-500 to-green-100  text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" data-category="hydroponics">Hydroponics</a>
+              <a href="#" class="drop-up-item bg-gradient-to-r from-emerald-500 to-green-100  text-white p-3 rounded-lg shadow-lg transform transition-all border-3 border-blue m-2" data-category="sustainableag">Sustainable Agriculture Techniques</a>  
+        </div>            
+    </div>
+
+
+
+    </div>
+  </div>
+  
+  <div class="relative">
+    <!-- Hero Content -->
+
+
+
+    <div class="carousel-container">
+        <!-- Water Solutions Slide -->
+        <div class="slide theme-water active" data-theme="water">
+            <div class="content-left">
+
+    <svg class="mandala-container" viewBox="0 0 400 400">
+        <!-- Sky gradient with day/night cycle -->
+        <defs>
+            <linearGradient id="skyGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#4a90e2">
+                    <animate attributeName="stop-color"
+                        values="#4a90e2; #2c3e50; #4a90e2"
+                        dur="30s"
+                        repeatCount="indefinite" />
+                </stop>
+                <stop offset="100%" stop-color="#87ceeb">
+                    <animate attributeName="stop-color"
+                        values="#87ceeb; #16213e; #87ceeb"
+                        dur="30s"
+                        repeatCount="indefinite" />
+                </stop>
+            </linearGradient>
+
+            <!-- Wave pattern -->
+            <pattern id="wavePattern" x="0" y="0" width="40" height="10" patternUnits="userSpaceOnUse">
+                <path d="M0,5 Q10,0 20,5 Q30,10 40,5"
+                      fill="none"
+                      stroke="rgba(255,255,255,0.3)"
+                      stroke-width="1">
+                    <animate attributeName="d"
+                        values="M0,5 Q10,0 20,5 Q30,10 40,5;
+                               M0,5 Q10,10 20,5 Q30,0 40,5;
+                               M0,5 Q10,0 20,5 Q30,10 40,5"
+                        dur="3s"
+                        repeatCount="indefinite" />
+                </path>
+            </pattern>
+
+            <!-- Cloud blur filter -->
+            <filter id="cloudBlur">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+            </filter>
+        </defs>
+
+        <!-- Sky background -->
+        <rect width="400" height="400" fill="url(#skyGradient)" />
+
+        <!-- Sun/Moon cycle -->
+        <circle cx="200" cy="100" r="30" fill="#ffd700">
+            <animate attributeName="cy"
+                values="100; 300; 100"
+                dur="30s"
+                repeatCount="indefinite" />
+            <animate attributeName="fill"
+                values="#ffd700; #ffffff; #ffd700"
+                dur="30s"
+                repeatCount="indefinite" />
+            <animate attributeName="r"
+                values="30; 25; 30"
+                dur="30s"
+                repeatCount="indefinite" />
+        </circle>
+
+        <!-- Drifting clouds -->
+        <g class="clouds" filter="url(#cloudBlur)">
+            <path d="M50,80 Q65,70 80,80 Q95,70 110,80 Q100,90 80,90 Q60,90 50,80"
+                  fill="white" opacity="0.7">
+                <animateTransform
+                    attributeName="transform"
+                    type="translate"
+                    values="0,0; 350,0; 0,0"
+                    dur="20s"
+                    repeatCount="indefinite" />
+            </path>
+            <path d="M250,120 Q265,110 280,120 Q295,110 310,120 Q300,130 280,130 Q260,130 250,120"
+                  fill="white" opacity="0.6">
+                <animateTransform
+                    attributeName="transform"
+                    type="translate"
+                    values="-250,0; 100,0; -250,0"
+                    dur="25s"
+                    repeatCount="indefinite" />
+            </path>
+        </g>
+
+        <!-- Mountains with dynamic shadows -->
+        <g class="mountains">
+            <!-- Back mountain range -->
+            <path d="M0,400 L150,200 L300,400 Z" fill="#2d3436">
+                <animate attributeName="fill"
+                    values="#2d3436; #1a1a1a; #2d3436"
+                    dur="30s"
+                    repeatCount="indefinite" />
+            </path>
+            <!-- Middle mountain -->
+            <path d="M100,400 L250,150 L400,400 Z" fill="#636e72">
+                <animate attributeName="fill"
+                    values="#636e72; #2d3436; #636e72"
+                    dur="30s"
+                    repeatCount="indefinite" />
+            </path>
+            <!-- Front mountain details -->
+            <path d="M150,400 L280,180 L410,400 Z" fill="#b2bec3">
+                <animate attributeName="fill"
+                    values="#b2bec3; #636e72; #b2bec3"
+                    dur="30s"
+                    repeatCount="indefinite" />
+            </path>
+        </g>
+
+        <!-- Ocean -->
+        <g class="ocean" transform="translate(0, 300)">
+            <!-- Base water -->
+            <rect width="400" height="100" fill="#3498db">
+                <animate attributeName="fill"
+                    values="#3498db; #16213e; #3498db"
+                    dur="30s"
+                    repeatCount="indefinite" />
+            </rect>
+
+            <!-- Dynamic waves -->
+            <g>
+                
+            <rect width="400" height="20"
+                  fill="url(#wavePattern)"
+                  opacity="0.85"
+                  transform="translate(0, 5)">
+                <animate attributeName="transform"
+                    values="translate(-40, 5); translate(0, 5)"
+                    dur="4s"
+                    repeatCount="indefinite" />
+            </rect>
+        
+            <rect width="400" height="20"
+                  fill="url(#wavePattern)"
+                  opacity="0.7"
+                  transform="translate(0, 10)">
+                <animate attributeName="transform"
+                    values="translate(-40, 10); translate(0, 10)"
+                    dur="5s"
+                    repeatCount="indefinite" />
+            </rect>
+        
+            <rect width="400" height="20"
+                  fill="url(#wavePattern)"
+                  opacity="0.55"
+                  transform="translate(0, 15)">
+                <animate attributeName="transform"
+                    values="translate(-40, 15); translate(0, 15)"
+                    dur="6s"
+                    repeatCount="indefinite" />
+            </rect>
+        
+            <rect width="400" height="20"
+                  fill="url(#wavePattern)"
+                  opacity="0.4"
+                  transform="translate(0, 20)">
+                <animate attributeName="transform"
+                    values="translate(-40, 20); translate(0, 20)"
+                    dur="7s"
+                    repeatCount="indefinite" />
+            </rect>
+        
+            <rect width="400" height="20"
+                  fill="url(#wavePattern)"
+                  opacity="0.25"
+                  transform="translate(0, 25)">
+                <animate attributeName="transform"
+                    values="translate(-40, 25); translate(0, 25)"
+                    dur="8s"
+                    repeatCount="indefinite" />
+            </rect>
+        
+            </g>
+
+            <!-- Moonlight reflection -->
+            <path d="M180,0 Q200,-20 220,0"
+                  fill="none"
+                  stroke="white"
+                  stroke-width="2"
+                  opacity="0">
+                <animate attributeName="opacity"
+                    values="0;0.5;0"
+                    dur="30s"
+                    repeatCount="indefinite" />
+            </path>
+        </g>
+
+        <!-- Shooting stars (visible at night) -->
+        <g class="stars">
+            
+            <line x1="110" y1="80" x2="210" y2="180"
+                  stroke="white" stroke-width="1" opacity="0">
+                <animate attributeName="opacity"
+                    values="0;0.7;0"
+                    dur="2s"
+                    begin="2s"
+                    repeatCount="indefinite" />
+            </line>
+        
+            <line x1="170" y1="110" x2="270" y2="210"
+                  stroke="white" stroke-width="1" opacity="0">
+                <animate attributeName="opacity"
+                    values="0;0.7;0"
+                    dur="2s"
+                    begin="4s"
+                    repeatCount="indefinite" />
+            </line>
+        
+            <line x1="230" y1="140" x2="330" y2="240"
+                  stroke="white" stroke-width="1" opacity="0">
+                <animate attributeName="opacity"
+                    values="0;0.7;0"
+                    dur="2s"
+                    begin="6s"
+                    repeatCount="indefinite" />
+            </line>
+        
+            <line x1="290" y1="170" x2="390" y2="270"
+                  stroke="white" stroke-width="1" opacity="0">
+                <animate attributeName="opacity"
+                    values="0;0.7;0"
+                    dur="2s"
+                    begin="8s"
+                    repeatCount="indefinite" />
+            </line>
+        
+            <line x1="350" y1="200" x2="450" y2="300"
+                  stroke="white" stroke-width="1" opacity="0">
+                <animate attributeName="opacity"
+                    values="0;0.7;0"
+                    dur="2s"
+                    begin="10s"
+                    repeatCount="indefinite" />
+            </line>
+        
+        </g>
+    </svg>
+
+            </div>
+            
+            <div class="content-right">
+                <svg class="character-container" viewBox="0 0 200 200">
+                    <!-- Water character -->
+                    <circle cx="100" cy="100" r="70" fill="none" stroke="white" stroke-width="3"/>
+                    <path d="M70,110 Q100,140 130,110" 
+                        fill="none" stroke="white" stroke-width="3">
+                        <animate attributeName="d" 
+                            values="M70,110 Q100,140 130,110;M70,120 Q100,150 130,120;M70,110 Q100,140 130,110"
+                            dur="3s"
+                            repeatCount="indefinite"/>
+                    </path>
+                    <!-- Eyes -->
+                    <circle cx="80" cy="85" r="5" fill="white"/>
+                    <circle cx="120" cy="85" r="5" fill="white"/>
+                </svg>
+
+                <div class="info-panel">
+                    <h3>Clean Water Solutions</h3>
+                    <p>Learn sustainable water management techniques and implementation strategies</p>
+                </div>
+
+                <div class="info-panel">
+                    <h3>Water Certification</h3>
+                    <p>Earn professional certification in water management systems</p>
+                </div>
+
+                <button class="cta-button" style="--theme-color: #2563eb;">
+                    Start Water Training
+                </button>
+            </div>
+        </div>
+
+        <!-- Additional slides follow same pattern -->
+ <!-- Cleanup & Detox Slide -->
+ <div class="slide theme-energy" data-theme="cleanup"> <!-- re-use or new class -->
+    <div class="content-left">
+        <!-- A warm orange/red day/night SVG scene -->
+        <svg class="mandala-container" viewBox="0 0 400 400">
+            <defs>
+                <!-- Sky gradient (warm oranges to deep reds) -->
+                <linearGradient id="skyGradient3" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#f97316">
+                        <animate attributeName="stop-color"
+                            values="#f97316; #3b0404; #f97316"
+                            dur="30s"
+                            repeatCount="indefinite" />
+                    </stop>
+                    <stop offset="100%" stop-color="#ef4444">
+                        <animate attributeName="stop-color"
+                            values="#ef4444; #2b0202; #ef4444"
+                            dur="30s"
+                            repeatCount="indefinite" />
+                    </stop>
+                </linearGradient>
+
+                <!-- Some rubble texture pattern -->
+                <pattern id="rubblePattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                    <rect x="0" y="0" width="10" height="10" fill="rgba(0,0,0,0.2)" />
+                    <rect x="10" y="10" width="10" height="10" fill="rgba(0,0,0,0.3)" />
+                </pattern>
+
+                <!-- Soft blur filter for the tree’s shade or dust -->
+                <filter id="softBlur3">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+                </filter>
+            </defs>
+
+            <!-- Background -->
+            <rect width="400" height="400" fill="url(#skyGradient3)" />
+
+            <!-- A “sun” or “moon” traveling from top to bottom -->
+            <circle cx="80" cy="100" r="20" fill="#ffd700">
+                <animate attributeName="cy"
+                    values="100; 350; 100"
+                    dur="30s"
+                    repeatCount="indefinite" />
+                <animate attributeName="fill"
+                    values="#ffd700; #ffffff; #ffd700"
+                    dur="30s"
+                    repeatCount="indefinite" />
+            </circle>
+
+            <!-- A large area of rubble/debris (bottom) -->
+            <rect x="0" y="300" width="400" height="100" fill="url(#rubblePattern)">
+                <animate attributeName="fill"
+                    values="url(#rubblePattern); #5c4033; url(#rubblePattern)"
+                    dur="30s"
+                    repeatCount="indefinite" />
+            </rect>
+
+            <!-- A tree trunk + canopy for shade -->
+            <g filter="url(#softBlur3)">
+                <!-- Trunk -->
+                <rect x="280" y="180" width="20" height="120" fill="#6b3f1d" />
+                <!-- Canopy (a circle or ellipse) -->
+                <ellipse cx="290" cy="160" rx="40" ry="30" fill="#2d6a4f">
+                    <animate attributeName="fill"
+                        values="#2d6a4f; #1a3d2c; #2d6a4f"
+                        dur="30s"
+                        repeatCount="indefinite" />
+                </ellipse>
+            </g>
+
+            <!-- A jar and a glass of water (foreground) -->
+            <g>
+                <!-- Jar -->
+                <rect x="60" y="270" width="35" height="50" fill="none" stroke="white" stroke-width="2" rx="5" />
+                <rect x="60" y="270" width="35" height="40" fill="rgba(173,216,230,0.3)" />
+                
+                <!-- Glass -->
+                <rect x="110" y="290" width="15" height="30" fill="none" stroke="white" stroke-width="2" rx="3" />
+                <rect x="110" y="300" width="15" height="15" fill="rgba(173,216,230,0.3)" />
+            </g>
+        </svg>
+    </div>
+
+    <div class="content-right">
+        <!-- A “cleanup” character (similar style as others) -->
+        <svg class="character-container" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="70" fill="none" stroke="white" stroke-width="3"/>
+            <!-- A bigger “smile” maybe -->
+            <path d="M70,120 Q100,150 130,120"
+                  fill="none" stroke="white" stroke-width="3">
+                <animate attributeName="d" 
+                    values="M70,120 Q100,150 130,120;M70,115 Q100,145 130,115;M70,120 Q100,150 130,120"
+                    dur="3s"
+                    repeatCount="indefinite"/>
+            </path>
+            <!-- Eyes -->
+            <circle cx="80" cy="85" r="5" fill="white"/>
+            <circle cx="120" cy="85" r="5" fill="white"/>
+            <!-- Maybe small “flames” icon on the forehead, to represent burned debris -->
+            <path d="M90,60 C95,50 105,50 110,60 Q100,55 90,60 Z"
+                  fill="white" />
+        </svg>
+
+        <div class="info-panel">
+            <h3>Cleanup & Detox of Burned Waste</h3>
+            <p>Reclaim land from cement rubble and burned debris. Learn safe handling 
+               and detoxification methods in post-fire environments.</p>
+        </div>
+
+        <div class="info-panel">
+            <h3>Remediation Certification</h3>
+            <p>Get certified in advanced cleanup techniques, 
+               focusing on rebuilding and safe disposal of toxic residue.</p>
+        </div>
+
+        <button class="cta-button" style="--theme-color: #f97316;">
+            Begin Cleanup Training
+        </button>
+    </div>
+</div>
+
+  <!-- Learning Clinics Slide -->
+    <div class="slide theme-food" data-theme="learning">
+        <div class="content-left">
+            <!-- A slower day/night yard environment -->
+            <svg class="mandala-container" viewBox="0 0 400 400">
+                <defs>
+                    <!-- Slower day/night sky gradient (60s cycle) -->
+                    <linearGradient id="learningSky" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#a8edea">
+                            <animate attributeName="stop-color"
+                                values="#a8edea; #3b6064; #a8edea"
+                                dur="60s"
+                                repeatCount="indefinite" />
+                        </stop>
+                        <stop offset="100%" stop-color="#fed6e3">
+                            <animate attributeName="stop-color"
+                                values="#fed6e3; #212121; #fed6e3"
+                                dur="60s"
+                                repeatCount="indefinite" />
+                        </stop>
+                    </linearGradient>
+
+                    <!-- Slower-moving cloud blur filter -->
+                    <filter id="learningCloudBlur">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+                    </filter>
+                </defs>
+
+                <!-- Background sky -->
+                <rect width="400" height="400" fill="url(#learningSky)" />
+
+                <!-- Slower sun/moon cycle (60s) -->
+                <circle cx="80" cy="80" r="25" fill="#ffd700">
+                    <animate attributeName="cy"
+                        values="80; 350; 80"
+                        dur="60s"
+                        repeatCount="indefinite" />
+                    <animate attributeName="fill"
+                        values="#ffd700; #ffffff; #ffd700"
+                        dur="60s"
+                        repeatCount="indefinite" />
+                </circle>
+
+                <!-- Clouds drifting more slowly -->
+                <g filter="url(#learningCloudBlur)">
+                    <path d="M30,90 Q60,70 90,90 Q120,70 150,90 Q130,110 90,110 Q60,110 30,90"
+                          fill="white" opacity="0.7">
+                        <animateTransform attributeName="transform" type="translate"
+                            values="0,0; 300,0; 0,0"
+                            dur="60s"
+                            repeatCount="indefinite" />
+                    </path>
+                    <path d="M220,120 Q240,100 260,120 Q280,100 300,120 Q290,140 260,140 Q230,140 220,120"
+                          fill="white" opacity="0.6">
+                        <animateTransform attributeName="transform" type="translate"
+                            values="-250,0; 100,0; -250,0"
+                            dur="50s"
+                            repeatCount="indefinite" />
+                    </path>
+                </g>
+
+                <!-- Yard: green ground -->
+                <rect x="0" y="300" width="400" height="100" fill="#7cb342" />
+
+                <!-- Small house -->
+                <g>
+                    <!-- House base -->
+                    <rect x="50" y="220" width="100" height="80" fill="#f7f1e3" />
+                    <!-- Roof -->
+                    <polygon points="50,220 100,180 150,220" fill="#b33939" />
+                    <!-- Door -->
+                    <rect x="90" y="260" width="20" height="40" fill="#596275" />
+                    <!-- Simple windows -->
+                    <rect x="60" y="240" width="20" height="20" fill="#ffffff" opacity="0.8" />
+                    <rect x="120" y="240" width="20" height="20" fill="#ffffff" opacity="0.8" />
+                </g>
+
+                <!-- Chairs in the yard -->
+                <g fill="#ffffff" stroke="#333" stroke-width="1">
+                    <!-- Chair #1 -->
+                    <rect x="200" y="280" width="15" height="20" rx="2" />
+                    <line x1="200" y1="280" x2="210" y2="260" stroke="#333" />
+                    <!-- Chair #2 -->
+                    <rect x="220" y="285" width="15" height="20" rx="2" />
+                    <line x1="220" y1="285" x2="230" y2="265" stroke="#333" />
+                </g>
+
+                <!-- Goats, chickens, cow (simple stylized shapes) -->
+                <g fill="#fff" stroke="#333" stroke-width="1">
+                    <!-- Goat #1 -->
+                    <path d="M300,320 
+                             l10,-5 5,10 10,-5   /* body, head with horns */
+                             l-5,10 -10,5 -5,-15" />
+                    <!-- Chicken #1 -->
+                    <path d="M260,320 
+                             l4,-4 4,4 -2,6 
+                             q-3,-2 -6,0 
+                             z" />
+                    <!-- Cow (a rectangle with small head & tail for simplicity) -->
+                    <rect x="320" y="310" width="25" height="15" />
+                    <circle cx="345" cy="315" r="3" />  <!-- simple head -->
+                    <line x1="345" y1="315" x2="350" y2="312" /> <!-- tail -->
+                </g>
+            </svg>
+        </div>
+
+        <div class="content-right">
+            <!-- A “learning clinics” character or icon -->
+            <svg class="character-container" viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="70" fill="none" stroke="white" stroke-width="3"/>
+                <!-- Smile -->
+                <path d="M70,120 Q100,140 130,120"
+                      fill="none" stroke="white" stroke-width="3">
+                    <animate attributeName="d" 
+                        values="M70,120 Q100,140 130,120; M70,115 Q100,145 130,115; M70,120 Q100,140 130,120"
+                        dur="3s"
+                        repeatCount="indefinite"/>
+                </path>
+                <!-- Eyes -->
+                <circle cx="80" cy="85" r="5" fill="white"/>
+                <circle cx="120" cy="85" r="5" fill="white"/>
+                <!-- Maybe a little “book” icon -->
+                <rect x="88" y="55" width="24" height="15" fill="white" rx="2" />
+                <line x1="100" y1="55" x2="100" y2="70" stroke="#333" stroke-width="2" />
+            </svg>
+
+            <div class="info-panel">
+                <h3>Community Learning Clinics</h3>
+                <p>Join a collaborative hub where multiple subjects—from small repairs to gardening and mentorship—are tackled in one supportive environment.</p>
+            </div>
+
+            <div class="info-panel">
+                <h3>Hands-On Projects</h3>
+                <p>Help raise goats, chickens, and cows, maintain gardens, build chairs, and share knowledge with neighbors.</p>
+            </div>
+
+            <button class="cta-button" style="--theme-color: #22c55e;">
+                Explore Learning Clinics
+            </button>
+        </div>
+    </div>
+
+
+
+    <!-- Waste Management Solutions Slide -->
+    <div class="slide theme-sanitation" data-theme="sanitation">
+        <div class="content-left">
+            <!-- A new day/night sanitation-themed SVG -->
+            <svg class="mandala-container" viewBox="0 0 400 400">
+                <!-- Similar structure to first slide, 
+                     but different colors and focal elements -->
+                <defs>
+                    <!-- Sky gradient -->
+                    <linearGradient id="skyGradient2" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#8EC5FC">
+                            <animate attributeName="stop-color"
+                                values="#8EC5FC; #233C78; #8EC5FC"
+                                dur="30s"
+                                repeatCount="indefinite" />
+                        </stop>
+                        <stop offset="100%" stop-color="#E0C3FC">
+                            <animate attributeName="stop-color"
+                                values="#E0C3FC; #1A1A40; #E0C3FC"
+                                dur="30s"
+                                repeatCount="indefinite" />
+                        </stop>
+                    </linearGradient>
+
+                    <!-- Swirl pattern (instead of waves) -->
+                    <pattern id="swirlPattern" x="0" y="0" width="40" height="40" 
+                             patternUnits="userSpaceOnUse">
+                        <path d="M0,30 C10,10 30,10 40,30 
+                                C30,10 10,10 0,30 Z"
+                              fill="none"
+                              stroke="rgba(255,255,255,0.2)"
+                              stroke-width="2">
+                            <animateTransform
+                                attributeName="transform"
+                                type="rotate"
+                                values="0 20 20; 360 20 20"
+                                dur="10s"
+                                repeatCount="indefinite" />
+                        </path>
+                    </pattern>
+
+                    <!-- Blur filter for floating objects -->
+                    <filter id="softBlur2">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
+                    </filter>
+                </defs>
+
+                <!-- Sky background -->
+                <rect width="400" height="400" fill="url(#skyGradient2)" />
+
+                <!-- Sun/Moon cycle -->
+                <circle cx="320" cy="80" r="25" fill="#ffdc5e">
+                    <animate attributeName="cy"
+                        values="80; 320; 80"
+                        dur="30s"
+                        repeatCount="indefinite" />
+                    <animate attributeName="fill"
+                        values="#ffdc5e; #ffffff; #ffdc5e"
+                        dur="30s"
+                        repeatCount="indefinite" />
+                    <animate attributeName="r"
+                        values="25; 20; 25"
+                        dur="30s"
+                        repeatCount="indefinite" />
+                </circle>
+
+                <!-- Rolling hills or ground area -->
+                <g class="ground">
+                    <path d="M0,350 C80,300 160,300 240,350 
+                            C320,400 400,400 400,400 
+                            L400,400 L0,400 Z"
+                          fill="#795548">
+                        <animate attributeName="fill"
+                            values="#795548; #3E2723; #795548"
+                            dur="30s"
+                            repeatCount="indefinite" />
+                    </path>
+                </g>
+
+                <!-- Floating swirl shapes -->
+                <g filter="url(#softBlur2)">
+                    <circle cx="80" cy="250" r="20" fill="url(#swirlPattern)">
+                        <animateTransform
+                            attributeName="transform"
+                            type="translate"
+                            values="0,0; 320,-80; 0,0"
+                            dur="25s"
+                            repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="300" cy="180" r="15" fill="url(#swirlPattern)" opacity="0.8">
+                        <animateTransform
+                            attributeName="transform"
+                            type="translate"
+                            values="0,0; -200,60; 0,0"
+                            dur="22s"
+                            repeatCount="indefinite" />
+                    </circle>
+                </g>
+
+                <!-- Overlapping "mountains" or ridges for variety -->
+                <path d="M0,380 L80,280 L160,380 Z" fill="#4E342E" opacity="0.7">
+                    <animate attributeName="fill"
+                        values="#4E342E; #2B1D1B; #4E342E"
+                        dur="30s"
+                        repeatCount="indefinite" />
+                </path>
+                <path d="M120,380 L200,260 L280,380 Z" fill="#5D4037" opacity="0.6">
+                    <animate attributeName="fill"
+                        values="#5D4037; #3E2723; #5D4037"
+                        dur="30s"
+                        repeatCount="indefinite" />
+                </path>
+
+                <!-- Star-like sparkles (night only) -->
+                <g class="stars">
+                    <circle cx="50" cy="60" r="2" fill="white" opacity="0">
+                        <animate attributeName="opacity"
+                            values="0;0.8;0"
+                            dur="4s"
+                            begin="2s"
+                            repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="200" cy="40" r="2" fill="white" opacity="0">
+                        <animate attributeName="opacity"
+                            values="0;0.8;0"
+                            dur="4s"
+                            begin="4s"
+                            repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="350" cy="90" r="2" fill="white" opacity="0">
+                        <animate attributeName="opacity"
+                            values="0;0.8;0"
+                            dur="4s"
+                            begin="6s"
+                            repeatCount="indefinite" />
+                    </circle>
+                </g>
+            </svg>
+        </div>
+        
+        <div class="content-right">
+            <!-- A sanitation-themed character -->
+            <svg class="character-container" viewBox="0 0 200 200">
+                <!-- Outer circle -->
+                <circle cx="100" cy="100" r="70" fill="none" stroke="white" stroke-width="3" />
+                <!-- “Smiling” path -->
+                <path d="M70,120 Q100,150 130,120"
+                      fill="none" stroke="white" stroke-width="3">
+                    <animate attributeName="d" 
+                        values="M70,120 Q100,150 130,120;M70,110 Q100,140 130,110;M70,120 Q100,150 130,120"
+                        dur="3s"
+                        repeatCount="indefinite"/>
+                </path>
+                <!-- Eyes -->
+                <circle cx="80" cy="85" r="5" fill="white"/>
+                <circle cx="120" cy="85" r="5" fill="white"/>
+                <!-- A small “waste bin” icon on the head -->
+                <rect x="90" y="50" width="20" height="25" fill="white" rx="3" />
+                <line x1="90" y1="50" x2="110" y2="50" 
+                      stroke="white" stroke-width="3" />
+                <line x1="100" y1="45" x2="100" y2="50"
+                      stroke="white" stroke-width="3" />
+            </svg>
+
+            <div class="info-panel">
+                <h3>Clean Sanitation Solutions</h3>
+                <p>Discover modern waste management, safe disposal methods, and community sanitation strategies.</p>
+            </div>
+
+            <div class="info-panel">
+                <h3>Sanitation Certification</h3>
+                <p>Earn professional qualifications in sanitation and waste management systems.</p>
+            </div>
+
+            <button class="cta-button" style="--theme-color: #059669;">
+                Start Sanitation Training
+            </button>
+        </div>
+    </div>
+
+
+<div class="nav-dots" role="tablist">
+  <!-- Slide 0 = Water -->
+  <button class="nav-dot active" role="tab" aria-selected="true">
+    <span class="visually-hidden">Water Solutions</span>
+  </button>
+
+  <!-- Slide 1 = Cleanup & Detox -->
+  <button class="nav-dot" role="tab" aria-selected="false">
+    <span class="visually-hidden">Cleanup & Detox</span>
+  </button>
+
+  <!-- Slide 2 = Sanitation -->
+  <button class="nav-dot" role="tab" aria-selected="false">
+    <span class="visually-hidden">Sanitation Solutions</span>
+  </button>
+
+  <!-- Slide 3 = Learning Clinics -->
+  <button class="nav-dot" role="tab" aria-selected="false">
+    <span class="visually-hidden">Learning Clinics</span>
+  </button>
+</div>
+
+
+        </div>
+    </div>
+
+    <!-- Modal Template -->
+    <div class="modal" id="slideModal" role="dialog">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Close modal">×</button>
+            <h2 id="modalTitle"></h2>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        class Carousel {
+            constructor(container) {
+                this.container = container;
+                this.slides = Array.from(container.querySelectorAll('.slide'));
+                this.dots = Array.from(container.querySelectorAll('.nav-dot'));
+                this.currentIndex = 0;
+                this.touchStartX = 0;
+                this.touchEndX = 0;
+                this.autoplayInterval = null;
+                this.isModalOpen = false;
+
+                this.init();
+            }
+
+            init() {
+                this.addEventListeners();
+                this.startAutoplay();
+            }
+
+            addEventListeners() {
+                // Touch events
+                this.container.addEventListener('touchstart', (e) => {
+                    this.touchStartX = e.touches[0].clientX;
+                    this.pauseAutoplay();
+                });
+
+                this.container.addEventListener('touchend', (e) => {
+                    this.touchEndX = e.changedTouches[0].clientX;
+                    this.handleSwipe();
+                    if (!this.isModalOpen) this.startAutoplay();
+                });
+
+                // Navigation dots
+                this.dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => this.goToSlide(index));
+                });
+
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (this.isModalOpen) return;
+                    if (e.key === 'ArrowRight') this.nextSlide();
+                    if (e.key === 'ArrowLeft') this.previousSlide();
+                });
+
+                // Modal handlers
+                document.querySelectorAll('.cta-button').forEach(button => {
+                    button.addEventListener('click', () => this.openModal());
+                });
+
+                document.querySelector('.modal-close').addEventListener('click', () => 
+                    this.closeModal());
+            }
+
+            handleSwipe() {
+                const swipeDistance = this.touchEndX - this.touchStartX;
+                const minSwipeDistance = 50;
+
+                if (Math.abs(swipeDistance) > minSwipeDistance) {
+                    if (swipeDistance > 0) this.previousSlide();
+                    else this.nextSlide();
+                }
+            }
+
+            goToSlide(index) {
+                this.slides[this.currentIndex].classList.remove('active');
+                this.dots[this.currentIndex].classList.remove('active');
+                this.dots[this.currentIndex].setAttribute('aria-selected', 'false');
+
+                this.currentIndex = index;
+
+                this.slides[this.currentIndex].classList.add('active');
+                this.dots[this.currentIndex].classList.add('active');
+                this.dots[this.currentIndex].setAttribute('aria-selected', 'true');
+            }
+
+            nextSlide() {
+                const next = (this.currentIndex + 1) % this.slides.length;
+                this.goToSlide(next);
+            }
+
+            previousSlide() {
+                const prev = (this.currentIndex - 1 + this.slides.length) % this.slides.length;
+                this.goToSlide(prev);
+            }
+
+            startAutoplay() {
+                if (this.autoplayInterval) this.pauseAutoplay();
+                this.autoplayInterval = setInterval(() => this.nextSlide(), 5000);
+            }
+
+            pauseAutoplay() {
+                if (this.autoplayInterval) {
+                    clearInterval(this.autoplayInterval);
+                    this.autoplayInterval = null;
+                }
+            }
+
+            openModal() {
+                const modal = document.getElementById('slideModal');
+                modal.classList.add('active');
+                this.isModalOpen = true;
+                this.pauseAutoplay();
+            }
+
+            closeModal() {
+                const modal = document.getElementById('slideModal');
+                modal.classList.remove('active');
+                this.isModalOpen = false;
+                if (!this.isModalOpen) this.startAutoplay();
+            }
+        }
+
+        // Initialize carousel
+        document.addEventListener('DOMContentLoaded', () => {
+            const carousel = new Carousel(document.querySelector('.carousel-container'));
+        });
+    </script>
+
+    
+    <div id="mondrian-overlay" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50">
+      <div class="absolute inset-0 p-8">
+        <div id="mondrian-grid" class="w-full h-full grid gap-4 opacity-0 transform scale-95 transition-all duration-300">
+          <!-- Subcategories will be dynamically inserted here -->
+        </div>
+      </div>
+      <button id="mondrian-close" class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+    
+  <div class="floating-icons">
+    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-opacity-20 hover:bg-white" data-category="Drinking Water"><i class="fas fa-tint fa-3x floating-icon" style="--i:1;"></i></a>
+    <i class="fas fa-recycle fa-3x floating-icon" style="--i:2;"></i>
+    <i class="fas fa-solar-panel fa-3x floating-icon" style="--i:3;"></i>
+    <i class="fas fa-heartbeat fa-3x floating-icon" style="--i:4;"></i>
+</div>
+    
+<div class="header relative overflow-hidden">
+
+<div class="container mx-auto flex justify-center space-x-8">
+
+
+
+
+
+       
+            </div>
+
+                
+            <div class="floating-icons">
+                <div class="floating-icons">
+                    <i class="fas fa-tint fa-2x floating-icon" style="--i:1;"></i>
+                    <i class="fas fa-recycle fa-2x floating-icon" style="--i:2;"></i>
+                    <i class="fas fa-solar-panel fa-2x floating-icon" style="--i:3;"></i>
+                    <i class="fas fa-heartbeat fa-2x floating-icon" style="--i:4;"></i>
+                    <i class="fas fa-leaf fa-2x floating-icon" style="--i:5;"></i>
+                    <i class="fas fa-seedling fa-2x floating-icon" style="--i:6;"></i>
+                    <i class="fas fa-water fa-2x floating-icon" style="--i:7;"></i>
+                    <i class="fas fa-wind fa-2x floating-icon" style="--i:8;"></i>
+                </div>
+            </div>
+
+  <div id="subheader" class="subheader"> Approvideo is a DIY learning network that supports hands on learning and community level collaboration. </div>
+
+
+
+
+          <div id="mondrian-box" class="relative left-0 right-0  dark:white-200 p-4 hidden">
+            <div id="subcategory-links" class="flex flex-wrap dark:bg-white-700 text-white-500 bg-black-200 justify-center"></div>
+          </div>
+
+        <div id="hero" class=" mb-1">
+        </div>
+    
+    </div>
+
+    <div class="container mx-auto px-4">
+
+
+
+    
+    <div id="categories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+    <!-- Search and Sort Controls -->
+    <div class="flex flex-col md:flex-row gap-4 mb-8">
+      <div class="flex-1">
+        <input 
+          type="text" 
+          id="searchInput"
+          placeholder="Search solutions..." 
+          class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+        >
+      </div>
+      <div class="flex-shrink-0">
+        <select 
+          id="sortSelect" 
+          class="w-full md:w-auto px-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+        >
+          <option value="newest">Newest First</option>
+          <option value="popular">Most Popular</option>
+          <option value="az">A-Z</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Loading Skeleton -->
+    <div id="skeletonLoader" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Skeleton cards will be injected here -->
+    </div>
+
+    <!-- Video Grid -->
+    <div id="videoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+      <!-- Videos will be dynamically inserted here -->
+    </div>
+
+    <!-- Infinite Scroll Trigger -->
+    <div id="infiniteScrollTrigger" class="h-20"></div>
+  </div>
+
+  
+      <script>
+
+        // Add this at the start of your JavaScript section
+const bannerMessages = [
+    "🎥 Sharing knowledge that changes lives - One video at a time",
+    "🌱 Building resilience through appropriate technology",
+    "💧 Clean water, safe shelter, better lives",
+    "🌟 Empowering communities with sustainable solutions",
+    "🤝 Technology that serves humanity",
+    "🏗️ Building bridges to a sustainable future",
+    "💪 Local solutions, global impact",
+    "🌍 Every community deserves access to vital knowledge"
+];
+
+// Add this to your DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.querySelector('.bg-gradient-to-r.from-green-600');
+    let currentMessageIndex = 0;
+
+    function updateBannerMessage() {
+        banner.textContent = bannerMessages[currentMessageIndex];
+        currentMessageIndex = (currentMessageIndex + 1) % bannerMessages.length;
+    }
+
+    // Initial message
+    updateBannerMessage();
+
+    // Rotate message every 5 seconds
+    setInterval(updateBannerMessage, 5000);
+});
+
+
+      getRandomColor() {
+        // Using HSL color space for more vibrant colors
+        const hue = Math.random() * 360;
+        const saturation = Math.random() * 100;
+        const lightness = Math.random() * 100;
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+      }
+
+
+          // Theme Toggle
+          const darkModeToggle = document.getElementById('darkModeToggle');
+          const html = document.documentElement;
+
+          function updateTheme(isDark) {
+            html.classList.toggle('dark', isDark);
+            localStorage.setItem('darkMode', isDark);
+          }
+
+          // Check saved preference
+          if (localStorage.getItem('darkMode') === 'true' ||
+              (!localStorage.getItem('darkMode') && 
+               window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            updateTheme(true);
+          }
+
+          darkModeToggle.addEventListener('click', () => {
+            updateTheme(!html.classList.contains('dark'));
+          });
+
+          // Profile Dropdown
+          const profileButton = document.getElementById('profileButton');
+          const profileDropdown = document.getElementById('profileDropdown');
+          
+          profileButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('dropdown-active');
+          });
+
+          document.addEventListener('click', () => {
+            profileDropdown.classList.remove('dropdown-active');
+          });
+
+
+  
+
+</script>
+
+
+<div class="container mx-auto px-4 mb-8">
+  <div class="rounded-lg border-4 border-indigo-500 bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-700 p-6 text-white">    
+      Approvideo provides a platform for educators and learners to discover and engage with educational YouTube videos.
+      We believe our use of thumbnails and curated collections falls within fair use principles, but we cannot guarantee 
+      fair use in all cases. Users are responsible for their use of copyrighted materials and should comply with 
+      YouTube's terms of service. We encourage transformative use, proper attribution, and respect for copyright.
+  </div>
+</div>
+    
+
+    
+    <BR><BR><BR>
+
+
+    
+
+<footer class="footer-gradient dark:footer-gradient-light text-gray-800 dark:text-gray-200 py-12 mt-12 transition-colors duration-600">
+    <div class="landscape">
+        <img src="images/windmill.svg" alt="Windmill">
+        <img src="images/leaf.svg" alt="Leaf">
+    </div>
+
+   <BR><BR><BR>
+    
+    <div class="container mx-auto px-4">
+        <div class="flex flex-wrap justify-between items-start">
+            <div class="w-full md:w-1/3 mb-8 md:mb-0">
+                <h3 class="footer-title mb-2 text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-500">ApproVideo</h3>
+                <p class="footer-subtitle text-lg">Appropriate Technology Videos for the DIY Sector</p>
+                <div class="mt-4 relative overflow-hidden cursor-pointer" id="mission-reveal">
+                    <p class="text-sm font-semibold">Our Mission (Click to reveal)</p>
+                    <div class="mission-text hidden mt-2 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg transform transition-all duration-500 ease-in-out">
+                        <p>To empower individuals and communities with accessible, sustainable technology solutions through educational videos.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/3 mb-8 md:mb-0">
+                <h4 class="text-xl font-semibold mb-4 text-blue-600 dark:text-blue-400">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="https://github.com/biomassives/video-library-manager-vanilla" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fab fa-github mr-2"></i>GitHub Repository</a></li>
+                    <li><a href="https://github.com/biomassives/video-library-manager-vanilla/issues" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fab fa-github mr-2"></i>Comments/ Issues </a></li>
+                    <li><a href="https://www.gnu.org/licenses/gpl-3.0.en.html" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fas fa-balance-scale mr-2"></i>GPL v3 License</a></li>
+                    <li><a href="https://scdhub.org" class="footer-link hover:text-green-500 transition duration-300 flex items-center" style="transform: translateX(0px);"><i class="fas fa-globe mr-2"></i>SCD Hub</a></li>
+                </ul>
+            </div>
+
+            <div class="w-full md:w-1/3 flex flex-col items-center md:items-end">
+                <button id="sponsor-us" class="footer-button bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white font-bold py-3 px-6 rounded-full transition duration-300 mb-4 transform hover:scale-105">
+                    Donate
+                </button>
+                <button id="be-an-editor" class="footer-button bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-6 rounded-full transform hover:scale-105 transition duration-300">
+                    Share a Video
+                </button>
+            </div>
+
+
+        </div>
+        <div class="mt-12 pt-8 border-t border-gray-700 dark:border-gray-300 text-center text-sm">
+            <p>© 2025 ApproVideo. All rights repected. | <a href="#" class="footer-link hover:text-blue-400 transition duration-300" style="transform: translateX(0px);">Privacy Policy</a> | <a href="#" class="footer-link hover:text-blue-400 transition duration-300" style="transform: translateX(0px);">Terms of Service</a></p>
+            <p class="mt-2">A project of SCD Hub 501(c)(3)</p>
+        </div>
+    </div>
+
+
+
+<div id="sponsor-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Support ApproVideo</h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500">
+                    Approvideo can use your help curating useful content about DIY appropriate technology. Donation? paypal ecocommunity@protonmail.com
+                </p>
+                <!-- Add sponsorship options or a form here -->
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="close-sponsor-modal" class="px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editor-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Share a Video</h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500">
+                    Join our team of editors and help curate high-quality content on appropriate technology. Share your expertise with the world!
+                </p>
+                  <form id="editor-login-form" class="space-y-4">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                        <input type="text" id="username" name="username" required="" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                  </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="password" name="password" required="" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Login
+                        </button>
+                    </div>
+                </form>
+                <p id="login-message" class="mt-2 text-sm text-red-600 hidden"></p>
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="close-editor-modal" class="px-4 py-2 bg-purple-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-300">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+  
+</footer>
+
+</body>
+</html>
