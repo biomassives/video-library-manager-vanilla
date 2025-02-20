@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dynamic Onboarding Form</title>
+  <!-- Include js-yaml via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
+  <style>
+    .question-container {
+      margin-bottom: 1em;
+    }
+  </style>
+</head>
+<body>
+  <form id="new-user-form">
+    <h2>Onboarding Form</h2>
+  </form>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Updated YAML string including both crisis and non-crisis questions
+      const yamlString = `
+onboarding_questions:
+  - type: text
+    label: Name
+    id: name
+    required: true
+  - type: email
+    label: Email
+    id: email
+    required: true
+  - type: radio
+    label: Relationship to Crisis Zone?
+    id: crisis_zone_relationship
+    options:
+      - value: in
+        label: I am in the crisis zone and need resources.
+      - value: out
+        label: I am outside the crisis zone.
+  - type: checkbox
+    label: What resources do you need?
+    id: crisis_zone_needs
+    depends_on: crisis_zone_relationship:in
+    options:
+      - value: water
+        label: Water
+      - value: renewable_energy
+        label: Renewable Energy
+      - value: shelter
+        label: Shelter
+      - value: health_support
+        label: Health Support
+      - value: research
+        label: Research
+  - type: checkbox
+    label: How can you help from outside the crisis zone?
+    id: non_crisis_help
+    depends_on: crisis_zone_relationship:out
+    options:
+      - value: research
+        label: Help with Research
+      - value: technical_training
+        label: Produce a Technical Training Clinic
+      - value: art
+        label: Contribute Artistic Expertise
+      - value: organic_farming
+        label: Organic Farming Support & Education
+      - value: water_energy
+        label: Water/Energy Systems Evaluation and Repair
+  - type: textarea
+    label: Interests (e.g., Garbage Mapping, Water Quality)
+    id: interests
+      `;
+
+      // Parse the YAML string using js-yaml
+      const data = jsyaml.load(yamlString);
+      const questions = data.onboarding_questions;
+      const form = document.getElementById('new-user-form');
+
+      // Function to create a question element based on its type and configuration
+      function createQuestion(question) {
+        // Container for each question with an id for conditional logic
+        const container = document.createElement('div');
+        container.classList.add('question-container');
+        container.id = question.id + '-container';
+
+        // Create label for the question
+        const label = document.createElement('label');
+        label.textContent = question.label;
+        label.setAttribute('for', question.id);
+        container.appendChild(label);
+
+        let inputElement;
+
+        switch(question.type) {
+          case 'text':
+          case 'email':
+            inputElement = document.createElement('input');
+            inputElement.type = question.type;
+            inputElement.id = question.id;
+            inputElement.name = question.id;
+            if (question.required) inputElement.required = true;
+            container.appendChild(inputElement);
+            break;
+
+          case 'textarea':
+            inputElement = document.createElement('textarea');
+            inputElement.id = question.id;
+            inputElement.name = question.id;
+            if (question.required) inputElement.required = true;
+            container.appendChild(inputElement);
+            break;
+
+          case 'radio':
+            inputElement = document.createElement('div');
+            question.options.forEach(option => {
+              const optionWrapper = document.createElement('label');
+              optionWrapper.style.display = "block";
+
+              const radioInput = document.createElement('input');
+              radioInput.type = 'radio';
+              radioInput.name = question.id;
+              radioInput.value = option.value;
+              radioInput.id = `${question.id}-${option.value}`;
+              if (question.required) radioInput.required = true;
+              optionWrapper.appendChild(radioInput);
+
+              const optionSpan = document.createElement('span');
+              optionSpan.textContent = " " + option.label;
+              optionWrapper.appendChild(optionSpan);
+
+              inputElement.appendChild(optionWrapper);
+            });
+            container.appendChild(inputElement);
+            break;
+
+          case 'checkbox':
+            inputElement = document.createElement('div');
+            question.options.forEach(option => {
+              const optionWrapper = document.createElement('label');
+              optionWrapper.style.display = "block";
+
+              const checkboxInput = document.createElement('input');
+              checkboxInput.type = 'checkbox';
+              // Use an array-style name to capture multiple selections
+              checkboxInput.name = question.id + "[]";
+              checkboxInput.value = option.value;
+              checkboxInput.id = `${question.id}-${option.value}`;
+              optionWrapper.appendChild(checkboxInput);
+
+              const optionSpan = document.createElement('span');
+              optionSpan.textContent = " " + option.label;
+              optionWrapper.appendChild(optionSpan);
+
+              inputElement.appendChild(optionWrapper);
+            });
+            container.appendChild(inputElement);
+            break;
+
+          default:
+            console.error("Unsupported question type: " + question.type);
+        }
+
+        // If the question is conditional, initially hide its container.
+        if (question.depends_on) {
+          container.style.display = "none";
+        }
+
+        return container;
+      }
+
+      // Loop through each question and append its element to the form
+      questions.forEach(question => {
+        const questionEl = createQuestion(question);
+        form.appendChild(questionEl);
+      });
+
+      // Conditional Logic: Listen for changes on radio inputs that serve as dependencies.
+      questions.forEach(question => {
+        if (question.type === 'radio') {
+          const radioButtons = document.getElementsByName(question.id);
+          radioButtons.forEach(radio => {
+            radio.addEventListener('change', function(e) {
+              // Check each question that depends on the current radio question
+              questions.forEach(depQuestion => {
+                if (depQuestion.depends_on && depQuestion.depends_on.startsWith(question.id + ':')) {
+                  const [depField, depValue] = depQuestion.depends_on.split(':');
+                  const dependentContainer = document.getElementById(depQuestion.id + '-container');
+                  // Toggle display based on whether the selected value matches the dependency
+                  if (e.target.value === depValue) {
+                    dependentContainer.style.display = "";
+                  } else {
+                    dependentContainer.style.display = "none";
+                  }
+                }
+              });
+            });
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
