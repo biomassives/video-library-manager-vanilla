@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Approvideo Review Portal</title>
+  <style>
+    /* Basic styling for the skeleton loader effect */
+  .skeleton {
+      background-color: #eee;
+      opacity: 0.7;
+      animation: pulse 1.5s infinite ease-in-out;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+  .skeleton-line {
+      height: 20px;
+      margin-bottom: 10px;
+      width: 80%;
+    }
+
+  .skeleton-box {
+      height: 50px;
+      width: 50px;
+      margin-right: 10px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.7; }
+      50% { opacity: 1; }
+      100% { opacity: 0.7; }
+    }
+
+    /* Theater-like stage effect */
+    #stage {
+      width: 80%;
+      margin: 20px auto;
+      perspective: 800px;
+      display: grid; /* Use grid for layout */
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
+      gap: 20px;
+    }
+
+  .review-area {
+      transform-style: preserve-3d;
+      opacity: 0;
+      transform: translateY(50px) rotateX(-10deg);
+      transition: opacity 1s ease, transform 1s ease;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+    }
+
+  .review-area.revealed {
+      opacity: 1;
+      transform: translateY(0) rotateX(0deg);
+    }
+
+  .review-area > * {
+      display: none;
+    }
+
+  .revealed {
+      display: block;
+    }
+
+    /* Curtain Effect */
+    #curtain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2em;
+      opacity: 1;
+      transition: opacity 1s ease;
+    }
+
+    #curtain.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="curtain">Loading...</div>
+  <div id="stage"></div>
+
+  <script>
+    const stage = document.getElementById('stage');
+    const curtain = document.getElementById('curtain');
+    const numAreas = 14; // Number of review areas
+    const numContexts = 20; // Number of contexts
+
+    // Function to create review area HTML
+    function createReviewArea(areaId) {
+      const area = document.createElement('div');
+      area.classList.add('review-area');
+      area.id = `area-${areaId}`;
+      area.innerHTML = `
+        <div class="skeleton">
+          <div class="skeleton-box"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+        </div>
+        <h2 class="revealed">Area ${areaId} <a href="#">(Link)</a></h2>
+        <p class="revealed">Description of Area ${areaId}.</p>
+        
+        <div class="revealed">
+          <h3>Contexts:</h3>
+          <ul>
+            ${[...Array(numContexts).keys()].map(i => `
+              <li>Context ${i + 1} for Area ${areaId}</li>
+            `).join('')}
+          </ul>
+        </div>
+      `;
+      return area;
+    }
+
+    // Create and add review areas to the stage
+    for (let i = 1; i <= numAreas; i++) {
+      stage.appendChild(createReviewArea(i));
+    }
+
+    // JavaScript to simulate loading and reveal content
+    const reviewAreas = document.querySelectorAll('.review-area');
+    let revealDelay = 500;
+
+    reviewAreas.forEach(area => {
+      setTimeout(() => {
+        const skeleton = area.querySelector('.skeleton');
+        skeleton.style.display = 'none';
+        const revealedElements = area.querySelectorAll('.revealed');
+        revealedElements.forEach(el => el.classList.add('revealed'));
+        area.classList.add('revealed');
+      }, revealDelay);
+      revealDelay += 300; // Reduced delay for smoother flow with more areas
+    });
+
+    // Curtain effect
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        curtain.classList.add('hidden');
+      }, revealDelay + 1000); // Hide after all areas are revealed
+    });
+  </script>
+
+</body>
+</html>
